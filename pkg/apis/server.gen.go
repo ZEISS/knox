@@ -98,6 +98,18 @@ type ServerInterface interface {
 	// Update a user
 	// (PUT /api/v1/user/{id})
 	PutApiV1UserId(c *fiber.Ctx, id string) error
+	// Lock the state of Terraform environment
+	// (POST /client/{teamId}/{projectId}/{environmentId}/lock)
+	LockEnvironment(c *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error
+	// Get the state of Terraform environment
+	// (GET /client/{teamId}/{projectId}/{environmentId}/state)
+	GetEnvironmentState(c *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error
+	// Update the state of Terraform environment
+	// (POST /client/{teamId}/{projectId}/{environmentId}/state)
+	UpdateEnvironmentState(c *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error
+	// Unlock the state of Terraform environment
+	// (POST /client/{teamId}/{projectId}/{environmentId}/unlock)
+	UnlockEnvironment(c *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -654,6 +666,142 @@ func (siw *ServerInterfaceWrapper) PutApiV1UserId(c *fiber.Ctx) error {
 	return siw.Handler.PutApiV1UserId(c, id)
 }
 
+// LockEnvironment operation middleware
+func (siw *ServerInterfaceWrapper) LockEnvironment(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "projectId" -------------
+	var projectId ProjectId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "environmentId" -------------
+	var environmentId EnvironmentId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "environmentId", c.Params("environmentId"), &environmentId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(Basic_authScopes, []string{})
+
+	return siw.Handler.LockEnvironment(c, teamId, projectId, environmentId)
+}
+
+// GetEnvironmentState operation middleware
+func (siw *ServerInterfaceWrapper) GetEnvironmentState(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "projectId" -------------
+	var projectId ProjectId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "environmentId" -------------
+	var environmentId EnvironmentId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "environmentId", c.Params("environmentId"), &environmentId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(Basic_authScopes, []string{})
+
+	return siw.Handler.GetEnvironmentState(c, teamId, projectId, environmentId)
+}
+
+// UpdateEnvironmentState operation middleware
+func (siw *ServerInterfaceWrapper) UpdateEnvironmentState(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "projectId" -------------
+	var projectId ProjectId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "environmentId" -------------
+	var environmentId EnvironmentId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "environmentId", c.Params("environmentId"), &environmentId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(Basic_authScopes, []string{})
+
+	return siw.Handler.UpdateEnvironmentState(c, teamId, projectId, environmentId)
+}
+
+// UnlockEnvironment operation middleware
+func (siw *ServerInterfaceWrapper) UnlockEnvironment(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "projectId" -------------
+	var projectId ProjectId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "environmentId" -------------
+	var environmentId EnvironmentId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "environmentId", c.Params("environmentId"), &environmentId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(Basic_authScopes, []string{})
+
+	return siw.Handler.UnlockEnvironment(c, teamId, projectId, environmentId)
+}
+
 // FiberServerOptions provides options for the Fiber server.
 type FiberServerOptions struct {
 	BaseURL     string
@@ -730,6 +878,14 @@ func RegisterHandlersWithOptions(router fiber.Router, si ServerInterface, option
 	router.Get(options.BaseURL+"/api/v1/user/:id", wrapper.GetApiV1UserId)
 
 	router.Put(options.BaseURL+"/api/v1/user/:id", wrapper.PutApiV1UserId)
+
+	router.Post(options.BaseURL+"/client/:teamId/:projectId/:environmentId/lock", wrapper.LockEnvironment)
+
+	router.Get(options.BaseURL+"/client/:teamId/:projectId/:environmentId/state", wrapper.GetEnvironmentState)
+
+	router.Post(options.BaseURL+"/client/:teamId/:projectId/:environmentId/state", wrapper.UpdateEnvironmentState)
+
+	router.Post(options.BaseURL+"/client/:teamId/:projectId/:environmentId/unlock", wrapper.UnlockEnvironment)
 
 }
 
@@ -1643,6 +1799,164 @@ func (response PutApiV1UserId500JSONResponse) VisitPutApiV1UserIdResponse(ctx *f
 	return ctx.JSON(&response)
 }
 
+type LockEnvironmentRequestObject struct {
+	TeamId        TeamId        `json:"teamId"`
+	ProjectId     ProjectId     `json:"projectId"`
+	EnvironmentId EnvironmentId `json:"environmentId"`
+	Body          *LockEnvironmentJSONRequestBody
+}
+
+type LockEnvironmentResponseObject interface {
+	VisitLockEnvironmentResponse(ctx *fiber.Ctx) error
+}
+
+type LockEnvironment200JSONResponse LockInfo
+
+func (response LockEnvironment200JSONResponse) VisitLockEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(200)
+
+	return ctx.JSON(&response)
+}
+
+type LockEnvironment404JSONResponse ErrorResponse
+
+func (response LockEnvironment404JSONResponse) VisitLockEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(404)
+
+	return ctx.JSON(&response)
+}
+
+type LockEnvironment500JSONResponse ErrorResponse
+
+func (response LockEnvironment500JSONResponse) VisitLockEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
+type GetEnvironmentStateRequestObject struct {
+	TeamId        TeamId        `json:"teamId"`
+	ProjectId     ProjectId     `json:"projectId"`
+	EnvironmentId EnvironmentId `json:"environmentId"`
+}
+
+type GetEnvironmentStateResponseObject interface {
+	VisitGetEnvironmentStateResponse(ctx *fiber.Ctx) error
+}
+
+type GetEnvironmentState200JSONResponse Payload
+
+func (response GetEnvironmentState200JSONResponse) VisitGetEnvironmentStateResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(200)
+
+	return ctx.JSON(&response)
+}
+
+type GetEnvironmentState404JSONResponse ErrorResponse
+
+func (response GetEnvironmentState404JSONResponse) VisitGetEnvironmentStateResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(404)
+
+	return ctx.JSON(&response)
+}
+
+type GetEnvironmentState500JSONResponse ErrorResponse
+
+func (response GetEnvironmentState500JSONResponse) VisitGetEnvironmentStateResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
+type UpdateEnvironmentStateRequestObject struct {
+	TeamId        TeamId        `json:"teamId"`
+	ProjectId     ProjectId     `json:"projectId"`
+	EnvironmentId EnvironmentId `json:"environmentId"`
+	Body          *UpdateEnvironmentStateJSONRequestBody
+}
+
+type UpdateEnvironmentStateResponseObject interface {
+	VisitUpdateEnvironmentStateResponse(ctx *fiber.Ctx) error
+}
+
+type UpdateEnvironmentState200JSONResponse Payload
+
+func (response UpdateEnvironmentState200JSONResponse) VisitUpdateEnvironmentStateResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(200)
+
+	return ctx.JSON(&response)
+}
+
+type UpdateEnvironmentState404JSONResponse ErrorResponse
+
+func (response UpdateEnvironmentState404JSONResponse) VisitUpdateEnvironmentStateResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(404)
+
+	return ctx.JSON(&response)
+}
+
+type UpdateEnvironmentState500JSONResponse ErrorResponse
+
+func (response UpdateEnvironmentState500JSONResponse) VisitUpdateEnvironmentStateResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
+type UnlockEnvironmentRequestObject struct {
+	TeamId        TeamId        `json:"teamId"`
+	ProjectId     ProjectId     `json:"projectId"`
+	EnvironmentId EnvironmentId `json:"environmentId"`
+	Body          *UnlockEnvironmentJSONRequestBody
+}
+
+type UnlockEnvironmentResponseObject interface {
+	VisitUnlockEnvironmentResponse(ctx *fiber.Ctx) error
+}
+
+type UnlockEnvironment200Response struct {
+}
+
+func (response UnlockEnvironment200Response) VisitUnlockEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Status(200)
+	return nil
+}
+
+type UnlockEnvironment204Response struct {
+}
+
+func (response UnlockEnvironment204Response) VisitUnlockEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Status(204)
+	return nil
+}
+
+type UnlockEnvironment404JSONResponse ErrorResponse
+
+func (response UnlockEnvironment404JSONResponse) VisitUnlockEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(404)
+
+	return ctx.JSON(&response)
+}
+
+type UnlockEnvironment500JSONResponse ErrorResponse
+
+func (response UnlockEnvironment500JSONResponse) VisitUnlockEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
 // StrictServerInterface represents all server handlers.
 type StrictServerInterface interface {
 	// Get system health status
@@ -1729,6 +2043,18 @@ type StrictServerInterface interface {
 	// Update a user
 	// (PUT /api/v1/user/{id})
 	PutApiV1UserId(ctx context.Context, request PutApiV1UserIdRequestObject) (PutApiV1UserIdResponseObject, error)
+	// Lock the state of Terraform environment
+	// (POST /client/{teamId}/{projectId}/{environmentId}/lock)
+	LockEnvironment(ctx context.Context, request LockEnvironmentRequestObject) (LockEnvironmentResponseObject, error)
+	// Get the state of Terraform environment
+	// (GET /client/{teamId}/{projectId}/{environmentId}/state)
+	GetEnvironmentState(ctx context.Context, request GetEnvironmentStateRequestObject) (GetEnvironmentStateResponseObject, error)
+	// Update the state of Terraform environment
+	// (POST /client/{teamId}/{projectId}/{environmentId}/state)
+	UpdateEnvironmentState(ctx context.Context, request UpdateEnvironmentStateRequestObject) (UpdateEnvironmentStateResponseObject, error)
+	// Unlock the state of Terraform environment
+	// (POST /client/{teamId}/{projectId}/{environmentId}/unlock)
+	UnlockEnvironment(ctx context.Context, request UnlockEnvironmentRequestObject) (UnlockEnvironmentResponseObject, error)
 }
 
 type StrictHandlerFunc func(ctx *fiber.Ctx, args interface{}) (interface{}, error)
@@ -2544,6 +2870,140 @@ func (sh *strictHandler) PutApiV1UserId(ctx *fiber.Ctx, id string) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	} else if validResponse, ok := response.(PutApiV1UserIdResponseObject); ok {
 		if err := validResponse.VisitPutApiV1UserIdResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// LockEnvironment operation middleware
+func (sh *strictHandler) LockEnvironment(ctx *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error {
+	var request LockEnvironmentRequestObject
+
+	request.TeamId = teamId
+	request.ProjectId = projectId
+	request.EnvironmentId = environmentId
+
+	var body LockEnvironmentJSONRequestBody
+	if err := ctx.BodyParser(&body); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+	request.Body = &body
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.LockEnvironment(ctx.UserContext(), request.(LockEnvironmentRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "LockEnvironment")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(LockEnvironmentResponseObject); ok {
+		if err := validResponse.VisitLockEnvironmentResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetEnvironmentState operation middleware
+func (sh *strictHandler) GetEnvironmentState(ctx *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error {
+	var request GetEnvironmentStateRequestObject
+
+	request.TeamId = teamId
+	request.ProjectId = projectId
+	request.EnvironmentId = environmentId
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.GetEnvironmentState(ctx.UserContext(), request.(GetEnvironmentStateRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetEnvironmentState")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(GetEnvironmentStateResponseObject); ok {
+		if err := validResponse.VisitGetEnvironmentStateResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// UpdateEnvironmentState operation middleware
+func (sh *strictHandler) UpdateEnvironmentState(ctx *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error {
+	var request UpdateEnvironmentStateRequestObject
+
+	request.TeamId = teamId
+	request.ProjectId = projectId
+	request.EnvironmentId = environmentId
+
+	var body UpdateEnvironmentStateJSONRequestBody
+	if err := ctx.BodyParser(&body); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+	request.Body = &body
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.UpdateEnvironmentState(ctx.UserContext(), request.(UpdateEnvironmentStateRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "UpdateEnvironmentState")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(UpdateEnvironmentStateResponseObject); ok {
+		if err := validResponse.VisitUpdateEnvironmentStateResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// UnlockEnvironment operation middleware
+func (sh *strictHandler) UnlockEnvironment(ctx *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error {
+	var request UnlockEnvironmentRequestObject
+
+	request.TeamId = teamId
+	request.ProjectId = projectId
+	request.EnvironmentId = environmentId
+
+	var body UnlockEnvironmentJSONRequestBody
+	if err := ctx.BodyParser(&body); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+	request.Body = &body
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.UnlockEnvironment(ctx.UserContext(), request.(UnlockEnvironmentRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "UnlockEnvironment")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(UnlockEnvironmentResponseObject); ok {
+		if err := validResponse.VisitUnlockEnvironmentResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {

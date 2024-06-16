@@ -15,18 +15,18 @@ paths:
         - Liveness
       summary: Get system health status
       responses:
-        '200':
+        "200":
           description: System is healthy
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HealthResponse'
-        '500':
+                $ref: "#/components/schemas/HealthResponse"
+        "500":
           description: System is down
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HealthResponse'
+                $ref: "#/components/schemas/HealthResponse"
 
   /_ready:
     get:
@@ -34,18 +34,157 @@ paths:
         - Readiness
       summary: Get system readiness
       responses:
-        '200':
+        "200":
           description: System is ready to accept traffic
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HealthResponse'
-        '500':
+                $ref: "#/components/schemas/HealthResponse"
+        "500":
           description: System not ready to accept traffic
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HealthResponse'
+                $ref: "#/components/schemas/HealthResponse"
+
+  /client/{teamId}/{projectId}/{environmentId}/lock:
+    post:
+      tags:
+        - Environments
+      summary: Lock the state of Terraform environment
+      operationId: lockEnvironment
+      parameters:
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/environmentId"
+      security:
+        - basic_auth: [] # Use basic auth to lock the environment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LockInfo"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LockInfo"
+        "404":
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /client/{teamId}/{projectId}/{environmentId}/unlock:
+    post:
+      tags:
+        - Environments
+      summary: Unlock the state of Terraform environment
+      operationId: unlockEnvironment
+      parameters:
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/environmentId"
+      security:
+        - basic_auth: [] # Use basic auth to unlock the environment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LockInfo"
+      responses:
+        "200":
+          description: Successful response
+        "204":
+          description: Successful response
+        "404":
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /client/{teamId}/{projectId}/{environmentId}/state:
+    get:
+      tags:
+        - Environments
+      summary: Get the state of Terraform environment
+      operationId: getEnvironmentState
+      parameters:
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/environmentId"
+      security:
+        - basic_auth: [] # Use basic auth to get the environment state
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Payload"
+        "404":
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      tags:
+        - Environments
+      summary: Update the state of Terraform environment
+      operationId: updateEnvironmentState
+      parameters:
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/environmentId"
+      security:
+        - basic_auth: [] # Use basic auth to update the environment state
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Payload"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Payload"
+        "404":
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   /api/v1/user:
     get:
@@ -66,7 +205,7 @@ paths:
             type: integer
             default: 0
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
@@ -76,7 +215,7 @@ paths:
                   users:
                     type: array
                     items:
-                      $ref: '#/components/schemas/User'
+                      $ref: "#/components/schemas/User"
                   metadata:
                     type: object
                     properties:
@@ -86,12 +225,12 @@ paths:
                         type: integer
                       totalCount:
                         type: integer
-        '500':
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     post:
       tags:
@@ -103,20 +242,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserCreate'
+              $ref: "#/components/schemas/UserCreate"
       responses:
-        '201':
+        "201":
           description: User created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '500':
+                $ref: "#/components/schemas/User"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   /api/v1/user/{id}:
     get:
@@ -132,24 +271,24 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '404':
+                $ref: "#/components/schemas/User"
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     put:
       tags:
@@ -167,26 +306,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserUpdate'
+              $ref: "#/components/schemas/UserUpdate"
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '404':
+                $ref: "#/components/schemas/User"
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     delete:
       tags:
@@ -201,20 +340,20 @@ paths:
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Successful response
-        '404':
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   /api/v1/team:
     post:
@@ -227,20 +366,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TeamCreate'
+              $ref: "#/components/schemas/TeamCreate"
       responses:
-        '201':
+        "201":
           description: Team created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Team'
-        '500':
+                $ref: "#/components/schemas/Team"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     get:
       tags:
@@ -260,7 +399,7 @@ paths:
             type: integer
             default: 0
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
@@ -270,7 +409,7 @@ paths:
                   teams:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Team'
+                      $ref: "#/components/schemas/Team"
                   metadata:
                     type: object
                     properties:
@@ -280,12 +419,12 @@ paths:
                         type: integer
                       totalCount:
                         type: integer
-        '500':
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   /api/v1/team/{id}:
     get:
@@ -301,24 +440,24 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Team'
-        '404':
+                $ref: "#/components/schemas/Team"
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     put:
       tags:
@@ -336,26 +475,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TeamUpdate'
+              $ref: "#/components/schemas/TeamUpdate"
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Team'
-        '404':
+                $ref: "#/components/schemas/Team"
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     delete:
       tags:
@@ -370,20 +509,20 @@ paths:
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Successful response
-        '404':
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   /api/v1/project:
     post:
@@ -396,20 +535,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProjectCreate'
+              $ref: "#/components/schemas/ProjectCreate"
       responses:
-        '201':
+        "201":
           description: Project created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Project'
-        '500':
+                $ref: "#/components/schemas/Project"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     get:
       tags:
@@ -429,7 +568,7 @@ paths:
             type: integer
             default: 0
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
@@ -439,7 +578,7 @@ paths:
                   projects:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Project'
+                      $ref: "#/components/schemas/Project"
                   metadata:
                     type: object
                     properties:
@@ -449,12 +588,12 @@ paths:
                         type: integer
                       totalCount:
                         type: integer
-        '500':
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   /api/v1/project/{id}:
     get:
@@ -470,24 +609,24 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Project'
-        '404':
+                $ref: "#/components/schemas/Project"
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     put:
       tags:
@@ -505,26 +644,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProjectUpdate'
+              $ref: "#/components/schemas/ProjectUpdate"
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Project'
-        '404':
+                $ref: "#/components/schemas/Project"
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     delete:
       tags:
@@ -539,21 +678,20 @@ paths:
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Successful response
-        '404':
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
+                $ref: "#/components/schemas/ErrorResponse"
 
   /api/v1/project/{projectId}/environment:
     post:
@@ -572,20 +710,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EnvironmentCreate'
+              $ref: "#/components/schemas/EnvironmentCreate"
       responses:
-        '201':
+        "201":
           description: Environment created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Environment'
-        '500':
+                $ref: "#/components/schemas/Environment"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     get:
       tags:
@@ -610,7 +748,7 @@ paths:
             type: integer
             default: 0
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
@@ -620,7 +758,7 @@ paths:
                   environments:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Environment'
+                      $ref: "#/components/schemas/Environment"
                   metadata:
                     type: object
                     properties:
@@ -630,12 +768,12 @@ paths:
                         type: integer
                       totalCount:
                         type: integer
-        '500':
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   /api/v1/project/{projectId}/environment/{environmentId}:
     get:
@@ -656,24 +794,24 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Environment'
-        '404':
+                $ref: "#/components/schemas/Environment"
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     put:
       tags:
@@ -696,26 +834,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EnvironmentUpdate'
+              $ref: "#/components/schemas/EnvironmentUpdate"
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Environment'
-        '404':
+                $ref: "#/components/schemas/Environment"
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     delete:
       tags:
@@ -735,20 +873,20 @@ paths:
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Successful response
-        '404':
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   /api/v1/snapshot:
     post:
@@ -761,20 +899,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SnapshotCreate'
+              $ref: "#/components/schemas/SnapshotCreate"
       responses:
-        '201':
+        "201":
           description: Snapshot created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Snapshot'
-        '500':
+                $ref: "#/components/schemas/Snapshot"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     get:
       tags:
@@ -794,7 +932,7 @@ paths:
             type: integer
             default: 0
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
@@ -804,7 +942,7 @@ paths:
                   snapshots:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Snapshot'
+                      $ref: "#/components/schemas/Snapshot"
                   metadata:
                     type: object
                     properties:
@@ -814,12 +952,12 @@ paths:
                         type: integer
                       totalCount:
                         type: integer
-        '500':
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   /api/v1/snapshot/{id}:
     get:
@@ -835,24 +973,24 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Snapshot'
-        '404':
+                $ref: "#/components/schemas/Snapshot"
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     put:
       tags:
@@ -870,26 +1008,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SnapshotUpdate'
+              $ref: "#/components/schemas/SnapshotUpdate"
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Snapshot'
-        '404':
+                $ref: "#/components/schemas/Snapshot"
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
     delete:
       tags:
@@ -904,20 +1042,20 @@ paths:
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Successful response
-        '404':
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   /api/v1/task/{id}:
     get:
@@ -933,27 +1071,66 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'
-        '404':
+                $ref: "#/components/schemas/Task"
+        "404":
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
 components:
+  parameters:
+    teamId:
+      name: teamId
+      in: path
+      required: true
+      schema:
+        type: string
+    projectId:
+      name: projectId
+      in: path
+      required: true
+      schema:
+        type: string
+    environmentId:
+      name: environmentId
+      in: path
+      required: true
+      schema:
+        type: string
+
   schemas:
+    LockInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        operation:
+          type: string
+        info:
+          type: string
+        who:
+          type: string
+        version:
+          type: string
+        created:
+          type: string
+          format: date-time
+        path:
+          type: string
+
     HealthResponse:
       type: object
       properties:
@@ -1242,8 +1419,15 @@ components:
         errorMessage:
           type: string
 
+    Payload:
+      type: string
+      format: binary
+
   securitySchemes:
     api_key:
       type: apiKey
       in: header
       name: x-api-key
+    basic_auth:
+      type: http
+      scheme: basic

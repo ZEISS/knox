@@ -192,6 +192,24 @@ type ClientInterface interface {
 	PutApiV1UserIdWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	PutApiV1UserId(ctx context.Context, id string, body PutApiV1UserIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LockEnvironmentWithBody request with any body
+	LockEnvironmentWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	LockEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body LockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetEnvironmentState request
+	GetEnvironmentState(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateEnvironmentStateWithBody request with any body
+	UpdateEnvironmentStateWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateEnvironmentState(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UnlockEnvironmentWithBody request with any body
+	UnlockEnvironmentWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UnlockEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UnlockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetHealth(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -640,6 +658,90 @@ func (c *Client) PutApiV1UserIdWithBody(ctx context.Context, id string, contentT
 
 func (c *Client) PutApiV1UserId(ctx context.Context, id string, body PutApiV1UserIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPutApiV1UserIdRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) LockEnvironmentWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLockEnvironmentRequestWithBody(c.Server, teamId, projectId, environmentId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) LockEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body LockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLockEnvironmentRequest(c.Server, teamId, projectId, environmentId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetEnvironmentState(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetEnvironmentStateRequest(c.Server, teamId, projectId, environmentId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateEnvironmentStateWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEnvironmentStateRequestWithBody(c.Server, teamId, projectId, environmentId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateEnvironmentState(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEnvironmentStateRequest(c.Server, teamId, projectId, environmentId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UnlockEnvironmentWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUnlockEnvironmentRequestWithBody(c.Server, teamId, projectId, environmentId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UnlockEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UnlockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUnlockEnvironmentRequest(c.Server, teamId, projectId, environmentId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1873,6 +1975,237 @@ func NewPutApiV1UserIdRequestWithBody(server string, id string, contentType stri
 	return req, nil
 }
 
+// NewLockEnvironmentRequest calls the generic LockEnvironment builder with application/json body
+func NewLockEnvironmentRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body LockEnvironmentJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLockEnvironmentRequestWithBody(server, teamId, projectId, environmentId, "application/json", bodyReader)
+}
+
+// NewLockEnvironmentRequestWithBody generates requests for LockEnvironment with any type of body
+func NewLockEnvironmentRequestWithBody(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/client/%s/%s/%s/lock", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetEnvironmentStateRequest generates requests for GetEnvironmentState
+func NewGetEnvironmentStateRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/client/%s/%s/%s/state", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateEnvironmentStateRequest calls the generic UpdateEnvironmentState builder with application/json body
+func NewUpdateEnvironmentStateRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateEnvironmentStateRequestWithBody(server, teamId, projectId, environmentId, "application/json", bodyReader)
+}
+
+// NewUpdateEnvironmentStateRequestWithBody generates requests for UpdateEnvironmentState with any type of body
+func NewUpdateEnvironmentStateRequestWithBody(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/client/%s/%s/%s/state", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewUnlockEnvironmentRequest calls the generic UnlockEnvironment builder with application/json body
+func NewUnlockEnvironmentRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UnlockEnvironmentJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUnlockEnvironmentRequestWithBody(server, teamId, projectId, environmentId, "application/json", bodyReader)
+}
+
+// NewUnlockEnvironmentRequestWithBody generates requests for UnlockEnvironment with any type of body
+func NewUnlockEnvironmentRequestWithBody(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/client/%s/%s/%s/unlock", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -2019,6 +2352,24 @@ type ClientWithResponsesInterface interface {
 	PutApiV1UserIdWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiV1UserIdResponse, error)
 
 	PutApiV1UserIdWithResponse(ctx context.Context, id string, body PutApiV1UserIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiV1UserIdResponse, error)
+
+	// LockEnvironmentWithBodyWithResponse request with any body
+	LockEnvironmentWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LockEnvironmentResponse, error)
+
+	LockEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body LockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*LockEnvironmentResponse, error)
+
+	// GetEnvironmentStateWithResponse request
+	GetEnvironmentStateWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*GetEnvironmentStateResponse, error)
+
+	// UpdateEnvironmentStateWithBodyWithResponse request with any body
+	UpdateEnvironmentStateWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error)
+
+	UpdateEnvironmentStateWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error)
+
+	// UnlockEnvironmentWithBodyWithResponse request with any body
+	UnlockEnvironmentWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UnlockEnvironmentResponse, error)
+
+	UnlockEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UnlockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UnlockEnvironmentResponse, error)
 }
 
 type GetHealthResponse struct {
@@ -2711,6 +3062,101 @@ func (r PutApiV1UserIdResponse) StatusCode() int {
 	return 0
 }
 
+type LockEnvironmentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *LockInfo
+	JSON404      *ErrorResponse
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r LockEnvironmentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LockEnvironmentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetEnvironmentStateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Payload
+	JSON404      *ErrorResponse
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetEnvironmentStateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetEnvironmentStateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateEnvironmentStateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Payload
+	JSON404      *ErrorResponse
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateEnvironmentStateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateEnvironmentStateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UnlockEnvironmentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON404      *ErrorResponse
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r UnlockEnvironmentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UnlockEnvironmentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 // GetHealthWithResponse request returning *GetHealthResponse
 func (c *ClientWithResponses) GetHealthWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetHealthResponse, error) {
 	rsp, err := c.GetHealth(ctx, reqEditors...)
@@ -3041,6 +3487,66 @@ func (c *ClientWithResponses) PutApiV1UserIdWithResponse(ctx context.Context, id
 		return nil, err
 	}
 	return ParsePutApiV1UserIdResponse(rsp)
+}
+
+// LockEnvironmentWithBodyWithResponse request with arbitrary body returning *LockEnvironmentResponse
+func (c *ClientWithResponses) LockEnvironmentWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LockEnvironmentResponse, error) {
+	rsp, err := c.LockEnvironmentWithBody(ctx, teamId, projectId, environmentId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLockEnvironmentResponse(rsp)
+}
+
+func (c *ClientWithResponses) LockEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body LockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*LockEnvironmentResponse, error) {
+	rsp, err := c.LockEnvironment(ctx, teamId, projectId, environmentId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLockEnvironmentResponse(rsp)
+}
+
+// GetEnvironmentStateWithResponse request returning *GetEnvironmentStateResponse
+func (c *ClientWithResponses) GetEnvironmentStateWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*GetEnvironmentStateResponse, error) {
+	rsp, err := c.GetEnvironmentState(ctx, teamId, projectId, environmentId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetEnvironmentStateResponse(rsp)
+}
+
+// UpdateEnvironmentStateWithBodyWithResponse request with arbitrary body returning *UpdateEnvironmentStateResponse
+func (c *ClientWithResponses) UpdateEnvironmentStateWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error) {
+	rsp, err := c.UpdateEnvironmentStateWithBody(ctx, teamId, projectId, environmentId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateEnvironmentStateResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateEnvironmentStateWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error) {
+	rsp, err := c.UpdateEnvironmentState(ctx, teamId, projectId, environmentId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateEnvironmentStateResponse(rsp)
+}
+
+// UnlockEnvironmentWithBodyWithResponse request with arbitrary body returning *UnlockEnvironmentResponse
+func (c *ClientWithResponses) UnlockEnvironmentWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UnlockEnvironmentResponse, error) {
+	rsp, err := c.UnlockEnvironmentWithBody(ctx, teamId, projectId, environmentId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUnlockEnvironmentResponse(rsp)
+}
+
+func (c *ClientWithResponses) UnlockEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UnlockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UnlockEnvironmentResponse, error) {
+	rsp, err := c.UnlockEnvironment(ctx, teamId, projectId, environmentId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUnlockEnvironmentResponse(rsp)
 }
 
 // ParseGetHealthResponse parses an HTTP response from a GetHealthWithResponse call
@@ -4060,6 +4566,159 @@ func ParsePutApiV1UserIdResponse(rsp *http.Response) (*PutApiV1UserIdResponse, e
 		}
 		response.JSON200 = &dest
 
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLockEnvironmentResponse parses an HTTP response from a LockEnvironmentWithResponse call
+func ParseLockEnvironmentResponse(rsp *http.Response) (*LockEnvironmentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LockEnvironmentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LockInfo
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetEnvironmentStateResponse parses an HTTP response from a GetEnvironmentStateWithResponse call
+func ParseGetEnvironmentStateResponse(rsp *http.Response) (*GetEnvironmentStateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetEnvironmentStateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Payload
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateEnvironmentStateResponse parses an HTTP response from a UpdateEnvironmentStateWithResponse call
+func ParseUpdateEnvironmentStateResponse(rsp *http.Response) (*UpdateEnvironmentStateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateEnvironmentStateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Payload
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUnlockEnvironmentResponse parses an HTTP response from a UnlockEnvironmentWithResponse call
+func ParseUnlockEnvironmentResponse(rsp *http.Response) (*UnlockEnvironmentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UnlockEnvironmentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
 		var dest ErrorResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
