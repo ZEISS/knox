@@ -1,3 +1,4 @@
-package example
+//go:build generate
+// +build generate
 
-//go:generate echo "Generating ..."
+package main
