@@ -12,7 +12,7 @@ require (
 	github.com/katallaxie/pkg v0.6.5
 	github.com/oapi-codegen/fiber-middleware v1.0.2
 	github.com/oapi-codegen/runtime v1.1.1
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.8.1
 	github.com/zeiss/fiber-authz v1.0.27
 	github.com/zeiss/typhoon v0.1.23
 	gorm.io/driver/postgres v1.5.9
