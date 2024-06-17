@@ -1117,6 +1117,7 @@ components:
       properties:
         id:
           type: string
+          format: uuid
         operation:
           type: string
         info:

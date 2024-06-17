@@ -5,9 +5,11 @@ import (
 
 	authz "github.com/zeiss/fiber-authz"
 	"github.com/zeiss/knox/internal/adapters/database"
+	"github.com/zeiss/knox/internal/adapters/handlers"
+	"github.com/zeiss/knox/internal/controllers"
+	openapi "github.com/zeiss/knox/pkg/apis"
 	"github.com/zeiss/knox/pkg/cfg"
 	"github.com/zeiss/knox/pkg/utils"
-	openapi "github.com/zeiss/typhoon/pkg/apis"
 
 	"github.com/gofiber/fiber/v2"
 	logger "github.com/gofiber/fiber/v2/middleware/logger"
@@ -100,6 +102,13 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 		validatorOptions.ErrorHandler = authz.NewOpenAPIErrorHandler()
 
 		app.Use(middleware.OapiRequestValidatorWithOptions(swagger, validatorOptions))
+
+		lc := controllers.NewLocksController(db)
+		sc := controllers.NewStateController(db)
+
+		handlers := handlers.NewAPIHandlers(lc, sc)
+		handler := openapi.NewStrictHandler(handlers, nil)
+		openapi.RegisterHandlers(app, handler)
 
 		err = app.Listen(s.cfg.Flags.Addr)
 		if err != nil {

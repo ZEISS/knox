@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 
+	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
 
 	"gorm.io/gorm"
@@ -33,7 +34,13 @@ func (d *database) Close() error {
 
 // RunMigrations runs the database migrations.
 func (d *database) Migrate(ctx context.Context) error {
-	return d.conn.WithContext(ctx).AutoMigrate()
+	return d.conn.WithContext(ctx).AutoMigrate(
+		&models.Environment{},
+		&models.Project{},
+		&models.Team{},
+		&models.Lock{},
+		&models.State{},
+	)
 }
 
 // ReadWriteTx starts a read only transaction.
@@ -87,4 +94,39 @@ var (
 
 type datastoreTx struct {
 	tx *gorm.DB
+}
+
+// CreateLock creates a new lock.
+func (tx *datastoreTx) CreateLock(ctx context.Context, lock *models.Lock) error {
+	return tx.tx.Create(lock).Error
+}
+
+// DeleteLock deletes a lock.
+func (tx *datastoreTx) DeleteLock(ctx context.Context, lock *models.Lock) error {
+	return tx.tx.Delete(lock).Error
+}
+
+// GetProject ...
+func (tx *datastoreTx) GetProject(ctx context.Context, project *models.Project) error {
+	return tx.tx.Where(project).First(project).Error
+}
+
+// GetEnvironment ...
+func (tx *datastoreTx) GetEnvironment(ctx context.Context, environment *models.Environment) error {
+	return tx.tx.Where(environment).First(environment).Error
+}
+
+// GetTeam ...
+func (tx *datastoreTx) GetTeam(ctx context.Context, team *models.Team) error {
+	return tx.tx.Where(team).First(team).Error
+}
+
+// GetState ...
+func (tx *datastoreTx) GetState(ctx context.Context, state *models.State) error {
+	return tx.tx.Where(state).First(state).Error
+}
+
+// UpdateState...
+func (tx *datastoreTx) UpdateState(ctx context.Context, state *models.State) error {
+	return tx.tx.Where(state).Save(state).Error
 }

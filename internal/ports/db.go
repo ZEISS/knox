@@ -3,6 +3,8 @@ package ports
 import (
 	"context"
 	"io"
+
+	"github.com/zeiss/knox/internal/models"
 )
 
 // Migration is a method that runs the migration.
@@ -23,9 +25,25 @@ type Datastore interface {
 }
 
 // ReadTx provides methods for transactional read operations.
-type ReadTx interface{}
+type ReadTx interface {
+	// GetProject ...
+	GetProject(context.Context, *models.Project) error
+	// GetEnvironment ...
+	GetEnvironment(context.Context, *models.Environment) error
+	// GetTeam ...
+	GetTeam(context.Context, *models.Team) error
+	// GetState ...
+	GetState(context.Context, *models.State) error
+}
 
 // ReadWriteTx provides methods for transactional read and write operations.
 type ReadWriteTx interface {
+	// CreateLock creates a new lock.
+	CreateLock(context.Context, *models.Lock) error
+	// DeleteLock deletes a lock.
+	DeleteLock(context.Context, *models.Lock) error
+	// UpdateState creates a new state.
+	UpdateState(context.Context, *models.State) error
+
 	ReadTx
 }

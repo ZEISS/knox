@@ -28,6 +28,7 @@ func (c *Config) DSN() string {
 // NewFlags ...
 func NewFlags() *Flags {
 	return &Flags{
+		Addr: ":8080",
 		DB: &DB{
 			Addr:     "host.docker.internal",
 			Database: "example",
