@@ -11,6 +11,18 @@ import (
 	"gorm.io/gorm"
 )
 
+// QueryError is an error that occurred while executing a query.
+type QueryError struct {
+	Query string
+	Err   error
+}
+
+// Error ...
+func (e *QueryError) Error() string { return e.Query + ": " + e.Err.Error() }
+
+// Unwrap ...
+func (e *QueryError) Unwrap() error { return e.Err }
+
 type database struct {
 	conn *gorm.DB
 }
@@ -54,34 +66,39 @@ func (d *database) ReadWriteTx(ctx context.Context, fn func(context.Context, por
 		tx.Rollback()
 	}
 
-	if err := tx.Error; err != nil && !errors.Is(err, sql.ErrTxDone) {
-		return err
-	}
-
-	if err := tx.Commit().Error; err != nil {
+	if err := tx.Commit().Error; err != nil && !errors.Is(err, sql.ErrTxDone) {
 		return err
 	}
 
 	return nil
 }
 
+// NewQueryError returns a new QueryError.
+func NewQueryError(query string, err error) *QueryError {
+	return &QueryError{
+		Query: query,
+		Err:   err,
+	}
+}
+
 // ReadTx starts a read only transaction.
 func (d *database) ReadTx(ctx context.Context, fn func(context.Context, ports.ReadTx) error) error {
 	tx := d.conn.WithContext(ctx).Begin()
 	if tx.Error != nil {
-		return tx.Error
+		return NewQueryError("begin read transaction", tx.Error)
 	}
 
-	if err := fn(ctx, &datastoreTx{tx}); err != nil {
+	err := fn(ctx, &datastoreTx{tx})
+	if err != nil {
 		tx.Rollback()
 	}
 
-	if err := tx.Error; err != nil && !errors.Is(err, sql.ErrTxDone) {
-		return err
+	if err := tx.Commit().Error; err != nil && !errors.Is(err, sql.ErrTxDone) {
+		return NewQueryError("commit read transaction", err)
 	}
 
-	if err := tx.Commit().Error; err != nil {
-		return err
+	if err != nil {
+		return NewQueryError("commit read transaction", err)
 	}
 
 	return nil

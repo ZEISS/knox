@@ -2,11 +2,13 @@ package handlers
 
 import (
 	"context"
+	"errors"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/zeiss/knox/internal/controllers"
 	openapi "github.com/zeiss/knox/pkg/apis"
 	"github.com/zeiss/knox/pkg/dto"
+	"gorm.io/gorm"
 )
 
 var _ openapi.StrictServerInterface = (*apiHandlers)(nil)
@@ -208,6 +210,10 @@ func (a *apiHandlers) GetEnvironmentState(ctx context.Context, request openapi.G
 	query := dto.FromGetEnvironmentStateRequestObject(request)
 
 	data, err := a.state.GetState(ctx, query)
+	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) { // the state was not found
+		return openapi.GetEnvironmentState404JSONResponse{}, nil
+	}
+
 	if err != nil {
 		return nil, fiber.NewError(fiber.StatusNotFound, err.Error())
 	}
