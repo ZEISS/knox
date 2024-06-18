@@ -4,8 +4,11 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/google/uuid"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
+	openapi "github.com/zeiss/knox/pkg/apis"
+
 	"gorm.io/datatypes"
 )
 
@@ -29,6 +32,8 @@ type UpdateStateControllerCommand struct {
 	Project string `json:"project" form:"project"`
 	// Environment is the environment of the lock.
 	Environment string `json:"environment" form:"environment"`
+	// LockID is the ID of the lock.
+	LockID uuid.UUID `json:"lock_id" form:"lock_id"`
 	// State is the state of the lock.
 	State *map[string]interface{} `json:"state" form:"state"`
 }
@@ -36,7 +41,7 @@ type UpdateStateControllerCommand struct {
 // StateController ...
 type StateController interface {
 	// GetState ...
-	GetState(ctx context.Context, query GetStateControllerQuery) ([]byte, error)
+	GetState(ctx context.Context, query GetStateControllerQuery) (map[string]interface{}, error)
 	// UpdateState ...
 	UpdateState(ctx context.Context, cmd UpdateStateControllerCommand) error
 }
@@ -52,8 +57,8 @@ func NewStateController(store ports.Datastore) *StateControllerImpl {
 }
 
 // GetState ...
-func (c *StateControllerImpl) GetState(ctx context.Context, query GetStateControllerQuery) ([]byte, error) {
-	var data []byte
+func (c *StateControllerImpl) GetState(ctx context.Context, query GetStateControllerQuery) (map[string]interface{}, error) {
+	var data map[string]interface{}
 
 	team := models.Team{
 		Slug: query.Team,
@@ -102,16 +107,33 @@ func (c *StateControllerImpl) GetState(ctx context.Context, query GetStateContro
 		return data, err
 	}
 
-	return state.Data, nil
+	var payload openapi.Payload
+	err = json.Unmarshal(state.Data, &payload)
+	if err != nil {
+		return data, err
+	}
+
+	return payload, nil
 }
 
 // UpdateState ...
 func (c *StateControllerImpl) UpdateState(ctx context.Context, cmd UpdateStateControllerCommand) error {
+	lock := models.Lock{
+		ID: cmd.LockID,
+	}
+
+	err := c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
+		return tx.GetLock(ctx, &lock)
+	})
+	if err != nil {
+		return err
+	}
+
 	team := models.Team{
 		Slug: cmd.Team,
 	}
 
-	err := c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
+	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
 		return tx.GetTeam(ctx, &team)
 	})
 	if err != nil {

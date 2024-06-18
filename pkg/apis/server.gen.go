@@ -106,7 +106,7 @@ type ServerInterface interface {
 	GetEnvironmentState(c *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error
 	// Update the state of Terraform environment
 	// (POST /client/{teamId}/{projectId}/{environmentId}/state)
-	UpdateEnvironmentState(c *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error
+	UpdateEnvironmentState(c *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params UpdateEnvironmentStateParams) error
 	// Unlock the state of Terraform environment
 	// (POST /client/{teamId}/{projectId}/{environmentId}/unlock)
 	UnlockEnvironment(c *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error
@@ -765,7 +765,23 @@ func (siw *ServerInterfaceWrapper) UpdateEnvironmentState(c *fiber.Ctx) error {
 
 	c.Context().SetUserValue(Basic_authScopes, []string{})
 
-	return siw.Handler.UpdateEnvironmentState(c, teamId, projectId, environmentId)
+	// Parameter object where we will unmarshal all parameters from the context
+	var params UpdateEnvironmentStateParams
+
+	var query url.Values
+	query, err = url.ParseQuery(string(c.Request().URI().QueryString()))
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for query string: %w", err).Error())
+	}
+
+	// ------------- Optional query parameter "ID" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "ID", query, &params.ID)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter ID: %w", err).Error())
+	}
+
+	return siw.Handler.UpdateEnvironmentState(c, teamId, projectId, environmentId, params)
 }
 
 // UnlockEnvironment operation middleware
@@ -1878,6 +1894,7 @@ type UpdateEnvironmentStateRequestObject struct {
 	TeamId        TeamId        `json:"teamId"`
 	ProjectId     ProjectId     `json:"projectId"`
 	EnvironmentId EnvironmentId `json:"environmentId"`
+	Params        UpdateEnvironmentStateParams
 	Body          *UpdateEnvironmentStateJSONRequestBody
 }
 
@@ -2943,12 +2960,13 @@ func (sh *strictHandler) GetEnvironmentState(ctx *fiber.Ctx, teamId TeamId, proj
 }
 
 // UpdateEnvironmentState operation middleware
-func (sh *strictHandler) UpdateEnvironmentState(ctx *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error {
+func (sh *strictHandler) UpdateEnvironmentState(ctx *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params UpdateEnvironmentStateParams) error {
 	var request UpdateEnvironmentStateRequestObject
 
 	request.TeamId = teamId
 	request.ProjectId = projectId
 	request.EnvironmentId = environmentId
+	request.Params = params
 
 	var body UpdateEnvironmentStateJSONRequestBody
 	if err := ctx.BodyParser(&body); err != nil {

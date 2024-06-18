@@ -113,6 +113,11 @@ type datastoreTx struct {
 	tx *gorm.DB
 }
 
+// GetLock ...
+func (tx *datastoreTx) GetLock(ctx context.Context, lock *models.Lock) error {
+	return tx.tx.Where(lock).First(lock).Error
+}
+
 // CreateLock creates a new lock.
 func (tx *datastoreTx) CreateLock(ctx context.Context, lock *models.Lock) error {
 	return tx.tx.Create(lock).Error

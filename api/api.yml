@@ -159,6 +159,7 @@ paths:
         - $ref: "#/components/parameters/teamId"
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/lockId"
       security:
         - basic_auth: [] # Use basic auth to update the environment state
       requestBody:
@@ -1110,6 +1111,13 @@ components:
       required: true
       schema:
         type: string
+    lockId:
+      name: ID
+      in: query
+      required: false
+      schema:
+        type: string
+        format: uuid
 
   schemas:
     LockInfo:

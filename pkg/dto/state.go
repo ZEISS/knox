@@ -3,6 +3,7 @@ package dto
 import (
 	"github.com/zeiss/knox/internal/controllers"
 	openapi "github.com/zeiss/knox/pkg/apis"
+	"github.com/zeiss/knox/pkg/utils"
 )
 
 // FromGetEnvironmentStateRequestObject ...
@@ -15,8 +16,8 @@ func FromGetEnvironmentStateRequestObject(request openapi.GetEnvironmentStateReq
 }
 
 // ToGetEnvironmentStateResponseObject ...
-func ToGetEnvironmentStateResponseObject(data []byte) openapi.GetEnvironmentStateResponseObject {
-	res := openapi.GetEnvironmentState200JSONResponse{}
+func ToGetEnvironmentStateResponseObject(data map[string]interface{}) openapi.GetEnvironmentStateResponseObject {
+	res := openapi.GetEnvironmentState200JSONResponse(openapi.Payload(data))
 
 	return res
 }
@@ -27,6 +28,7 @@ func FromUpdateEnvironmentStateRequestObject(request openapi.UpdateEnvironmentSt
 		Team:        request.TeamId,
 		Project:     request.ProjectId,
 		Environment: request.EnvironmentId,
+		LockID:      utils.PtrUUID(request.Params.ID),
 		State:       request.Body,
 	}
 }

@@ -34,6 +34,8 @@ type ReadTx interface {
 	GetTeam(context.Context, *models.Team) error
 	// GetState ...
 	GetState(context.Context, *models.State) error
+	// GetLock ...
+	GetLock(context.Context, *models.Lock) error
 }
 
 // ReadWriteTx provides methods for transactional read and write operations.

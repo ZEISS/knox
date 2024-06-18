@@ -231,7 +231,7 @@ func (a *apiHandlers) UpdateEnvironmentState(ctx context.Context, request openap
 		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	return nil, nil
+	return dto.ToUpdateEnvironmentStateResponseObject(), nil
 }
 
 // Unlock the state of Terraform environment

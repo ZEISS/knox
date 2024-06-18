@@ -202,9 +202,9 @@ type ClientInterface interface {
 	GetEnvironmentState(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateEnvironmentStateWithBody request with any body
-	UpdateEnvironmentStateWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateEnvironmentStateWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *UpdateEnvironmentStateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateEnvironmentState(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateEnvironmentState(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *UpdateEnvironmentStateParams, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UnlockEnvironmentWithBody request with any body
 	UnlockEnvironmentWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -704,8 +704,8 @@ func (c *Client) GetEnvironmentState(ctx context.Context, teamId TeamId, project
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateEnvironmentStateWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateEnvironmentStateRequestWithBody(c.Server, teamId, projectId, environmentId, contentType, body)
+func (c *Client) UpdateEnvironmentStateWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *UpdateEnvironmentStateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEnvironmentStateRequestWithBody(c.Server, teamId, projectId, environmentId, params, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -716,8 +716,8 @@ func (c *Client) UpdateEnvironmentStateWithBody(ctx context.Context, teamId Team
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateEnvironmentState(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateEnvironmentStateRequest(c.Server, teamId, projectId, environmentId, body)
+func (c *Client) UpdateEnvironmentState(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *UpdateEnvironmentStateParams, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEnvironmentStateRequest(c.Server, teamId, projectId, environmentId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -2085,18 +2085,18 @@ func NewGetEnvironmentStateRequest(server string, teamId TeamId, projectId Proje
 }
 
 // NewUpdateEnvironmentStateRequest calls the generic UpdateEnvironmentState builder with application/json body
-func NewUpdateEnvironmentStateRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody) (*http.Request, error) {
+func NewUpdateEnvironmentStateRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *UpdateEnvironmentStateParams, body UpdateEnvironmentStateJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateEnvironmentStateRequestWithBody(server, teamId, projectId, environmentId, "application/json", bodyReader)
+	return NewUpdateEnvironmentStateRequestWithBody(server, teamId, projectId, environmentId, params, "application/json", bodyReader)
 }
 
 // NewUpdateEnvironmentStateRequestWithBody generates requests for UpdateEnvironmentState with any type of body
-func NewUpdateEnvironmentStateRequestWithBody(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader) (*http.Request, error) {
+func NewUpdateEnvironmentStateRequestWithBody(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *UpdateEnvironmentStateParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -2133,6 +2133,28 @@ func NewUpdateEnvironmentStateRequestWithBody(server string, teamId TeamId, proj
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.ID != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "ID", runtime.ParamLocationQuery, *params.ID); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("POST", queryURL.String(), body)
@@ -2362,9 +2384,9 @@ type ClientWithResponsesInterface interface {
 	GetEnvironmentStateWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*GetEnvironmentStateResponse, error)
 
 	// UpdateEnvironmentStateWithBodyWithResponse request with any body
-	UpdateEnvironmentStateWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error)
+	UpdateEnvironmentStateWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *UpdateEnvironmentStateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error)
 
-	UpdateEnvironmentStateWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error)
+	UpdateEnvironmentStateWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *UpdateEnvironmentStateParams, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error)
 
 	// UnlockEnvironmentWithBodyWithResponse request with any body
 	UnlockEnvironmentWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UnlockEnvironmentResponse, error)
@@ -3516,16 +3538,16 @@ func (c *ClientWithResponses) GetEnvironmentStateWithResponse(ctx context.Contex
 }
 
 // UpdateEnvironmentStateWithBodyWithResponse request with arbitrary body returning *UpdateEnvironmentStateResponse
-func (c *ClientWithResponses) UpdateEnvironmentStateWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error) {
-	rsp, err := c.UpdateEnvironmentStateWithBody(ctx, teamId, projectId, environmentId, contentType, body, reqEditors...)
+func (c *ClientWithResponses) UpdateEnvironmentStateWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *UpdateEnvironmentStateParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error) {
+	rsp, err := c.UpdateEnvironmentStateWithBody(ctx, teamId, projectId, environmentId, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseUpdateEnvironmentStateResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateEnvironmentStateWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error) {
-	rsp, err := c.UpdateEnvironmentState(ctx, teamId, projectId, environmentId, body, reqEditors...)
+func (c *ClientWithResponses) UpdateEnvironmentStateWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *UpdateEnvironmentStateParams, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error) {
+	rsp, err := c.UpdateEnvironmentState(ctx, teamId, projectId, environmentId, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
