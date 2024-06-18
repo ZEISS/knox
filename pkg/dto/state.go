@@ -17,7 +17,7 @@ func FromGetEnvironmentStateRequestObject(request openapi.GetEnvironmentStateReq
 
 // ToGetEnvironmentStateResponseObject ...
 func ToGetEnvironmentStateResponseObject(data map[string]interface{}) openapi.GetEnvironmentStateResponseObject {
-	res := openapi.GetEnvironmentState200JSONResponse(openapi.Payload(data))
+	res := openapi.GetEnvironmentState200JSONResponse(data)
 
 	return res
 }
