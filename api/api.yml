@@ -1421,7 +1421,7 @@ components:
           type: string
 
     Payload:
-      type: string
+      type: object
       format: binary
 
   securitySchemes:

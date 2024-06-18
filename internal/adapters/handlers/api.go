@@ -224,6 +224,13 @@ func (a *apiHandlers) GetEnvironmentState(ctx context.Context, request openapi.G
 // Update the state of Terraform environment
 // (POST /client/{teamId}/{projectId}/{environmentId}/state)
 func (a *apiHandlers) UpdateEnvironmentState(ctx context.Context, request openapi.UpdateEnvironmentStateRequestObject) (openapi.UpdateEnvironmentStateResponseObject, error) {
+	cmd := dto.FromUpdateEnvironmentStateRequestObject(request)
+
+	err := a.state.UpdateState(ctx, cmd)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
 	return nil, nil
 }
 

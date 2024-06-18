@@ -2,9 +2,11 @@ package controllers
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
+	"gorm.io/datatypes"
 )
 
 var _ StateController = (*StateControllerImpl)(nil)
@@ -27,6 +29,8 @@ type UpdateStateControllerCommand struct {
 	Project string `json:"project" form:"project"`
 	// Environment is the environment of the lock.
 	Environment string `json:"environment" form:"environment"`
+	// State is the state of the lock.
+	State *map[string]interface{} `json:"state" form:"state"`
 }
 
 // StateController ...
@@ -103,5 +107,58 @@ func (c *StateControllerImpl) GetState(ctx context.Context, query GetStateContro
 
 // UpdateState ...
 func (c *StateControllerImpl) UpdateState(ctx context.Context, cmd UpdateStateControllerCommand) error {
+	team := models.Team{
+		Slug: cmd.Team,
+	}
+
+	err := c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
+		return tx.GetTeam(ctx, &team)
+	})
+	if err != nil {
+		return err
+	}
+
+	project := models.Project{
+		Name:   cmd.Project,
+		TeamID: team.ID,
+	}
+
+	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
+		return tx.GetProject(ctx, &project)
+	})
+	if err != nil {
+		return err
+	}
+
+	env := models.Environment{
+		Name:      cmd.Environment,
+		ProjectID: project.ID,
+	}
+
+	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
+		return tx.GetEnvironment(ctx, &env)
+	})
+	if err != nil {
+		return err
+	}
+
+	b, err := json.Marshal(cmd.State)
+	if err != nil {
+		return err
+	}
+
+	state := models.State{
+		TeamID:        team.ID,
+		ProjectID:     project.ID,
+		EnvironmentID: env.ID,
+		Data:          datatypes.JSON(b),
+	}
+	err = c.store.ReadWriteTx(ctx, func(ctx context.Context, tx ports.ReadWriteTx) error {
+		return tx.UpdateState(ctx, &state)
+	})
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

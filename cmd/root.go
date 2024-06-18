@@ -99,7 +99,7 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 
 		validatorOptions := &middleware.Options{}
 		validatorOptions.Options.AuthenticationFunc = authz.NewOpenAPIAuthenticator(authz.WithAuthzChecker(authz.NewFake(true)))
-		validatorOptions.ErrorHandler = authz.NewOpenAPIErrorHandler()
+		// validatorOptions.ErrorHandler = authz.NewOpenAPIErrorHandler()
 
 		app.Use(middleware.OapiRequestValidatorWithOptions(swagger, validatorOptions))
 

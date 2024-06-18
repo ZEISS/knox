@@ -20,3 +20,20 @@ func ToGetEnvironmentStateResponseObject(data []byte) openapi.GetEnvironmentStat
 
 	return res
 }
+
+// FromUpdateEnvironmentStateRequestObject ...
+func FromUpdateEnvironmentStateRequestObject(request openapi.UpdateEnvironmentStateRequestObject) controllers.UpdateStateControllerCommand {
+	return controllers.UpdateStateControllerCommand{
+		Team:        request.TeamId,
+		Project:     request.ProjectId,
+		Environment: request.EnvironmentId,
+		State:       request.Body,
+	}
+}
+
+// ToUpdateEnvironmentStateResponseObject ...
+func ToUpdateEnvironmentStateResponseObject() openapi.UpdateEnvironmentState200JSONResponse {
+	res := openapi.UpdateEnvironmentState200JSONResponse{}
+
+	return res
+}
