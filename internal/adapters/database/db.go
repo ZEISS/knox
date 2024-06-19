@@ -145,10 +145,32 @@ func (tx *datastoreTx) GetTeam(ctx context.Context, team *models.Team) error {
 
 // GetState ...
 func (tx *datastoreTx) GetState(ctx context.Context, state *models.State) error {
-	return tx.tx.Where(state).First(state).Error
+	return tx.tx.Where(state).Last(state).Error
 }
 
 // UpdateState...
 func (tx *datastoreTx) UpdateState(ctx context.Context, state *models.State) error {
-	return tx.tx.Where(state).Save(state).Error
+	latest := models.State{}
+
+	result := tx.tx.Debug().
+		Model(&models.State{}).
+		Where("team_id = ? AND project_id = ? AND environment_id = ?", state.TeamID, state.ProjectID, state.EnvironmentID).
+		Last(&latest)
+
+	if result.Error != nil && !errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return result.Error
+	}
+
+	if latest.Version > 0 {
+		state.Version = latest.Version + 1
+	}
+
+	if latest.Version > 0 {
+		err := tx.tx.Delete(&latest).Error
+		if err != nil {
+			return err
+		}
+	}
+
+	return tx.tx.Select("*").Create(&state).Error
 }

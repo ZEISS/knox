@@ -500,6 +500,8 @@ github.com/zeiss/fiber-authz v1.0.27 h1:vm8oorWm2Kj8LG34mI68I1tFL5DB/Qk4vNRmP1ly
 github.com/zeiss/fiber-authz v1.0.27/go.mod h1:wC7CT4M+oLTQMhwZLbKZDAqSYBcla967jpOC+fwMf2c=
 github.com/zeiss/fiber-goth v1.2.4 h1:tzuS4iXhCC9elEzVNVKILB4fBMa+wkaSqe8kr6jLA4c=
 github.com/zeiss/fiber-goth v1.2.4/go.mod h1:TkapFI+7LOvbb093zF8cP/CH2PcQJSBQWQZDzgGoygE=
+github.com/zeiss/gorm-seed v0.1.0 h1:0pdXHyytd30Bv8dasssWQzVo80d7RpvB0M8uZRdevCc=
+github.com/zeiss/gorm-seed v0.1.0/go.mod h1:Tli6ekFpRjtQY8S6VoNiLgRnX1DVEvHJkf+UI85kV+E=
 gitlab.com/bosi/decorder v0.4.2 h1:qbQaV3zgwnBZ4zPMhGLW4KZe7A7NwxEhJx39R3shffo=
 gitlab.com/bosi/decorder v0.4.2/go.mod h1:muuhHoaJkA9QLcYHq4Mj8FJUwDZ+EirSHRiaTcTf6T8=
 go-simpler.org/assert v0.9.0 h1:PfpmcSvL7yAnWyChSjOz6Sp6m9j5lyK8Ok9pEL31YkQ=
@@ -676,6 +678,8 @@ gorm.io/driver/sqlserver v1.4.1/go.mod h1:DJ4P+MeZbc5rvY58PnmN1Lnyvb5gw5NPzGshHD
 gorm.io/gorm v1.25.7/go.mod h1:hbnx/Oo0ChWMn1BIhpy1oYozzpM15i4YPuHDmfYtwg8=
 gorm.io/gorm v1.25.10 h1:dQpO+33KalOA+aFYGlK+EfxcI5MbO7EP2yYygwh9h+s=
 gorm.io/gorm v1.25.10/go.mod h1:hbnx/Oo0ChWMn1BIhpy1oYozzpM15i4YPuHDmfYtwg8=
+gorm.io/plugin/optimisticlock v1.1.1 h1:REWF26BNTIcLpgzp34EW1Mi9bPZpthBcwjBkOYINn5Q=
+gorm.io/plugin/optimisticlock v1.1.1/go.mod h1:wFWgM/KsGEg+IoxgZAAVBP4OmaPfj337L/+T4AR6/hI=
 honnef.co/go/tools v0.4.7 h1:9MDAWxMoSnB6QoSqiVr7P5mtkT9pOc1kSxchzPCnqJs=
 honnef.co/go/tools v0.4.7/go.mod h1:+rnGS1THNh8zMwnd2oVOTL9QF6vmfyG6ZXBULae2uc0=
 mvdan.cc/gofumpt v0.6.0 h1:G3QvahNDmpD+Aek/bNOLrFR2XC6ZAdo62dZu65gmwGo=
