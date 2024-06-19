@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/zeiss/fiber-goth/adapters"
 	"github.com/zeiss/knox/internal/adapters/database"
 	"github.com/zeiss/knox/internal/configs"
 	"github.com/zeiss/knox/internal/models"
@@ -21,7 +22,7 @@ var seeds = []seed.Seed{
 	{
 		Name: "create team",
 		Run: func(db *gorm.DB) error {
-			team := models.Team{
+			team := adapters.GothTeam{
 				Name: "Zeiss",
 				Slug: "zeiss",
 			}

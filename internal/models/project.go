@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/zeiss/fiber-goth/adapters"
 	"gorm.io/gorm"
 )
 
@@ -16,7 +17,7 @@ type Project struct {
 	// Description is the description of the project.
 	Description *string `json:"description" form:"description" validate:"omitempty,max=1024"`
 	// Team is the team of the project.
-	Team Team `json:"team" form:"team"`
+	Team adapters.GothTeam `json:"team" form:"team"`
 	// TeamID is the team id of the project.
 	TeamID uuid.UUID `json:"team_id"`
 	// Environments are the environments in the project.

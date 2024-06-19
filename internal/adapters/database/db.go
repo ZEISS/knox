@@ -8,6 +8,7 @@ import (
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
 
+	"github.com/zeiss/fiber-goth/adapters"
 	"gorm.io/gorm"
 )
 
@@ -47,9 +48,12 @@ func (d *database) Close() error {
 // RunMigrations runs the database migrations.
 func (d *database) Migrate(ctx context.Context) error {
 	return d.conn.WithContext(ctx).AutoMigrate(
+		&adapters.GothSession{},
+		&adapters.GothAccount{},
+		&adapters.GothUser{},
+		&adapters.GothTeam{},
 		&models.Environment{},
 		&models.Project{},
-		&models.Team{},
 		&models.Lock{},
 		&models.State{},
 	)
@@ -139,7 +143,7 @@ func (tx *datastoreTx) GetEnvironment(ctx context.Context, environment *models.E
 }
 
 // GetTeam ...
-func (tx *datastoreTx) GetTeam(ctx context.Context, team *models.Team) error {
+func (tx *datastoreTx) GetTeam(ctx context.Context, team *adapters.GothTeam) error {
 	return tx.tx.Where(team).First(team).Error
 }
 

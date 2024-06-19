@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/google/uuid"
+	"github.com/zeiss/fiber-goth/adapters"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
 	openapi "github.com/zeiss/knox/pkg/apis"
@@ -60,7 +61,7 @@ func NewStateController(store ports.Datastore) *StateControllerImpl {
 func (c *StateControllerImpl) GetState(ctx context.Context, query GetStateControllerQuery) (map[string]interface{}, error) {
 	var data map[string]interface{}
 
-	team := models.Team{
+	team := adapters.GothTeam{
 		Slug: query.Team,
 	}
 
@@ -129,7 +130,7 @@ func (c *StateControllerImpl) UpdateState(ctx context.Context, cmd UpdateStateCo
 		return err
 	}
 
-	team := models.Team{
+	team := adapters.GothTeam{
 		Slug: cmd.Team,
 	}
 

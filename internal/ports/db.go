@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 
+	"github.com/zeiss/fiber-goth/adapters"
 	"github.com/zeiss/knox/internal/models"
 )
 
@@ -31,7 +32,7 @@ type ReadTx interface {
 	// GetEnvironment ...
 	GetEnvironment(context.Context, *models.Environment) error
 	// GetTeam ...
-	GetTeam(context.Context, *models.Team) error
+	GetTeam(context.Context, *adapters.GothTeam) error
 	// GetState ...
 	GetState(context.Context, *models.State) error
 	// GetLock ...

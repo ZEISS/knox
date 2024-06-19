@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/zeiss/fiber-goth/adapters"
 )
 
 // Lock ...
@@ -21,7 +22,7 @@ type Lock struct {
 	// Who is the who of the lock.
 	Who string `json:"who" form:"who"`
 	// Team is the team of the lock.
-	Team Team `json:"team" form:"team"`
+	Team adapters.GothTeam `json:"team" form:"team"`
 	// TeamID is the team id of the lock.
 	TeamID uuid.UUID `json:"team_id" gorm:"uniqueIndex:idx_team_project_environment"`
 	// Environment is the environment of the lock.

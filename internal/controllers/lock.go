@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
+	"github.com/zeiss/fiber-goth/adapters"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
 )
@@ -64,7 +65,7 @@ func NewLocksController(store ports.Datastore) *LocksControllerImpl {
 
 // Lock ...
 func (c *LocksControllerImpl) Lock(ctx context.Context, cmd LockControllerCommand) error {
-	team := models.Team{
+	team := adapters.GothTeam{
 		Slug: cmd.Team,
 	}
 
