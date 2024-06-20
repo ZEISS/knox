@@ -187,7 +187,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /api/v1/user:
+  /user:
     get:
       tags:
         - Users
@@ -195,16 +195,8 @@ paths:
       security:
         - api_key: []
       parameters:
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: offset
-          schema:
-            type: integer
-            default: 0
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
       responses:
         "200":
           description: Successful response
@@ -258,7 +250,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /api/v1/user/{id}:
+  /user/{id}:
     get:
       tags:
         - Users
@@ -356,7 +348,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /api/v1/team:
+  /team:
     post:
       tags:
         - Teams
@@ -427,7 +419,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /api/v1/team/{id}:
+  /team/{id}:
     get:
       tags:
         - Teams
@@ -525,7 +517,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /api/v1/project:
+  /project:
     post:
       tags:
         - Projects
@@ -596,7 +588,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /api/v1/project/{id}:
+  /project/{id}:
     get:
       tags:
         - Projects
@@ -694,7 +686,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /api/v1/project/{projectId}/environment:
+  /project/{projectId}/environment:
     post:
       tags:
         - Environments
@@ -776,7 +768,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /api/v1/project/{projectId}/environment/{environmentId}:
+  /project/{projectId}/environment/{environmentId}:
     get:
       tags:
         - Environments
@@ -889,11 +881,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /api/v1/snapshot:
+  /snapshot:
     post:
       tags:
         - Snapshots
       summary: Create a new snapshot
+      operationId: createSnapshot
       security:
         - api_key: []
       requestBody:
@@ -960,7 +953,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /api/v1/snapshot/{id}:
+  /snapshot/{id}:
     get:
       tags:
         - Snapshots
@@ -1058,7 +1051,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /api/v1/task/{id}:
+  /task/{id}:
     get:
       tags:
         - Tasks
@@ -1118,6 +1111,20 @@ components:
       schema:
         type: string
         format: uuid
+    offset:
+      name: offset
+      in: query
+      required: false
+      schema:
+        type: integer
+      default: 0
+    limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+      default: 10
 
   schemas:
     LockInfo:
@@ -1388,12 +1395,9 @@ components:
           type: string
         description:
           type: string
-        record_type:
+        state_id:
           type: string
-        record_uuid:
-          type: string
-        team_id:
-          type: integer
+          format: uuid
 
     SnapshotUpdate:
       type: object

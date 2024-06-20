@@ -20,7 +20,6 @@ require (
 	gorm.io/datatypes v1.2.1
 	gorm.io/driver/postgres v1.5.9
 	gorm.io/gorm v1.25.10
-	gorm.io/plugin/optimisticlock v1.1.1
 	mvdan.cc/gofumpt v0.6.0
 )
 

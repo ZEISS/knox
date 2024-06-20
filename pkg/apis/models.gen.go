@@ -130,11 +130,9 @@ type Snapshot struct {
 
 // SnapshotCreate defines model for SnapshotCreate.
 type SnapshotCreate struct {
-	Description *string `json:"description,omitempty"`
-	RecordType  *string `json:"record_type,omitempty"`
-	RecordUuid  *string `json:"record_uuid,omitempty"`
-	TeamId      *int    `json:"team_id,omitempty"`
-	Title       *string `json:"title,omitempty"`
+	Description *string             `json:"description,omitempty"`
+	StateId     *openapi_types.UUID `json:"state_id,omitempty"`
+	Title       *string             `json:"title,omitempty"`
 }
 
 // SnapshotUpdate defines model for SnapshotUpdate.
@@ -211,8 +209,14 @@ type UserUpdate struct {
 // EnvironmentId defines model for environmentId.
 type EnvironmentId = string
 
+// Limit defines model for limit.
+type Limit = int
+
 // LockId defines model for lockId.
 type LockId = openapi_types.UUID
+
+// Offset defines model for offset.
+type Offset = int
 
 // ProjectId defines model for projectId.
 type ProjectId = string
@@ -220,70 +224,40 @@ type ProjectId = string
 // TeamId defines model for teamId.
 type TeamId = string
 
-// GetApiV1ProjectParams defines parameters for GetApiV1Project.
-type GetApiV1ProjectParams struct {
-	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
-	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
-}
-
-// GetApiV1ProjectProjectIdEnvironmentParams defines parameters for GetApiV1ProjectProjectIdEnvironment.
-type GetApiV1ProjectProjectIdEnvironmentParams struct {
-	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
-	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
-}
-
-// GetApiV1SnapshotParams defines parameters for GetApiV1Snapshot.
-type GetApiV1SnapshotParams struct {
-	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
-	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
-}
-
-// GetApiV1TeamParams defines parameters for GetApiV1Team.
-type GetApiV1TeamParams struct {
-	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
-	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
-}
-
-// GetApiV1UserParams defines parameters for GetApiV1User.
-type GetApiV1UserParams struct {
-	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
-	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
-}
-
 // UpdateEnvironmentStateParams defines parameters for UpdateEnvironmentState.
 type UpdateEnvironmentStateParams struct {
 	ID *LockId `form:"ID,omitempty" json:"ID,omitempty"`
 }
 
-// PostApiV1ProjectJSONRequestBody defines body for PostApiV1Project for application/json ContentType.
-type PostApiV1ProjectJSONRequestBody = ProjectCreate
+// GetProjectParams defines parameters for GetProject.
+type GetProjectParams struct {
+	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+}
 
-// PutApiV1ProjectIdJSONRequestBody defines body for PutApiV1ProjectId for application/json ContentType.
-type PutApiV1ProjectIdJSONRequestBody = ProjectUpdate
+// GetProjectProjectIdEnvironmentParams defines parameters for GetProjectProjectIdEnvironment.
+type GetProjectProjectIdEnvironmentParams struct {
+	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+}
 
-// PostApiV1ProjectProjectIdEnvironmentJSONRequestBody defines body for PostApiV1ProjectProjectIdEnvironment for application/json ContentType.
-type PostApiV1ProjectProjectIdEnvironmentJSONRequestBody = EnvironmentCreate
+// GetSnapshotParams defines parameters for GetSnapshot.
+type GetSnapshotParams struct {
+	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+}
 
-// PutApiV1ProjectProjectIdEnvironmentEnvironmentIdJSONRequestBody defines body for PutApiV1ProjectProjectIdEnvironmentEnvironmentId for application/json ContentType.
-type PutApiV1ProjectProjectIdEnvironmentEnvironmentIdJSONRequestBody = EnvironmentUpdate
+// GetTeamParams defines parameters for GetTeam.
+type GetTeamParams struct {
+	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+}
 
-// PostApiV1SnapshotJSONRequestBody defines body for PostApiV1Snapshot for application/json ContentType.
-type PostApiV1SnapshotJSONRequestBody = SnapshotCreate
-
-// PutApiV1SnapshotIdJSONRequestBody defines body for PutApiV1SnapshotId for application/json ContentType.
-type PutApiV1SnapshotIdJSONRequestBody = SnapshotUpdate
-
-// PostApiV1TeamJSONRequestBody defines body for PostApiV1Team for application/json ContentType.
-type PostApiV1TeamJSONRequestBody = TeamCreate
-
-// PutApiV1TeamIdJSONRequestBody defines body for PutApiV1TeamId for application/json ContentType.
-type PutApiV1TeamIdJSONRequestBody = TeamUpdate
-
-// PostApiV1UserJSONRequestBody defines body for PostApiV1User for application/json ContentType.
-type PostApiV1UserJSONRequestBody = UserCreate
-
-// PutApiV1UserIdJSONRequestBody defines body for PutApiV1UserId for application/json ContentType.
-type PutApiV1UserIdJSONRequestBody = UserUpdate
+// GetUserParams defines parameters for GetUser.
+type GetUserParams struct {
+	Limit  *Limit  `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *Offset `form:"offset,omitempty" json:"offset,omitempty"`
+}
 
 // LockEnvironmentJSONRequestBody defines body for LockEnvironment for application/json ContentType.
 type LockEnvironmentJSONRequestBody = LockInfo
@@ -294,42 +268,73 @@ type UpdateEnvironmentStateJSONRequestBody = Payload
 // UnlockEnvironmentJSONRequestBody defines body for UnlockEnvironment for application/json ContentType.
 type UnlockEnvironmentJSONRequestBody = LockInfo
 
+// PostProjectJSONRequestBody defines body for PostProject for application/json ContentType.
+type PostProjectJSONRequestBody = ProjectCreate
+
+// PutProjectIdJSONRequestBody defines body for PutProjectId for application/json ContentType.
+type PutProjectIdJSONRequestBody = ProjectUpdate
+
+// PostProjectProjectIdEnvironmentJSONRequestBody defines body for PostProjectProjectIdEnvironment for application/json ContentType.
+type PostProjectProjectIdEnvironmentJSONRequestBody = EnvironmentCreate
+
+// PutProjectProjectIdEnvironmentEnvironmentIdJSONRequestBody defines body for PutProjectProjectIdEnvironmentEnvironmentId for application/json ContentType.
+type PutProjectProjectIdEnvironmentEnvironmentIdJSONRequestBody = EnvironmentUpdate
+
+// CreateSnapshotJSONRequestBody defines body for CreateSnapshot for application/json ContentType.
+type CreateSnapshotJSONRequestBody = SnapshotCreate
+
+// PutSnapshotIdJSONRequestBody defines body for PutSnapshotId for application/json ContentType.
+type PutSnapshotIdJSONRequestBody = SnapshotUpdate
+
+// PostTeamJSONRequestBody defines body for PostTeam for application/json ContentType.
+type PostTeamJSONRequestBody = TeamCreate
+
+// PutTeamIdJSONRequestBody defines body for PutTeamId for application/json ContentType.
+type PutTeamIdJSONRequestBody = TeamUpdate
+
+// PostUserJSONRequestBody defines body for PostUser for application/json ContentType.
+type PostUserJSONRequestBody = UserCreate
+
+// PutUserIdJSONRequestBody defines body for PutUserId for application/json ContentType.
+type PutUserIdJSONRequestBody = UserUpdate
+
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
+	"V5v/AgAA//9HqNtoVWQAAA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

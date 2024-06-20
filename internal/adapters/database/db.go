@@ -178,3 +178,8 @@ func (tx *datastoreTx) UpdateState(ctx context.Context, state *models.State) err
 
 	return tx.tx.Select("*").Create(&state).Error
 }
+
+// CreateSnapshot creates a new snapshot.
+func (tx *datastoreTx) CreateSnapshot(ctx context.Context, snapshot *models.Snapshot) error {
+	return tx.tx.Create(snapshot).Error
+}

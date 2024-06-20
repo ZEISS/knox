@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/zeiss/fiber-goth/adapters"
 
 	"gorm.io/datatypes"
 	"gorm.io/gorm"
@@ -17,10 +18,18 @@ type Snapshot struct {
 	Title string `json:"name" form:"name" validate:"required,alphanum,gt=3,lt=255"`
 	// Description is the description of the snapshot.
 	Description *string `json:"description" form:"description" validate:"omitempty,max=1024"`
-	// State is the state of the snapshot.
-	State State `json:"state" form:"state"`
-	// StateID is the state id of the snapshot.
-	StateID uuid.UUID `json:"state_id" gorm:"uniqueIndex:idx_state_snapshot"`
+	// Team is the team of the state.
+	Team adapters.GothTeam `json:"team" form:"team"`
+	// TeamID is the team id of the state.
+	TeamID uuid.UUID `json:"team_id" gorm:"uniqueIndex:idx_team_project_environment"`
+	// Environment is the environment of the state.
+	Environment Environment `json:"environment" form:"environment"`
+	// EnvironmentID is the environment id of the state.
+	EnvironmentID uuid.UUID `json:"environment_id" gorm:"uniqueIndex:idx_team_project_environment"`
+	// Project is the project of the state.
+	Project Project `json:"project" form:"project"`
+	// ProjectID is the project id of the state.
+	ProjectID uuid.UUID `json:"project_id" gorm:"uniqueIndex:idx_team_project_environment"`
 	// Data is the data of the state.
 	Data datatypes.JSON `json:"data" form:"data"`
 	// CreatedAt is the time the snapshot was created.

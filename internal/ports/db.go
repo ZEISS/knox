@@ -47,6 +47,8 @@ type ReadWriteTx interface {
 	DeleteLock(context.Context, *models.Lock) error
 	// UpdateState creates a new state.
 	UpdateState(context.Context, *models.State) error
+	// CreateSnapshot creates a new snapshot.
+	CreateSnapshot(context.Context, *models.Snapshot) error
 
 	ReadTx
 }

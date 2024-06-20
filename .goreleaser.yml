@@ -1,13 +1,56 @@
+project_name: knox
+
 before:
   hooks:
     - go mod tidy
+
 builds:
-  - skip: true
+   -
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 7
+    ignore:
+        - goos: darwin
+          goarch: 386
+        - goos: windows
+          goarch: arm
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w
+
+archives:
+  - builds:
+      - csync
+    name_template: "csync_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
 release:
   header: |
     ## Changelog ({{ .Date }})
     
-    Welcome to this new release! We hope you enjoy the changes we've made.
+    Welcome to this new release! We hope you enjoy the changes we've made.#
+dockers:
+  - image_templates:
+    - 'zeiss/knox:{{ .Tag }}-amd64'
+    use: buildx
+    build_flag_templates:
+    - "--pull"
+    - "--platform=linux/amd64"
+  - image_templates:
+    - 'zeiss/knox:{{ .Tag }}-arm64'
+    use: buildx
+    build_flag_templates:
+    - "--pull"
+    - "--platform=linux/arm64"
+    goarch: arm64
 changelog:
   groups:
     - title: Features

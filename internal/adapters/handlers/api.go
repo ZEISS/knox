@@ -14,13 +14,14 @@ import (
 var _ openapi.StrictServerInterface = (*apiHandlers)(nil)
 
 type apiHandlers struct {
-	locks controllers.LocksController
-	state controllers.StateController
+	locks     controllers.LocksController
+	state     controllers.StateController
+	snapshots controllers.SnapshotController
 }
 
 // NewAPIHandlers returns a new instance of APIHandlers.
-func NewAPIHandlers(locks controllers.LocksController, state controllers.StateController) *apiHandlers {
-	return &apiHandlers{locks, state}
+func NewAPIHandlers(locks controllers.LocksController, state controllers.StateController, snapshots controllers.SnapshotController) *apiHandlers {
+	return &apiHandlers{locks, state, snapshots}
 }
 
 // Get system health status
@@ -36,158 +37,165 @@ func (a *apiHandlers) GetReady(ctx context.Context, request openapi.GetReadyRequ
 }
 
 // Get a list of projects
-// (GET /api/v1/project)
-func (a *apiHandlers) GetApiV1Project(ctx context.Context, request openapi.GetApiV1ProjectRequestObject) (openapi.GetApiV1ProjectResponseObject, error) {
+// (GET /project)
+func (a *apiHandlers) GetProject(ctx context.Context, request openapi.GetProjectRequestObject) (openapi.GetProjectResponseObject, error) {
 	return nil, nil
 }
 
 // Create a new project
-// (POST /api/v1/project)
-func (a *apiHandlers) PostApiV1Project(ctx context.Context, request openapi.PostApiV1ProjectRequestObject) (openapi.PostApiV1ProjectResponseObject, error) {
+// (POST /project)
+func (a *apiHandlers) PostProject(ctx context.Context, request openapi.PostProjectRequestObject) (openapi.PostProjectResponseObject, error) {
 	return nil, nil
 }
 
 // Delete a project
-// (DELETE /api/v1/project/{id})
-func (a *apiHandlers) DeleteApiV1ProjectId(ctx context.Context, request openapi.DeleteApiV1ProjectIdRequestObject) (openapi.DeleteApiV1ProjectIdResponseObject, error) {
+// (DELETE /project/{id})
+func (a *apiHandlers) DeleteProjectId(ctx context.Context, request openapi.DeleteProjectIdRequestObject) (openapi.DeleteProjectIdResponseObject, error) {
 	return nil, nil
 }
 
 // Get a project
-// (GET /api/v1/project/{id})
-func (a *apiHandlers) GetApiV1ProjectId(ctx context.Context, request openapi.GetApiV1ProjectIdRequestObject) (openapi.GetApiV1ProjectIdResponseObject, error) {
+// (GET /project/{id})
+func (a *apiHandlers) GetProjectId(ctx context.Context, request openapi.GetProjectIdRequestObject) (openapi.GetProjectIdResponseObject, error) {
 	return nil, nil
 }
 
 // Update a project
-// (PUT /api/v1/project/{id})
-func (a *apiHandlers) PutApiV1ProjectId(ctx context.Context, request openapi.PutApiV1ProjectIdRequestObject) (openapi.PutApiV1ProjectIdResponseObject, error) {
+// (PUT /project/{id})
+func (a *apiHandlers) PutProjectId(ctx context.Context, request openapi.PutProjectIdRequestObject) (openapi.PutProjectIdResponseObject, error) {
 	return nil, nil
 }
 
 // Get a list of environments
-// (GET /api/v1/project/{projectId}/environment)
-func (a *apiHandlers) GetApiV1ProjectProjectIdEnvironment(ctx context.Context, request openapi.GetApiV1ProjectProjectIdEnvironmentRequestObject) (openapi.GetApiV1ProjectProjectIdEnvironmentResponseObject, error) {
+// (GET /project/{projectId}/environment)
+func (a *apiHandlers) GetProjectProjectIdEnvironment(ctx context.Context, request openapi.GetProjectProjectIdEnvironmentRequestObject) (openapi.GetProjectProjectIdEnvironmentResponseObject, error) {
 	return nil, nil
 }
 
 // Create a new environment
-// (POST /api/v1/project/{projectId}/environment)
-func (a *apiHandlers) PostApiV1ProjectProjectIdEnvironment(ctx context.Context, request openapi.PostApiV1ProjectProjectIdEnvironmentRequestObject) (openapi.PostApiV1ProjectProjectIdEnvironmentResponseObject, error) {
+// (POST /project/{projectId}/environment)
+func (a *apiHandlers) PostProjectProjectIdEnvironment(ctx context.Context, request openapi.PostProjectProjectIdEnvironmentRequestObject) (openapi.PostProjectProjectIdEnvironmentResponseObject, error) {
 	return nil, nil
 }
 
 // Delete an environment
-// (DELETE /api/v1/project/{projectId}/environment/{environmentId})
-func (a *apiHandlers) DeleteApiV1ProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, request openapi.DeleteApiV1ProjectProjectIdEnvironmentEnvironmentIdRequestObject) (openapi.DeleteApiV1ProjectProjectIdEnvironmentEnvironmentIdResponseObject, error) {
+// (DELETE /project/{projectId}/environment/{environmentId})
+func (a *apiHandlers) DeleteProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, request openapi.DeleteProjectProjectIdEnvironmentEnvironmentIdRequestObject) (openapi.DeleteProjectProjectIdEnvironmentEnvironmentIdResponseObject, error) {
 	return nil, nil
 }
 
 // Get an environment
-// (GET /api/v1/project/{projectId}/environment/{environmentId})
-func (a *apiHandlers) GetApiV1ProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, request openapi.GetApiV1ProjectProjectIdEnvironmentEnvironmentIdRequestObject) (openapi.GetApiV1ProjectProjectIdEnvironmentEnvironmentIdResponseObject, error) {
+// (GET /project/{projectId}/environment/{environmentId})
+func (a *apiHandlers) GetProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, request openapi.GetProjectProjectIdEnvironmentEnvironmentIdRequestObject) (openapi.GetProjectProjectIdEnvironmentEnvironmentIdResponseObject, error) {
 	return nil, nil
 }
 
 // Update an environment
-// (PUT /api/v1/project/{projectId}/environment/{environmentId})
-func (a *apiHandlers) PutApiV1ProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, request openapi.PutApiV1ProjectProjectIdEnvironmentEnvironmentIdRequestObject) (openapi.PutApiV1ProjectProjectIdEnvironmentEnvironmentIdResponseObject, error) {
+// (PUT /project/{projectId}/environment/{environmentId})
+func (a *apiHandlers) PutProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, request openapi.PutProjectProjectIdEnvironmentEnvironmentIdRequestObject) (openapi.PutProjectProjectIdEnvironmentEnvironmentIdResponseObject, error) {
 	return nil, nil
 }
 
 // Get a list of snapshots
-// (GET /api/v1/snapshot)
-func (a *apiHandlers) GetApiV1Snapshot(ctx context.Context, request openapi.GetApiV1SnapshotRequestObject) (openapi.GetApiV1SnapshotResponseObject, error) {
+// (GET /snapshot)
+func (a *apiHandlers) GetSnapshot(ctx context.Context, request openapi.GetSnapshotRequestObject) (openapi.GetSnapshotResponseObject, error) {
 	return nil, nil
 }
 
 // Create a new snapshot
-// (POST /api/v1/snapshot)
-func (a *apiHandlers) PostApiV1Snapshot(ctx context.Context, request openapi.PostApiV1SnapshotRequestObject) (openapi.PostApiV1SnapshotResponseObject, error) {
-	return nil, nil
+// (POST /snapshot)
+func (a *apiHandlers) CreateSnapshot(ctx context.Context, request openapi.CreateSnapshotRequestObject) (openapi.CreateSnapshotResponseObject, error) {
+	cmd := dto.FromCreateSnapshotRequestObject(request)
+
+	snapshot, err := a.snapshots.CreateSnapshot(ctx, cmd)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return dto.ToCreateSnapshotResponseObject(snapshot), nil
 }
 
 // Delete a snapshot
-// (DELETE /api/v1/snapshot/{id})
-func (a *apiHandlers) DeleteApiV1SnapshotId(ctx context.Context, request openapi.DeleteApiV1SnapshotIdRequestObject) (openapi.DeleteApiV1SnapshotIdResponseObject, error) {
+// (DELETE /snapshot/{id})
+func (a *apiHandlers) DeleteSnapshotId(ctx context.Context, request openapi.DeleteSnapshotIdRequestObject) (openapi.DeleteSnapshotIdResponseObject, error) {
 	return nil, nil
 }
 
 // Get a snapshot
-// (GET /api/v1/snapshot/{id})
-func (a *apiHandlers) GetApiV1SnapshotId(ctx context.Context, request openapi.GetApiV1SnapshotIdRequestObject) (openapi.GetApiV1SnapshotIdResponseObject, error) {
+// (GET /snapshot/{id})
+func (a *apiHandlers) GetSnapshotId(ctx context.Context, request openapi.GetSnapshotIdRequestObject) (openapi.GetSnapshotIdResponseObject, error) {
 	return nil, nil
 }
 
 // Update a snapshot
-// (PUT /api/v1/snapshot/{id})
-func (a *apiHandlers) PutApiV1SnapshotId(ctx context.Context, request openapi.PutApiV1SnapshotIdRequestObject) (openapi.PutApiV1SnapshotIdResponseObject, error) {
+// (PUT /snapshot/{id})
+func (a *apiHandlers) PutSnapshotId(ctx context.Context, request openapi.PutSnapshotIdRequestObject) (openapi.PutSnapshotIdResponseObject, error) {
 	return nil, nil
 }
 
 // Get a task
-// (GET /api/v1/task/{id})
-func (a *apiHandlers) GetApiV1TaskId(ctx context.Context, request openapi.GetApiV1TaskIdRequestObject) (openapi.GetApiV1TaskIdResponseObject, error) {
+// (GET /task/{id})
+func (a *apiHandlers) GetTaskId(ctx context.Context, request openapi.GetTaskIdRequestObject) (openapi.GetTaskIdResponseObject, error) {
 	return nil, nil
 }
 
 // Get a list of teams
-// (GET /api/v1/team)
-func (a *apiHandlers) GetApiV1Team(ctx context.Context, request openapi.GetApiV1TeamRequestObject) (openapi.GetApiV1TeamResponseObject, error) {
+// (GET /team)
+func (a *apiHandlers) GetTeam(ctx context.Context, request openapi.GetTeamRequestObject) (openapi.GetTeamResponseObject, error) {
 	return nil, nil
 }
 
 // Create a new team
-// (POST /api/v1/team)
-func (a *apiHandlers) PostApiV1Team(ctx context.Context, request openapi.PostApiV1TeamRequestObject) (openapi.PostApiV1TeamResponseObject, error) {
+// (POST /team)
+func (a *apiHandlers) PostTeam(ctx context.Context, request openapi.PostTeamRequestObject) (openapi.PostTeamResponseObject, error) {
 	return nil, nil
 }
 
 // Delete a team
-// (DELETE /api/v1/team/{id})
-func (a *apiHandlers) DeleteApiV1TeamId(ctx context.Context, request openapi.DeleteApiV1TeamIdRequestObject) (openapi.DeleteApiV1TeamIdResponseObject, error) {
+// (DELETE /team/{id})
+func (a *apiHandlers) DeleteTeamId(ctx context.Context, request openapi.DeleteTeamIdRequestObject) (openapi.DeleteTeamIdResponseObject, error) {
 	return nil, nil
 }
 
 // Get a team
-// (GET /api/v1/team/{id})
-func (a *apiHandlers) GetApiV1TeamId(ctx context.Context, request openapi.GetApiV1TeamIdRequestObject) (openapi.GetApiV1TeamIdResponseObject, error) {
+// (GET /team/{id})
+func (a *apiHandlers) GetTeamId(ctx context.Context, request openapi.GetTeamIdRequestObject) (openapi.GetTeamIdResponseObject, error) {
 	return nil, nil
 }
 
 // Update a team
-// (PUT /api/v1/team/{id})
-func (a *apiHandlers) PutApiV1TeamId(ctx context.Context, request openapi.PutApiV1TeamIdRequestObject) (openapi.PutApiV1TeamIdResponseObject, error) {
+// (PUT /team/{id})
+func (a *apiHandlers) PutTeamId(ctx context.Context, request openapi.PutTeamIdRequestObject) (openapi.PutTeamIdResponseObject, error) {
 	return nil, nil
 }
 
 // Get a list of users
-// (GET /api/v1/user)
-func (a *apiHandlers) GetApiV1User(ctx context.Context, request openapi.GetApiV1UserRequestObject) (openapi.GetApiV1UserResponseObject, error) {
+// (GET /user)
+func (a *apiHandlers) GetUser(ctx context.Context, request openapi.GetUserRequestObject) (openapi.GetUserResponseObject, error) {
 	return nil, nil
 }
 
 // Create a new user
-// (POST /api/v1/user)
-func (a *apiHandlers) PostApiV1User(ctx context.Context, request openapi.PostApiV1UserRequestObject) (openapi.PostApiV1UserResponseObject, error) {
+// (POST /user)
+func (a *apiHandlers) PostUser(ctx context.Context, request openapi.PostUserRequestObject) (openapi.PostUserResponseObject, error) {
 	return nil, nil
 }
 
 // Delete a user
-// (DELETE /api/v1/user/{id})
-func (a *apiHandlers) DeleteApiV1UserId(ctx context.Context, request openapi.DeleteApiV1UserIdRequestObject) (openapi.DeleteApiV1UserIdResponseObject, error) {
+// (DELETE /user/{id})
+func (a *apiHandlers) DeleteUserId(ctx context.Context, request openapi.DeleteUserIdRequestObject) (openapi.DeleteUserIdResponseObject, error) {
 	return nil, nil
 }
 
 // Get a user
-// (GET /api/v1/user/{id})
-func (a *apiHandlers) GetApiV1UserId(ctx context.Context, request openapi.GetApiV1UserIdRequestObject) (openapi.GetApiV1UserIdResponseObject, error) {
+// (GET /user/{id})
+func (a *apiHandlers) GetUserId(ctx context.Context, request openapi.GetUserIdRequestObject) (openapi.GetUserIdResponseObject, error) {
 	return nil, nil
 }
 
 // Update a user
-// (PUT /api/v1/user/{id})
-func (a *apiHandlers) PutApiV1UserId(ctx context.Context, request openapi.PutApiV1UserIdRequestObject) (openapi.PutApiV1UserIdResponseObject, error) {
+// (PUT /user/{id})
+func (a *apiHandlers) PutUserId(ctx context.Context, request openapi.PutUserIdRequestObject) (openapi.PutUserIdResponseObject, error) {
 	return nil, nil
 }
 
