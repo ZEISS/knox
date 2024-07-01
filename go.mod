@@ -16,7 +16,7 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/zeiss/fiber-authz v1.0.31
 	github.com/zeiss/fiber-goth v1.2.4
-	github.com/zeiss/gorm-seed v0.1.1
+	github.com/zeiss/gorm-seed v0.1.2
 	gorm.io/datatypes v1.2.1
 	gorm.io/driver/postgres v1.5.9
 	gorm.io/gorm v1.25.10
