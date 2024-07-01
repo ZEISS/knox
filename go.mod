@@ -6,7 +6,7 @@ toolchain go1.22.4
 
 require (
 	github.com/getkin/kin-openapi v0.125.0
-	github.com/gofiber/fiber/v2 v2.52.4
+	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/golang/mock v1.7.0-rc.1
 	github.com/golangci/golangci-lint v1.59.1
 	github.com/google/uuid v1.6.0
