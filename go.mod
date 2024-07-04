@@ -15,7 +15,7 @@ require (
 	github.com/oapi-codegen/runtime v1.1.1
 	github.com/spf13/cobra v1.8.1
 	github.com/zeiss/fiber-authz v1.0.31
-	github.com/zeiss/fiber-goth v1.2.5
+	github.com/zeiss/fiber-goth v1.2.8
 	github.com/zeiss/gorm-seed v0.1.2
 	gorm.io/datatypes v1.2.1
 	gorm.io/driver/postgres v1.5.9
