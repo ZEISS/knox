@@ -19,7 +19,7 @@ require (
 	github.com/zeiss/gorm-seed v0.1.2
 	gorm.io/datatypes v1.2.1
 	gorm.io/driver/postgres v1.5.9
-	gorm.io/gorm v1.25.10
+	gorm.io/gorm v1.25.11
 	mvdan.cc/gofumpt v0.6.0
 )
 
