@@ -3,6 +3,7 @@ openapi: 3.0.1
 
 info:
   title: Knox
+  version: 1.0.0
   description:
 
 servers:
@@ -14,6 +15,7 @@ paths:
       tags:
         - Liveness
       summary: Get system health status
+      operationId: getHealth
       responses:
         "200":
           description: System is healthy
@@ -33,6 +35,7 @@ paths:
       tags:
         - Readiness
       summary: Get system readiness
+      operationId: getReady
       responses:
         "200":
           description: System is ready to accept traffic
@@ -192,6 +195,7 @@ paths:
       tags:
         - Users
       summary: Get a list of users
+      operationId: getUsers
       security:
         - api_key: []
       parameters:
@@ -255,6 +259,7 @@ paths:
       tags:
         - Users
       summary: Get a user
+      operationId: getUser
       security:
         - api_key: []
       parameters:
@@ -287,6 +292,7 @@ paths:
       tags:
         - Users
       summary: Update a user
+      operationId: updateUser
       security:
         - api_key: []
       parameters:
@@ -324,6 +330,7 @@ paths:
       tags:
         - Users
       summary: Delete a user
+      operationId: deleteUser
       security:
         - api_key: []
       parameters:
@@ -424,6 +431,7 @@ paths:
       tags:
         - Teams
       summary: Get a team
+      operationId: getTeam
       security:
         - api_key: []
       parameters:
@@ -547,6 +555,7 @@ paths:
       tags:
         - Projects
       summary: Get a list of projects
+      operationId: getProjects
       security:
         - api_key: []
       parameters:
@@ -593,6 +602,7 @@ paths:
       tags:
         - Projects
       summary: Get a project
+      operationId: getProject
       security:
         - api_key: []
       parameters:
@@ -625,6 +635,7 @@ paths:
       tags:
         - Projects
       summary: Update a project
+      operationId: updateProject
       security:
         - api_key: []
       parameters:
@@ -662,6 +673,7 @@ paths:
       tags:
         - Projects
       summary: Delete a project
+      operationId: deleteProject
       security:
         - api_key: []
       parameters:
@@ -722,6 +734,7 @@ paths:
       tags:
         - Environments
       summary: Get a list of environments
+      operationId: getEnvironments
       security:
         - api_key: []
       parameters:
@@ -773,6 +786,7 @@ paths:
       tags:
         - Environments
       summary: Get an environment
+      operationId: getEnvironment
       security:
         - api_key: []
       parameters:
@@ -810,6 +824,7 @@ paths:
       tags:
         - Environments
       summary: Update an environment
+      operationId: updateEnvironment
       security:
         - api_key: []
       parameters:
@@ -852,6 +867,7 @@ paths:
       tags:
         - Environments
       summary: Delete an environment
+      operationId: deleteEnvironment
       security:
         - api_key: []
       parameters:
@@ -912,6 +928,7 @@ paths:
       tags:
         - Snapshots
       summary: Get a list of snapshots
+      operationId: getSnapshots
       security:
         - api_key: []
       parameters:
@@ -958,6 +975,7 @@ paths:
       tags:
         - Snapshots
       summary: Get a snapshot
+      operationId: getSnapshot
       security:
         - api_key: []
       parameters:
@@ -990,6 +1008,7 @@ paths:
       tags:
         - Snapshots
       summary: Update a snapshot
+      operationId: updateSnapshot
       security:
         - api_key: []
       parameters:
@@ -1027,6 +1046,7 @@ paths:
       tags:
         - Snapshots
       summary: Delete a snapshot
+      operationId: deleteSnapshot
       security:
         - api_key: []
       parameters:
@@ -1056,6 +1076,7 @@ paths:
       tags:
         - Tasks
       summary: Get a task
+      operationId: getTask
       security:
         - api_key: []
       parameters:
