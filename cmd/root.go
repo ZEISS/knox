@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"context"
+	"log"
 
-	authz "github.com/zeiss/fiber-authz"
 	"github.com/zeiss/knox/internal/adapters/database"
 	"github.com/zeiss/knox/internal/adapters/handlers"
 	"github.com/zeiss/knox/internal/controllers"
@@ -15,8 +15,11 @@ import (
 	logger "github.com/gofiber/fiber/v2/middleware/logger"
 	requestid "github.com/gofiber/fiber/v2/middleware/requestid"
 	"github.com/katallaxie/pkg/server"
+	"github.com/kelseyhightower/envconfig"
 	middleware "github.com/oapi-codegen/fiber-middleware"
 	"github.com/spf13/cobra"
+	authz "github.com/zeiss/fiber-authz"
+	seed "github.com/zeiss/gorm-seed"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -27,20 +30,24 @@ var config *cfg.Config
 func init() {
 	config = cfg.New()
 
-	Root.PersistentFlags().StringVar(&config.Flags.Addr, "addr", ":8080", "addr")
-	Root.PersistentFlags().StringVar(&config.Flags.DB.Addr, "db-addr", config.Flags.DB.Addr, "Database address")
-	Root.PersistentFlags().StringVar(&config.Flags.DB.Database, "db-database", config.Flags.DB.Database, "Database name")
-	Root.PersistentFlags().StringVar(&config.Flags.DB.Username, "db-username", config.Flags.DB.Username, "Database user")
-	Root.PersistentFlags().StringVar(&config.Flags.DB.Password, "db-password", config.Flags.DB.Password, "Database password")
-	Root.PersistentFlags().IntVar(&config.Flags.DB.Port, "db-port", config.Flags.DB.Port, "Database port")
+	err := envconfig.Process("", config.Flags)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	Root.AddCommand(Seed)
+	Root.AddCommand(Migrate)
+
+	Root.PersistentFlags().StringVar(&config.Flags.Addr, "addr", config.Flags.Addr, "addr")
+	Root.PersistentFlags().StringVar(&config.Flags.DatabaseURI, "db-uri", config.Flags.DatabaseURI, "Database URI")
+	Root.PersistentFlags().StringVar(&config.Flags.DatabaseTablePrefix, "db-table-prefix", config.Flags.DatabaseTablePrefix, "Database table prefix")
 
 	Root.SilenceUsage = true
 }
 
 var Root = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
-		cfg := cfg.New()
-		srv := NewWebSrv(cfg)
+		srv := NewWebSrv(config)
 
 		s, _ := server.WithContext(cmd.Context())
 		s.Listen(srv, false)
@@ -64,21 +71,16 @@ func NewWebSrv(cfg *cfg.Config) *WebSrv {
 // Start starts the server.
 func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.RunFunc) func() error {
 	return func() error {
-		conn, err := gorm.Open(postgres.Open(s.cfg.DSN()), &gorm.Config{
+		conn, err := gorm.Open(postgres.Open(s.cfg.Flags.DatabaseURI), &gorm.Config{
 			NamingStrategy: schema.NamingStrategy{
-				TablePrefix: "knox_",
+				TablePrefix: config.Flags.DatabaseTablePrefix,
 			},
 		})
 		if err != nil {
 			return err
 		}
 
-		db, err := database.NewDB(conn)
-		if err != nil {
-			return err
-		}
-
-		err = db.Migrate(ctx)
+		store, err := seed.NewDatabase(conn, database.NewReadTx(), database.NewWriteTx())
 		if err != nil {
 			return err
 		}
@@ -103,9 +105,9 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 
 		app.Use(middleware.OapiRequestValidatorWithOptions(swagger, validatorOptions))
 
-		lc := controllers.NewLocksController(db)
-		sc := controllers.NewStateController(db)
-		pc := controllers.NewSnapshotController(db)
+		lc := controllers.NewLocksController(store)
+		sc := controllers.NewStateController(store)
+		pc := controllers.NewSnapshotController(store)
 
 		handlers := handlers.NewAPIHandlers(lc, sc, pc)
 		handler := openapi.NewStrictHandler(handlers, nil)

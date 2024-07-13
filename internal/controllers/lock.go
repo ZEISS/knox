@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/zeiss/fiber-goth/adapters"
+	seed "github.com/zeiss/gorm-seed"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
 )
@@ -55,11 +56,11 @@ type LocksController interface {
 
 // LocksControllerImpl is the controller for operators.
 type LocksControllerImpl struct {
-	store ports.Datastore
+	store seed.Database[ports.ReadTx, ports.ReadWriteTx]
 }
 
 // NewLocksController returns a new LocksControllerImpl.
-func NewLocksController(store ports.Datastore) *LocksControllerImpl {
+func NewLocksController(store seed.Database[ports.ReadTx, ports.ReadWriteTx]) *LocksControllerImpl {
 	return &LocksControllerImpl{store}
 }
 

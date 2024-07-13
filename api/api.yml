@@ -385,6 +385,7 @@ paths:
       tags:
         - Teams
       summary: Get a list of teams
+      operationId: getTeams
       security:
         - api_key: []
       parameters:

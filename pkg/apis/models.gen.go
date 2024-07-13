@@ -229,32 +229,32 @@ type UpdateEnvironmentStateParams struct {
 	ID *LockId `form:"ID,omitempty" json:"ID,omitempty"`
 }
 
-// GetProjectParams defines parameters for GetProject.
-type GetProjectParams struct {
+// GetProjectsParams defines parameters for GetProjects.
+type GetProjectsParams struct {
 	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
 }
 
-// GetProjectProjectIdEnvironmentParams defines parameters for GetProjectProjectIdEnvironment.
-type GetProjectProjectIdEnvironmentParams struct {
+// GetEnvironmentsParams defines parameters for GetEnvironments.
+type GetEnvironmentsParams struct {
 	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
 }
 
-// GetSnapshotParams defines parameters for GetSnapshot.
-type GetSnapshotParams struct {
+// GetSnapshotsParams defines parameters for GetSnapshots.
+type GetSnapshotsParams struct {
 	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
 }
 
-// GetTeamParams defines parameters for GetTeam.
-type GetTeamParams struct {
+// GetTeamsParams defines parameters for GetTeams.
+type GetTeamsParams struct {
 	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
 }
 
-// GetUserParams defines parameters for GetUser.
-type GetUserParams struct {
+// GetUsersParams defines parameters for GetUsers.
+type GetUsersParams struct {
 	Limit  *Limit  `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset *Offset `form:"offset,omitempty" json:"offset,omitempty"`
 }
@@ -271,20 +271,20 @@ type UnlockEnvironmentJSONRequestBody = LockInfo
 // PostProjectJSONRequestBody defines body for PostProject for application/json ContentType.
 type PostProjectJSONRequestBody = ProjectCreate
 
-// PutProjectIdJSONRequestBody defines body for PutProjectId for application/json ContentType.
-type PutProjectIdJSONRequestBody = ProjectUpdate
+// UpdateProjectJSONRequestBody defines body for UpdateProject for application/json ContentType.
+type UpdateProjectJSONRequestBody = ProjectUpdate
 
 // PostProjectProjectIdEnvironmentJSONRequestBody defines body for PostProjectProjectIdEnvironment for application/json ContentType.
 type PostProjectProjectIdEnvironmentJSONRequestBody = EnvironmentCreate
 
-// PutProjectProjectIdEnvironmentEnvironmentIdJSONRequestBody defines body for PutProjectProjectIdEnvironmentEnvironmentId for application/json ContentType.
-type PutProjectProjectIdEnvironmentEnvironmentIdJSONRequestBody = EnvironmentUpdate
+// UpdateEnvironmentJSONRequestBody defines body for UpdateEnvironment for application/json ContentType.
+type UpdateEnvironmentJSONRequestBody = EnvironmentUpdate
 
 // CreateSnapshotJSONRequestBody defines body for CreateSnapshot for application/json ContentType.
 type CreateSnapshotJSONRequestBody = SnapshotCreate
 
-// PutSnapshotIdJSONRequestBody defines body for PutSnapshotId for application/json ContentType.
-type PutSnapshotIdJSONRequestBody = SnapshotUpdate
+// UpdateSnapshotJSONRequestBody defines body for UpdateSnapshot for application/json ContentType.
+type UpdateSnapshotJSONRequestBody = SnapshotUpdate
 
 // PostTeamJSONRequestBody defines body for PostTeam for application/json ContentType.
 type PostTeamJSONRequestBody = TeamCreate
@@ -295,46 +295,46 @@ type PutTeamIdJSONRequestBody = TeamUpdate
 // PostUserJSONRequestBody defines body for PostUser for application/json ContentType.
 type PostUserJSONRequestBody = UserCreate
 
-// PutUserIdJSONRequestBody defines body for PutUserId for application/json ContentType.
-type PutUserIdJSONRequestBody = UserUpdate
+// UpdateUserJSONRequestBody defines body for UpdateUser for application/json ContentType.
+type UpdateUserJSONRequestBody = UserUpdate
 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"V5v/AgAA//9HqNtoVWQAAA==",
+	"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",
+	"zMPBhgm5+rj8uETJTfJ3AAAA//9x0hNx7mMAAA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

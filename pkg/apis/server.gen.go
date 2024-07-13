@@ -34,55 +34,55 @@ type ServerInterface interface {
 	UnlockEnvironment(c *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error
 	// Get a list of projects
 	// (GET /project)
-	GetProject(c *fiber.Ctx, params GetProjectParams) error
+	GetProjects(c *fiber.Ctx, params GetProjectsParams) error
 	// Create a new project
 	// (POST /project)
 	PostProject(c *fiber.Ctx) error
 	// Delete a project
 	// (DELETE /project/{id})
-	DeleteProjectId(c *fiber.Ctx, id string) error
+	DeleteProject(c *fiber.Ctx, id string) error
 	// Get a project
 	// (GET /project/{id})
-	GetProjectId(c *fiber.Ctx, id string) error
+	GetProject(c *fiber.Ctx, id string) error
 	// Update a project
 	// (PUT /project/{id})
-	PutProjectId(c *fiber.Ctx, id string) error
+	UpdateProject(c *fiber.Ctx, id string) error
 	// Get a list of environments
 	// (GET /project/{projectId}/environment)
-	GetProjectProjectIdEnvironment(c *fiber.Ctx, projectId string, params GetProjectProjectIdEnvironmentParams) error
+	GetEnvironments(c *fiber.Ctx, projectId string, params GetEnvironmentsParams) error
 	// Create a new environment
 	// (POST /project/{projectId}/environment)
 	PostProjectProjectIdEnvironment(c *fiber.Ctx, projectId string) error
 	// Delete an environment
 	// (DELETE /project/{projectId}/environment/{environmentId})
-	DeleteProjectProjectIdEnvironmentEnvironmentId(c *fiber.Ctx, projectId string, environmentId string) error
+	DeleteEnvironment(c *fiber.Ctx, projectId string, environmentId string) error
 	// Get an environment
 	// (GET /project/{projectId}/environment/{environmentId})
-	GetProjectProjectIdEnvironmentEnvironmentId(c *fiber.Ctx, projectId string, environmentId string) error
+	GetEnvironment(c *fiber.Ctx, projectId string, environmentId string) error
 	// Update an environment
 	// (PUT /project/{projectId}/environment/{environmentId})
-	PutProjectProjectIdEnvironmentEnvironmentId(c *fiber.Ctx, projectId string, environmentId string) error
+	UpdateEnvironment(c *fiber.Ctx, projectId string, environmentId string) error
 	// Get a list of snapshots
 	// (GET /snapshot)
-	GetSnapshot(c *fiber.Ctx, params GetSnapshotParams) error
+	GetSnapshots(c *fiber.Ctx, params GetSnapshotsParams) error
 	// Create a new snapshot
 	// (POST /snapshot)
 	CreateSnapshot(c *fiber.Ctx) error
 	// Delete a snapshot
 	// (DELETE /snapshot/{id})
-	DeleteSnapshotId(c *fiber.Ctx, id string) error
+	DeleteSnapshot(c *fiber.Ctx, id string) error
 	// Get a snapshot
 	// (GET /snapshot/{id})
-	GetSnapshotId(c *fiber.Ctx, id string) error
+	GetSnapshot(c *fiber.Ctx, id string) error
 	// Update a snapshot
 	// (PUT /snapshot/{id})
-	PutSnapshotId(c *fiber.Ctx, id string) error
+	UpdateSnapshot(c *fiber.Ctx, id string) error
 	// Get a task
 	// (GET /task/{id})
-	GetTaskId(c *fiber.Ctx, id string) error
+	GetTask(c *fiber.Ctx, id string) error
 	// Get a list of teams
 	// (GET /team)
-	GetTeam(c *fiber.Ctx, params GetTeamParams) error
+	GetTeams(c *fiber.Ctx, params GetTeamsParams) error
 	// Create a new team
 	// (POST /team)
 	PostTeam(c *fiber.Ctx) error
@@ -91,25 +91,25 @@ type ServerInterface interface {
 	DeleteTeamId(c *fiber.Ctx, id string) error
 	// Get a team
 	// (GET /team/{id})
-	GetTeamId(c *fiber.Ctx, id string) error
+	GetTeam(c *fiber.Ctx, id string) error
 	// Update a team
 	// (PUT /team/{id})
 	PutTeamId(c *fiber.Ctx, id string) error
 	// Get a list of users
 	// (GET /user)
-	GetUser(c *fiber.Ctx, params GetUserParams) error
+	GetUsers(c *fiber.Ctx, params GetUsersParams) error
 	// Create a new user
 	// (POST /user)
 	PostUser(c *fiber.Ctx) error
 	// Delete a user
 	// (DELETE /user/{id})
-	DeleteUserId(c *fiber.Ctx, id string) error
+	DeleteUser(c *fiber.Ctx, id string) error
 	// Get a user
 	// (GET /user/{id})
-	GetUserId(c *fiber.Ctx, id string) error
+	GetUser(c *fiber.Ctx, id string) error
 	// Update a user
 	// (PUT /user/{id})
-	PutUserId(c *fiber.Ctx, id string) error
+	UpdateUser(c *fiber.Ctx, id string) error
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -283,15 +283,15 @@ func (siw *ServerInterfaceWrapper) UnlockEnvironment(c *fiber.Ctx) error {
 	return siw.Handler.UnlockEnvironment(c, teamId, projectId, environmentId)
 }
 
-// GetProject operation middleware
-func (siw *ServerInterfaceWrapper) GetProject(c *fiber.Ctx) error {
+// GetProjects operation middleware
+func (siw *ServerInterfaceWrapper) GetProjects(c *fiber.Ctx) error {
 
 	var err error
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params GetProjectParams
+	var params GetProjectsParams
 
 	var query url.Values
 	query, err = url.ParseQuery(string(c.Request().URI().QueryString()))
@@ -313,7 +313,7 @@ func (siw *ServerInterfaceWrapper) GetProject(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter offset: %w", err).Error())
 	}
 
-	return siw.Handler.GetProject(c, params)
+	return siw.Handler.GetProjects(c, params)
 }
 
 // PostProject operation middleware
@@ -324,8 +324,8 @@ func (siw *ServerInterfaceWrapper) PostProject(c *fiber.Ctx) error {
 	return siw.Handler.PostProject(c)
 }
 
-// DeleteProjectId operation middleware
-func (siw *ServerInterfaceWrapper) DeleteProjectId(c *fiber.Ctx) error {
+// DeleteProject operation middleware
+func (siw *ServerInterfaceWrapper) DeleteProject(c *fiber.Ctx) error {
 
 	var err error
 
@@ -339,11 +339,11 @@ func (siw *ServerInterfaceWrapper) DeleteProjectId(c *fiber.Ctx) error {
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.DeleteProjectId(c, id)
+	return siw.Handler.DeleteProject(c, id)
 }
 
-// GetProjectId operation middleware
-func (siw *ServerInterfaceWrapper) GetProjectId(c *fiber.Ctx) error {
+// GetProject operation middleware
+func (siw *ServerInterfaceWrapper) GetProject(c *fiber.Ctx) error {
 
 	var err error
 
@@ -357,11 +357,11 @@ func (siw *ServerInterfaceWrapper) GetProjectId(c *fiber.Ctx) error {
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.GetProjectId(c, id)
+	return siw.Handler.GetProject(c, id)
 }
 
-// PutProjectId operation middleware
-func (siw *ServerInterfaceWrapper) PutProjectId(c *fiber.Ctx) error {
+// UpdateProject operation middleware
+func (siw *ServerInterfaceWrapper) UpdateProject(c *fiber.Ctx) error {
 
 	var err error
 
@@ -375,11 +375,11 @@ func (siw *ServerInterfaceWrapper) PutProjectId(c *fiber.Ctx) error {
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.PutProjectId(c, id)
+	return siw.Handler.UpdateProject(c, id)
 }
 
-// GetProjectProjectIdEnvironment operation middleware
-func (siw *ServerInterfaceWrapper) GetProjectProjectIdEnvironment(c *fiber.Ctx) error {
+// GetEnvironments operation middleware
+func (siw *ServerInterfaceWrapper) GetEnvironments(c *fiber.Ctx) error {
 
 	var err error
 
@@ -394,7 +394,7 @@ func (siw *ServerInterfaceWrapper) GetProjectProjectIdEnvironment(c *fiber.Ctx) 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params GetProjectProjectIdEnvironmentParams
+	var params GetEnvironmentsParams
 
 	var query url.Values
 	query, err = url.ParseQuery(string(c.Request().URI().QueryString()))
@@ -416,7 +416,7 @@ func (siw *ServerInterfaceWrapper) GetProjectProjectIdEnvironment(c *fiber.Ctx) 
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter offset: %w", err).Error())
 	}
 
-	return siw.Handler.GetProjectProjectIdEnvironment(c, projectId, params)
+	return siw.Handler.GetEnvironments(c, projectId, params)
 }
 
 // PostProjectProjectIdEnvironment operation middleware
@@ -437,8 +437,8 @@ func (siw *ServerInterfaceWrapper) PostProjectProjectIdEnvironment(c *fiber.Ctx)
 	return siw.Handler.PostProjectProjectIdEnvironment(c, projectId)
 }
 
-// DeleteProjectProjectIdEnvironmentEnvironmentId operation middleware
-func (siw *ServerInterfaceWrapper) DeleteProjectProjectIdEnvironmentEnvironmentId(c *fiber.Ctx) error {
+// DeleteEnvironment operation middleware
+func (siw *ServerInterfaceWrapper) DeleteEnvironment(c *fiber.Ctx) error {
 
 	var err error
 
@@ -460,11 +460,11 @@ func (siw *ServerInterfaceWrapper) DeleteProjectProjectIdEnvironmentEnvironmentI
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.DeleteProjectProjectIdEnvironmentEnvironmentId(c, projectId, environmentId)
+	return siw.Handler.DeleteEnvironment(c, projectId, environmentId)
 }
 
-// GetProjectProjectIdEnvironmentEnvironmentId operation middleware
-func (siw *ServerInterfaceWrapper) GetProjectProjectIdEnvironmentEnvironmentId(c *fiber.Ctx) error {
+// GetEnvironment operation middleware
+func (siw *ServerInterfaceWrapper) GetEnvironment(c *fiber.Ctx) error {
 
 	var err error
 
@@ -486,11 +486,11 @@ func (siw *ServerInterfaceWrapper) GetProjectProjectIdEnvironmentEnvironmentId(c
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.GetProjectProjectIdEnvironmentEnvironmentId(c, projectId, environmentId)
+	return siw.Handler.GetEnvironment(c, projectId, environmentId)
 }
 
-// PutProjectProjectIdEnvironmentEnvironmentId operation middleware
-func (siw *ServerInterfaceWrapper) PutProjectProjectIdEnvironmentEnvironmentId(c *fiber.Ctx) error {
+// UpdateEnvironment operation middleware
+func (siw *ServerInterfaceWrapper) UpdateEnvironment(c *fiber.Ctx) error {
 
 	var err error
 
@@ -512,18 +512,18 @@ func (siw *ServerInterfaceWrapper) PutProjectProjectIdEnvironmentEnvironmentId(c
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.PutProjectProjectIdEnvironmentEnvironmentId(c, projectId, environmentId)
+	return siw.Handler.UpdateEnvironment(c, projectId, environmentId)
 }
 
-// GetSnapshot operation middleware
-func (siw *ServerInterfaceWrapper) GetSnapshot(c *fiber.Ctx) error {
+// GetSnapshots operation middleware
+func (siw *ServerInterfaceWrapper) GetSnapshots(c *fiber.Ctx) error {
 
 	var err error
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params GetSnapshotParams
+	var params GetSnapshotsParams
 
 	var query url.Values
 	query, err = url.ParseQuery(string(c.Request().URI().QueryString()))
@@ -545,7 +545,7 @@ func (siw *ServerInterfaceWrapper) GetSnapshot(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter offset: %w", err).Error())
 	}
 
-	return siw.Handler.GetSnapshot(c, params)
+	return siw.Handler.GetSnapshots(c, params)
 }
 
 // CreateSnapshot operation middleware
@@ -556,8 +556,8 @@ func (siw *ServerInterfaceWrapper) CreateSnapshot(c *fiber.Ctx) error {
 	return siw.Handler.CreateSnapshot(c)
 }
 
-// DeleteSnapshotId operation middleware
-func (siw *ServerInterfaceWrapper) DeleteSnapshotId(c *fiber.Ctx) error {
+// DeleteSnapshot operation middleware
+func (siw *ServerInterfaceWrapper) DeleteSnapshot(c *fiber.Ctx) error {
 
 	var err error
 
@@ -571,11 +571,11 @@ func (siw *ServerInterfaceWrapper) DeleteSnapshotId(c *fiber.Ctx) error {
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.DeleteSnapshotId(c, id)
+	return siw.Handler.DeleteSnapshot(c, id)
 }
 
-// GetSnapshotId operation middleware
-func (siw *ServerInterfaceWrapper) GetSnapshotId(c *fiber.Ctx) error {
+// GetSnapshot operation middleware
+func (siw *ServerInterfaceWrapper) GetSnapshot(c *fiber.Ctx) error {
 
 	var err error
 
@@ -589,11 +589,11 @@ func (siw *ServerInterfaceWrapper) GetSnapshotId(c *fiber.Ctx) error {
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.GetSnapshotId(c, id)
+	return siw.Handler.GetSnapshot(c, id)
 }
 
-// PutSnapshotId operation middleware
-func (siw *ServerInterfaceWrapper) PutSnapshotId(c *fiber.Ctx) error {
+// UpdateSnapshot operation middleware
+func (siw *ServerInterfaceWrapper) UpdateSnapshot(c *fiber.Ctx) error {
 
 	var err error
 
@@ -607,11 +607,11 @@ func (siw *ServerInterfaceWrapper) PutSnapshotId(c *fiber.Ctx) error {
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.PutSnapshotId(c, id)
+	return siw.Handler.UpdateSnapshot(c, id)
 }
 
-// GetTaskId operation middleware
-func (siw *ServerInterfaceWrapper) GetTaskId(c *fiber.Ctx) error {
+// GetTask operation middleware
+func (siw *ServerInterfaceWrapper) GetTask(c *fiber.Ctx) error {
 
 	var err error
 
@@ -625,18 +625,18 @@ func (siw *ServerInterfaceWrapper) GetTaskId(c *fiber.Ctx) error {
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.GetTaskId(c, id)
+	return siw.Handler.GetTask(c, id)
 }
 
-// GetTeam operation middleware
-func (siw *ServerInterfaceWrapper) GetTeam(c *fiber.Ctx) error {
+// GetTeams operation middleware
+func (siw *ServerInterfaceWrapper) GetTeams(c *fiber.Ctx) error {
 
 	var err error
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params GetTeamParams
+	var params GetTeamsParams
 
 	var query url.Values
 	query, err = url.ParseQuery(string(c.Request().URI().QueryString()))
@@ -658,7 +658,7 @@ func (siw *ServerInterfaceWrapper) GetTeam(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter offset: %w", err).Error())
 	}
 
-	return siw.Handler.GetTeam(c, params)
+	return siw.Handler.GetTeams(c, params)
 }
 
 // PostTeam operation middleware
@@ -687,8 +687,8 @@ func (siw *ServerInterfaceWrapper) DeleteTeamId(c *fiber.Ctx) error {
 	return siw.Handler.DeleteTeamId(c, id)
 }
 
-// GetTeamId operation middleware
-func (siw *ServerInterfaceWrapper) GetTeamId(c *fiber.Ctx) error {
+// GetTeam operation middleware
+func (siw *ServerInterfaceWrapper) GetTeam(c *fiber.Ctx) error {
 
 	var err error
 
@@ -702,7 +702,7 @@ func (siw *ServerInterfaceWrapper) GetTeamId(c *fiber.Ctx) error {
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.GetTeamId(c, id)
+	return siw.Handler.GetTeam(c, id)
 }
 
 // PutTeamId operation middleware
@@ -723,15 +723,15 @@ func (siw *ServerInterfaceWrapper) PutTeamId(c *fiber.Ctx) error {
 	return siw.Handler.PutTeamId(c, id)
 }
 
-// GetUser operation middleware
-func (siw *ServerInterfaceWrapper) GetUser(c *fiber.Ctx) error {
+// GetUsers operation middleware
+func (siw *ServerInterfaceWrapper) GetUsers(c *fiber.Ctx) error {
 
 	var err error
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params GetUserParams
+	var params GetUsersParams
 
 	var query url.Values
 	query, err = url.ParseQuery(string(c.Request().URI().QueryString()))
@@ -753,7 +753,7 @@ func (siw *ServerInterfaceWrapper) GetUser(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter offset: %w", err).Error())
 	}
 
-	return siw.Handler.GetUser(c, params)
+	return siw.Handler.GetUsers(c, params)
 }
 
 // PostUser operation middleware
@@ -764,8 +764,8 @@ func (siw *ServerInterfaceWrapper) PostUser(c *fiber.Ctx) error {
 	return siw.Handler.PostUser(c)
 }
 
-// DeleteUserId operation middleware
-func (siw *ServerInterfaceWrapper) DeleteUserId(c *fiber.Ctx) error {
+// DeleteUser operation middleware
+func (siw *ServerInterfaceWrapper) DeleteUser(c *fiber.Ctx) error {
 
 	var err error
 
@@ -779,11 +779,11 @@ func (siw *ServerInterfaceWrapper) DeleteUserId(c *fiber.Ctx) error {
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.DeleteUserId(c, id)
+	return siw.Handler.DeleteUser(c, id)
 }
 
-// GetUserId operation middleware
-func (siw *ServerInterfaceWrapper) GetUserId(c *fiber.Ctx) error {
+// GetUser operation middleware
+func (siw *ServerInterfaceWrapper) GetUser(c *fiber.Ctx) error {
 
 	var err error
 
@@ -797,11 +797,11 @@ func (siw *ServerInterfaceWrapper) GetUserId(c *fiber.Ctx) error {
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.GetUserId(c, id)
+	return siw.Handler.GetUser(c, id)
 }
 
-// PutUserId operation middleware
-func (siw *ServerInterfaceWrapper) PutUserId(c *fiber.Ctx) error {
+// UpdateUser operation middleware
+func (siw *ServerInterfaceWrapper) UpdateUser(c *fiber.Ctx) error {
 
 	var err error
 
@@ -815,7 +815,7 @@ func (siw *ServerInterfaceWrapper) PutUserId(c *fiber.Ctx) error {
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.PutUserId(c, id)
+	return siw.Handler.UpdateUser(c, id)
 }
 
 // FiberServerOptions provides options for the Fiber server.
@@ -851,57 +851,57 @@ func RegisterHandlersWithOptions(router fiber.Router, si ServerInterface, option
 
 	router.Post(options.BaseURL+"/client/:teamId/:projectId/:environmentId/unlock", wrapper.UnlockEnvironment)
 
-	router.Get(options.BaseURL+"/project", wrapper.GetProject)
+	router.Get(options.BaseURL+"/project", wrapper.GetProjects)
 
 	router.Post(options.BaseURL+"/project", wrapper.PostProject)
 
-	router.Delete(options.BaseURL+"/project/:id", wrapper.DeleteProjectId)
+	router.Delete(options.BaseURL+"/project/:id", wrapper.DeleteProject)
 
-	router.Get(options.BaseURL+"/project/:id", wrapper.GetProjectId)
+	router.Get(options.BaseURL+"/project/:id", wrapper.GetProject)
 
-	router.Put(options.BaseURL+"/project/:id", wrapper.PutProjectId)
+	router.Put(options.BaseURL+"/project/:id", wrapper.UpdateProject)
 
-	router.Get(options.BaseURL+"/project/:projectId/environment", wrapper.GetProjectProjectIdEnvironment)
+	router.Get(options.BaseURL+"/project/:projectId/environment", wrapper.GetEnvironments)
 
 	router.Post(options.BaseURL+"/project/:projectId/environment", wrapper.PostProjectProjectIdEnvironment)
 
-	router.Delete(options.BaseURL+"/project/:projectId/environment/:environmentId", wrapper.DeleteProjectProjectIdEnvironmentEnvironmentId)
+	router.Delete(options.BaseURL+"/project/:projectId/environment/:environmentId", wrapper.DeleteEnvironment)
 
-	router.Get(options.BaseURL+"/project/:projectId/environment/:environmentId", wrapper.GetProjectProjectIdEnvironmentEnvironmentId)
+	router.Get(options.BaseURL+"/project/:projectId/environment/:environmentId", wrapper.GetEnvironment)
 
-	router.Put(options.BaseURL+"/project/:projectId/environment/:environmentId", wrapper.PutProjectProjectIdEnvironmentEnvironmentId)
+	router.Put(options.BaseURL+"/project/:projectId/environment/:environmentId", wrapper.UpdateEnvironment)
 
-	router.Get(options.BaseURL+"/snapshot", wrapper.GetSnapshot)
+	router.Get(options.BaseURL+"/snapshot", wrapper.GetSnapshots)
 
 	router.Post(options.BaseURL+"/snapshot", wrapper.CreateSnapshot)
 
-	router.Delete(options.BaseURL+"/snapshot/:id", wrapper.DeleteSnapshotId)
+	router.Delete(options.BaseURL+"/snapshot/:id", wrapper.DeleteSnapshot)
 
-	router.Get(options.BaseURL+"/snapshot/:id", wrapper.GetSnapshotId)
+	router.Get(options.BaseURL+"/snapshot/:id", wrapper.GetSnapshot)
 
-	router.Put(options.BaseURL+"/snapshot/:id", wrapper.PutSnapshotId)
+	router.Put(options.BaseURL+"/snapshot/:id", wrapper.UpdateSnapshot)
 
-	router.Get(options.BaseURL+"/task/:id", wrapper.GetTaskId)
+	router.Get(options.BaseURL+"/task/:id", wrapper.GetTask)
 
-	router.Get(options.BaseURL+"/team", wrapper.GetTeam)
+	router.Get(options.BaseURL+"/team", wrapper.GetTeams)
 
 	router.Post(options.BaseURL+"/team", wrapper.PostTeam)
 
 	router.Delete(options.BaseURL+"/team/:id", wrapper.DeleteTeamId)
 
-	router.Get(options.BaseURL+"/team/:id", wrapper.GetTeamId)
+	router.Get(options.BaseURL+"/team/:id", wrapper.GetTeam)
 
 	router.Put(options.BaseURL+"/team/:id", wrapper.PutTeamId)
 
-	router.Get(options.BaseURL+"/user", wrapper.GetUser)
+	router.Get(options.BaseURL+"/user", wrapper.GetUsers)
 
 	router.Post(options.BaseURL+"/user", wrapper.PostUser)
 
-	router.Delete(options.BaseURL+"/user/:id", wrapper.DeleteUserId)
+	router.Delete(options.BaseURL+"/user/:id", wrapper.DeleteUser)
 
-	router.Get(options.BaseURL+"/user/:id", wrapper.GetUserId)
+	router.Get(options.BaseURL+"/user/:id", wrapper.GetUser)
 
-	router.Put(options.BaseURL+"/user/:id", wrapper.PutUserId)
+	router.Put(options.BaseURL+"/user/:id", wrapper.UpdateUser)
 
 }
 
@@ -1114,15 +1114,15 @@ func (response UnlockEnvironment500JSONResponse) VisitUnlockEnvironmentResponse(
 	return ctx.JSON(&response)
 }
 
-type GetProjectRequestObject struct {
-	Params GetProjectParams
+type GetProjectsRequestObject struct {
+	Params GetProjectsParams
 }
 
-type GetProjectResponseObject interface {
-	VisitGetProjectResponse(ctx *fiber.Ctx) error
+type GetProjectsResponseObject interface {
+	VisitGetProjectsResponse(ctx *fiber.Ctx) error
 }
 
-type GetProject200JSONResponse struct {
+type GetProjects200JSONResponse struct {
 	Metadata *struct {
 		Limit      *int `json:"limit,omitempty"`
 		Offset     *int `json:"offset,omitempty"`
@@ -1131,16 +1131,16 @@ type GetProject200JSONResponse struct {
 	Projects *[]Project `json:"projects,omitempty"`
 }
 
-func (response GetProject200JSONResponse) VisitGetProjectResponse(ctx *fiber.Ctx) error {
+func (response GetProjects200JSONResponse) VisitGetProjectsResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type GetProject500JSONResponse ErrorResponse
+type GetProjects500JSONResponse ErrorResponse
 
-func (response GetProject500JSONResponse) VisitGetProjectResponse(ctx *fiber.Ctx) error {
+func (response GetProjects500JSONResponse) VisitGetProjectsResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
@@ -1173,121 +1173,121 @@ func (response PostProject500JSONResponse) VisitPostProjectResponse(ctx *fiber.C
 	return ctx.JSON(&response)
 }
 
-type DeleteProjectIdRequestObject struct {
+type DeleteProjectRequestObject struct {
 	Id string `json:"id"`
 }
 
-type DeleteProjectIdResponseObject interface {
-	VisitDeleteProjectIdResponse(ctx *fiber.Ctx) error
+type DeleteProjectResponseObject interface {
+	VisitDeleteProjectResponse(ctx *fiber.Ctx) error
 }
 
-type DeleteProjectId204Response struct {
+type DeleteProject204Response struct {
 }
 
-func (response DeleteProjectId204Response) VisitDeleteProjectIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteProject204Response) VisitDeleteProjectResponse(ctx *fiber.Ctx) error {
 	ctx.Status(204)
 	return nil
 }
 
-type DeleteProjectId404JSONResponse ErrorResponse
+type DeleteProject404JSONResponse ErrorResponse
 
-func (response DeleteProjectId404JSONResponse) VisitDeleteProjectIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteProject404JSONResponse) VisitDeleteProjectResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type DeleteProjectId500JSONResponse ErrorResponse
+type DeleteProject500JSONResponse ErrorResponse
 
-func (response DeleteProjectId500JSONResponse) VisitDeleteProjectIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteProject500JSONResponse) VisitDeleteProjectResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
 	return ctx.JSON(&response)
 }
 
-type GetProjectIdRequestObject struct {
+type GetProjectRequestObject struct {
 	Id string `json:"id"`
 }
 
-type GetProjectIdResponseObject interface {
-	VisitGetProjectIdResponse(ctx *fiber.Ctx) error
+type GetProjectResponseObject interface {
+	VisitGetProjectResponse(ctx *fiber.Ctx) error
 }
 
-type GetProjectId200JSONResponse Project
+type GetProject200JSONResponse Project
 
-func (response GetProjectId200JSONResponse) VisitGetProjectIdResponse(ctx *fiber.Ctx) error {
+func (response GetProject200JSONResponse) VisitGetProjectResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type GetProjectId404JSONResponse ErrorResponse
+type GetProject404JSONResponse ErrorResponse
 
-func (response GetProjectId404JSONResponse) VisitGetProjectIdResponse(ctx *fiber.Ctx) error {
+func (response GetProject404JSONResponse) VisitGetProjectResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type GetProjectId500JSONResponse ErrorResponse
+type GetProject500JSONResponse ErrorResponse
 
-func (response GetProjectId500JSONResponse) VisitGetProjectIdResponse(ctx *fiber.Ctx) error {
+func (response GetProject500JSONResponse) VisitGetProjectResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
 	return ctx.JSON(&response)
 }
 
-type PutProjectIdRequestObject struct {
+type UpdateProjectRequestObject struct {
 	Id   string `json:"id"`
-	Body *PutProjectIdJSONRequestBody
+	Body *UpdateProjectJSONRequestBody
 }
 
-type PutProjectIdResponseObject interface {
-	VisitPutProjectIdResponse(ctx *fiber.Ctx) error
+type UpdateProjectResponseObject interface {
+	VisitUpdateProjectResponse(ctx *fiber.Ctx) error
 }
 
-type PutProjectId200JSONResponse Project
+type UpdateProject200JSONResponse Project
 
-func (response PutProjectId200JSONResponse) VisitPutProjectIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateProject200JSONResponse) VisitUpdateProjectResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type PutProjectId404JSONResponse ErrorResponse
+type UpdateProject404JSONResponse ErrorResponse
 
-func (response PutProjectId404JSONResponse) VisitPutProjectIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateProject404JSONResponse) VisitUpdateProjectResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type PutProjectId500JSONResponse ErrorResponse
+type UpdateProject500JSONResponse ErrorResponse
 
-func (response PutProjectId500JSONResponse) VisitPutProjectIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateProject500JSONResponse) VisitUpdateProjectResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
 	return ctx.JSON(&response)
 }
 
-type GetProjectProjectIdEnvironmentRequestObject struct {
+type GetEnvironmentsRequestObject struct {
 	ProjectId string `json:"projectId"`
-	Params    GetProjectProjectIdEnvironmentParams
+	Params    GetEnvironmentsParams
 }
 
-type GetProjectProjectIdEnvironmentResponseObject interface {
-	VisitGetProjectProjectIdEnvironmentResponse(ctx *fiber.Ctx) error
+type GetEnvironmentsResponseObject interface {
+	VisitGetEnvironmentsResponse(ctx *fiber.Ctx) error
 }
 
-type GetProjectProjectIdEnvironment200JSONResponse struct {
+type GetEnvironments200JSONResponse struct {
 	Environments *[]Environment `json:"environments,omitempty"`
 	Metadata     *struct {
 		Limit      *int `json:"limit,omitempty"`
@@ -1296,16 +1296,16 @@ type GetProjectProjectIdEnvironment200JSONResponse struct {
 	} `json:"metadata,omitempty"`
 }
 
-func (response GetProjectProjectIdEnvironment200JSONResponse) VisitGetProjectProjectIdEnvironmentResponse(ctx *fiber.Ctx) error {
+func (response GetEnvironments200JSONResponse) VisitGetEnvironmentsResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type GetProjectProjectIdEnvironment500JSONResponse ErrorResponse
+type GetEnvironments500JSONResponse ErrorResponse
 
-func (response GetProjectProjectIdEnvironment500JSONResponse) VisitGetProjectProjectIdEnvironmentResponse(ctx *fiber.Ctx) error {
+func (response GetEnvironments500JSONResponse) VisitGetEnvironmentsResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
@@ -1339,123 +1339,123 @@ func (response PostProjectProjectIdEnvironment500JSONResponse) VisitPostProjectP
 	return ctx.JSON(&response)
 }
 
-type DeleteProjectProjectIdEnvironmentEnvironmentIdRequestObject struct {
+type DeleteEnvironmentRequestObject struct {
 	ProjectId     string `json:"projectId"`
 	EnvironmentId string `json:"environmentId"`
 }
 
-type DeleteProjectProjectIdEnvironmentEnvironmentIdResponseObject interface {
-	VisitDeleteProjectProjectIdEnvironmentEnvironmentIdResponse(ctx *fiber.Ctx) error
+type DeleteEnvironmentResponseObject interface {
+	VisitDeleteEnvironmentResponse(ctx *fiber.Ctx) error
 }
 
-type DeleteProjectProjectIdEnvironmentEnvironmentId204Response struct {
+type DeleteEnvironment204Response struct {
 }
 
-func (response DeleteProjectProjectIdEnvironmentEnvironmentId204Response) VisitDeleteProjectProjectIdEnvironmentEnvironmentIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteEnvironment204Response) VisitDeleteEnvironmentResponse(ctx *fiber.Ctx) error {
 	ctx.Status(204)
 	return nil
 }
 
-type DeleteProjectProjectIdEnvironmentEnvironmentId404JSONResponse ErrorResponse
+type DeleteEnvironment404JSONResponse ErrorResponse
 
-func (response DeleteProjectProjectIdEnvironmentEnvironmentId404JSONResponse) VisitDeleteProjectProjectIdEnvironmentEnvironmentIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteEnvironment404JSONResponse) VisitDeleteEnvironmentResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type DeleteProjectProjectIdEnvironmentEnvironmentId500JSONResponse ErrorResponse
+type DeleteEnvironment500JSONResponse ErrorResponse
 
-func (response DeleteProjectProjectIdEnvironmentEnvironmentId500JSONResponse) VisitDeleteProjectProjectIdEnvironmentEnvironmentIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteEnvironment500JSONResponse) VisitDeleteEnvironmentResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
 	return ctx.JSON(&response)
 }
 
-type GetProjectProjectIdEnvironmentEnvironmentIdRequestObject struct {
+type GetEnvironmentRequestObject struct {
 	ProjectId     string `json:"projectId"`
 	EnvironmentId string `json:"environmentId"`
 }
 
-type GetProjectProjectIdEnvironmentEnvironmentIdResponseObject interface {
-	VisitGetProjectProjectIdEnvironmentEnvironmentIdResponse(ctx *fiber.Ctx) error
+type GetEnvironmentResponseObject interface {
+	VisitGetEnvironmentResponse(ctx *fiber.Ctx) error
 }
 
-type GetProjectProjectIdEnvironmentEnvironmentId200JSONResponse Environment
+type GetEnvironment200JSONResponse Environment
 
-func (response GetProjectProjectIdEnvironmentEnvironmentId200JSONResponse) VisitGetProjectProjectIdEnvironmentEnvironmentIdResponse(ctx *fiber.Ctx) error {
+func (response GetEnvironment200JSONResponse) VisitGetEnvironmentResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type GetProjectProjectIdEnvironmentEnvironmentId404JSONResponse ErrorResponse
+type GetEnvironment404JSONResponse ErrorResponse
 
-func (response GetProjectProjectIdEnvironmentEnvironmentId404JSONResponse) VisitGetProjectProjectIdEnvironmentEnvironmentIdResponse(ctx *fiber.Ctx) error {
+func (response GetEnvironment404JSONResponse) VisitGetEnvironmentResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type GetProjectProjectIdEnvironmentEnvironmentId500JSONResponse ErrorResponse
+type GetEnvironment500JSONResponse ErrorResponse
 
-func (response GetProjectProjectIdEnvironmentEnvironmentId500JSONResponse) VisitGetProjectProjectIdEnvironmentEnvironmentIdResponse(ctx *fiber.Ctx) error {
+func (response GetEnvironment500JSONResponse) VisitGetEnvironmentResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
 	return ctx.JSON(&response)
 }
 
-type PutProjectProjectIdEnvironmentEnvironmentIdRequestObject struct {
+type UpdateEnvironmentRequestObject struct {
 	ProjectId     string `json:"projectId"`
 	EnvironmentId string `json:"environmentId"`
-	Body          *PutProjectProjectIdEnvironmentEnvironmentIdJSONRequestBody
+	Body          *UpdateEnvironmentJSONRequestBody
 }
 
-type PutProjectProjectIdEnvironmentEnvironmentIdResponseObject interface {
-	VisitPutProjectProjectIdEnvironmentEnvironmentIdResponse(ctx *fiber.Ctx) error
+type UpdateEnvironmentResponseObject interface {
+	VisitUpdateEnvironmentResponse(ctx *fiber.Ctx) error
 }
 
-type PutProjectProjectIdEnvironmentEnvironmentId200JSONResponse Environment
+type UpdateEnvironment200JSONResponse Environment
 
-func (response PutProjectProjectIdEnvironmentEnvironmentId200JSONResponse) VisitPutProjectProjectIdEnvironmentEnvironmentIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateEnvironment200JSONResponse) VisitUpdateEnvironmentResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type PutProjectProjectIdEnvironmentEnvironmentId404JSONResponse ErrorResponse
+type UpdateEnvironment404JSONResponse ErrorResponse
 
-func (response PutProjectProjectIdEnvironmentEnvironmentId404JSONResponse) VisitPutProjectProjectIdEnvironmentEnvironmentIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateEnvironment404JSONResponse) VisitUpdateEnvironmentResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type PutProjectProjectIdEnvironmentEnvironmentId500JSONResponse ErrorResponse
+type UpdateEnvironment500JSONResponse ErrorResponse
 
-func (response PutProjectProjectIdEnvironmentEnvironmentId500JSONResponse) VisitPutProjectProjectIdEnvironmentEnvironmentIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateEnvironment500JSONResponse) VisitUpdateEnvironmentResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
 	return ctx.JSON(&response)
 }
 
-type GetSnapshotRequestObject struct {
-	Params GetSnapshotParams
+type GetSnapshotsRequestObject struct {
+	Params GetSnapshotsParams
 }
 
-type GetSnapshotResponseObject interface {
-	VisitGetSnapshotResponse(ctx *fiber.Ctx) error
+type GetSnapshotsResponseObject interface {
+	VisitGetSnapshotsResponse(ctx *fiber.Ctx) error
 }
 
-type GetSnapshot200JSONResponse struct {
+type GetSnapshots200JSONResponse struct {
 	Metadata *struct {
 		Limit      *int `json:"limit,omitempty"`
 		Offset     *int `json:"offset,omitempty"`
@@ -1464,16 +1464,16 @@ type GetSnapshot200JSONResponse struct {
 	Snapshots *[]Snapshot `json:"snapshots,omitempty"`
 }
 
-func (response GetSnapshot200JSONResponse) VisitGetSnapshotResponse(ctx *fiber.Ctx) error {
+func (response GetSnapshots200JSONResponse) VisitGetSnapshotsResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type GetSnapshot500JSONResponse ErrorResponse
+type GetSnapshots500JSONResponse ErrorResponse
 
-func (response GetSnapshot500JSONResponse) VisitGetSnapshotResponse(ctx *fiber.Ctx) error {
+func (response GetSnapshots500JSONResponse) VisitGetSnapshotsResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
@@ -1506,155 +1506,155 @@ func (response CreateSnapshot500JSONResponse) VisitCreateSnapshotResponse(ctx *f
 	return ctx.JSON(&response)
 }
 
-type DeleteSnapshotIdRequestObject struct {
+type DeleteSnapshotRequestObject struct {
 	Id string `json:"id"`
 }
 
-type DeleteSnapshotIdResponseObject interface {
-	VisitDeleteSnapshotIdResponse(ctx *fiber.Ctx) error
+type DeleteSnapshotResponseObject interface {
+	VisitDeleteSnapshotResponse(ctx *fiber.Ctx) error
 }
 
-type DeleteSnapshotId204Response struct {
+type DeleteSnapshot204Response struct {
 }
 
-func (response DeleteSnapshotId204Response) VisitDeleteSnapshotIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteSnapshot204Response) VisitDeleteSnapshotResponse(ctx *fiber.Ctx) error {
 	ctx.Status(204)
 	return nil
 }
 
-type DeleteSnapshotId404JSONResponse ErrorResponse
+type DeleteSnapshot404JSONResponse ErrorResponse
 
-func (response DeleteSnapshotId404JSONResponse) VisitDeleteSnapshotIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteSnapshot404JSONResponse) VisitDeleteSnapshotResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type DeleteSnapshotId500JSONResponse ErrorResponse
+type DeleteSnapshot500JSONResponse ErrorResponse
 
-func (response DeleteSnapshotId500JSONResponse) VisitDeleteSnapshotIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteSnapshot500JSONResponse) VisitDeleteSnapshotResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
 	return ctx.JSON(&response)
 }
 
-type GetSnapshotIdRequestObject struct {
+type GetSnapshotRequestObject struct {
 	Id string `json:"id"`
 }
 
-type GetSnapshotIdResponseObject interface {
-	VisitGetSnapshotIdResponse(ctx *fiber.Ctx) error
+type GetSnapshotResponseObject interface {
+	VisitGetSnapshotResponse(ctx *fiber.Ctx) error
 }
 
-type GetSnapshotId200JSONResponse Snapshot
+type GetSnapshot200JSONResponse Snapshot
 
-func (response GetSnapshotId200JSONResponse) VisitGetSnapshotIdResponse(ctx *fiber.Ctx) error {
+func (response GetSnapshot200JSONResponse) VisitGetSnapshotResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type GetSnapshotId404JSONResponse ErrorResponse
+type GetSnapshot404JSONResponse ErrorResponse
 
-func (response GetSnapshotId404JSONResponse) VisitGetSnapshotIdResponse(ctx *fiber.Ctx) error {
+func (response GetSnapshot404JSONResponse) VisitGetSnapshotResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type GetSnapshotId500JSONResponse ErrorResponse
+type GetSnapshot500JSONResponse ErrorResponse
 
-func (response GetSnapshotId500JSONResponse) VisitGetSnapshotIdResponse(ctx *fiber.Ctx) error {
+func (response GetSnapshot500JSONResponse) VisitGetSnapshotResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
 	return ctx.JSON(&response)
 }
 
-type PutSnapshotIdRequestObject struct {
+type UpdateSnapshotRequestObject struct {
 	Id   string `json:"id"`
-	Body *PutSnapshotIdJSONRequestBody
+	Body *UpdateSnapshotJSONRequestBody
 }
 
-type PutSnapshotIdResponseObject interface {
-	VisitPutSnapshotIdResponse(ctx *fiber.Ctx) error
+type UpdateSnapshotResponseObject interface {
+	VisitUpdateSnapshotResponse(ctx *fiber.Ctx) error
 }
 
-type PutSnapshotId200JSONResponse Snapshot
+type UpdateSnapshot200JSONResponse Snapshot
 
-func (response PutSnapshotId200JSONResponse) VisitPutSnapshotIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateSnapshot200JSONResponse) VisitUpdateSnapshotResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type PutSnapshotId404JSONResponse ErrorResponse
+type UpdateSnapshot404JSONResponse ErrorResponse
 
-func (response PutSnapshotId404JSONResponse) VisitPutSnapshotIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateSnapshot404JSONResponse) VisitUpdateSnapshotResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type PutSnapshotId500JSONResponse ErrorResponse
+type UpdateSnapshot500JSONResponse ErrorResponse
 
-func (response PutSnapshotId500JSONResponse) VisitPutSnapshotIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateSnapshot500JSONResponse) VisitUpdateSnapshotResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
 	return ctx.JSON(&response)
 }
 
-type GetTaskIdRequestObject struct {
+type GetTaskRequestObject struct {
 	Id string `json:"id"`
 }
 
-type GetTaskIdResponseObject interface {
-	VisitGetTaskIdResponse(ctx *fiber.Ctx) error
+type GetTaskResponseObject interface {
+	VisitGetTaskResponse(ctx *fiber.Ctx) error
 }
 
-type GetTaskId200JSONResponse Task
+type GetTask200JSONResponse Task
 
-func (response GetTaskId200JSONResponse) VisitGetTaskIdResponse(ctx *fiber.Ctx) error {
+func (response GetTask200JSONResponse) VisitGetTaskResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type GetTaskId404JSONResponse ErrorResponse
+type GetTask404JSONResponse ErrorResponse
 
-func (response GetTaskId404JSONResponse) VisitGetTaskIdResponse(ctx *fiber.Ctx) error {
+func (response GetTask404JSONResponse) VisitGetTaskResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type GetTaskId500JSONResponse ErrorResponse
+type GetTask500JSONResponse ErrorResponse
 
-func (response GetTaskId500JSONResponse) VisitGetTaskIdResponse(ctx *fiber.Ctx) error {
+func (response GetTask500JSONResponse) VisitGetTaskResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
 	return ctx.JSON(&response)
 }
 
-type GetTeamRequestObject struct {
-	Params GetTeamParams
+type GetTeamsRequestObject struct {
+	Params GetTeamsParams
 }
 
-type GetTeamResponseObject interface {
-	VisitGetTeamResponse(ctx *fiber.Ctx) error
+type GetTeamsResponseObject interface {
+	VisitGetTeamsResponse(ctx *fiber.Ctx) error
 }
 
-type GetTeam200JSONResponse struct {
+type GetTeams200JSONResponse struct {
 	Metadata *struct {
 		Limit      *int `json:"limit,omitempty"`
 		Offset     *int `json:"offset,omitempty"`
@@ -1663,16 +1663,16 @@ type GetTeam200JSONResponse struct {
 	Teams *[]Team `json:"teams,omitempty"`
 }
 
-func (response GetTeam200JSONResponse) VisitGetTeamResponse(ctx *fiber.Ctx) error {
+func (response GetTeams200JSONResponse) VisitGetTeamsResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type GetTeam500JSONResponse ErrorResponse
+type GetTeams500JSONResponse ErrorResponse
 
-func (response GetTeam500JSONResponse) VisitGetTeamResponse(ctx *fiber.Ctx) error {
+func (response GetTeams500JSONResponse) VisitGetTeamsResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
@@ -1739,35 +1739,35 @@ func (response DeleteTeamId500JSONResponse) VisitDeleteTeamIdResponse(ctx *fiber
 	return ctx.JSON(&response)
 }
 
-type GetTeamIdRequestObject struct {
+type GetTeamRequestObject struct {
 	Id string `json:"id"`
 }
 
-type GetTeamIdResponseObject interface {
-	VisitGetTeamIdResponse(ctx *fiber.Ctx) error
+type GetTeamResponseObject interface {
+	VisitGetTeamResponse(ctx *fiber.Ctx) error
 }
 
-type GetTeamId200JSONResponse Team
+type GetTeam200JSONResponse Team
 
-func (response GetTeamId200JSONResponse) VisitGetTeamIdResponse(ctx *fiber.Ctx) error {
+func (response GetTeam200JSONResponse) VisitGetTeamResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type GetTeamId404JSONResponse ErrorResponse
+type GetTeam404JSONResponse ErrorResponse
 
-func (response GetTeamId404JSONResponse) VisitGetTeamIdResponse(ctx *fiber.Ctx) error {
+func (response GetTeam404JSONResponse) VisitGetTeamResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type GetTeamId500JSONResponse ErrorResponse
+type GetTeam500JSONResponse ErrorResponse
 
-func (response GetTeamId500JSONResponse) VisitGetTeamIdResponse(ctx *fiber.Ctx) error {
+func (response GetTeam500JSONResponse) VisitGetTeamResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
@@ -1810,15 +1810,15 @@ func (response PutTeamId500JSONResponse) VisitPutTeamIdResponse(ctx *fiber.Ctx) 
 	return ctx.JSON(&response)
 }
 
-type GetUserRequestObject struct {
-	Params GetUserParams
+type GetUsersRequestObject struct {
+	Params GetUsersParams
 }
 
-type GetUserResponseObject interface {
-	VisitGetUserResponse(ctx *fiber.Ctx) error
+type GetUsersResponseObject interface {
+	VisitGetUsersResponse(ctx *fiber.Ctx) error
 }
 
-type GetUser200JSONResponse struct {
+type GetUsers200JSONResponse struct {
 	Metadata *struct {
 		Limit      *int `json:"limit,omitempty"`
 		Offset     *int `json:"offset,omitempty"`
@@ -1827,16 +1827,16 @@ type GetUser200JSONResponse struct {
 	Users *[]User `json:"users,omitempty"`
 }
 
-func (response GetUser200JSONResponse) VisitGetUserResponse(ctx *fiber.Ctx) error {
+func (response GetUsers200JSONResponse) VisitGetUsersResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type GetUser500JSONResponse ErrorResponse
+type GetUsers500JSONResponse ErrorResponse
 
-func (response GetUser500JSONResponse) VisitGetUserResponse(ctx *fiber.Ctx) error {
+func (response GetUsers500JSONResponse) VisitGetUsersResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
@@ -1869,105 +1869,105 @@ func (response PostUser500JSONResponse) VisitPostUserResponse(ctx *fiber.Ctx) er
 	return ctx.JSON(&response)
 }
 
-type DeleteUserIdRequestObject struct {
+type DeleteUserRequestObject struct {
 	Id string `json:"id"`
 }
 
-type DeleteUserIdResponseObject interface {
-	VisitDeleteUserIdResponse(ctx *fiber.Ctx) error
+type DeleteUserResponseObject interface {
+	VisitDeleteUserResponse(ctx *fiber.Ctx) error
 }
 
-type DeleteUserId204Response struct {
+type DeleteUser204Response struct {
 }
 
-func (response DeleteUserId204Response) VisitDeleteUserIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteUser204Response) VisitDeleteUserResponse(ctx *fiber.Ctx) error {
 	ctx.Status(204)
 	return nil
 }
 
-type DeleteUserId404JSONResponse ErrorResponse
+type DeleteUser404JSONResponse ErrorResponse
 
-func (response DeleteUserId404JSONResponse) VisitDeleteUserIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteUser404JSONResponse) VisitDeleteUserResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type DeleteUserId500JSONResponse ErrorResponse
+type DeleteUser500JSONResponse ErrorResponse
 
-func (response DeleteUserId500JSONResponse) VisitDeleteUserIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteUser500JSONResponse) VisitDeleteUserResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
 	return ctx.JSON(&response)
 }
 
-type GetUserIdRequestObject struct {
+type GetUserRequestObject struct {
 	Id string `json:"id"`
 }
 
-type GetUserIdResponseObject interface {
-	VisitGetUserIdResponse(ctx *fiber.Ctx) error
+type GetUserResponseObject interface {
+	VisitGetUserResponse(ctx *fiber.Ctx) error
 }
 
-type GetUserId200JSONResponse User
+type GetUser200JSONResponse User
 
-func (response GetUserId200JSONResponse) VisitGetUserIdResponse(ctx *fiber.Ctx) error {
+func (response GetUser200JSONResponse) VisitGetUserResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type GetUserId404JSONResponse ErrorResponse
+type GetUser404JSONResponse ErrorResponse
 
-func (response GetUserId404JSONResponse) VisitGetUserIdResponse(ctx *fiber.Ctx) error {
+func (response GetUser404JSONResponse) VisitGetUserResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type GetUserId500JSONResponse ErrorResponse
+type GetUser500JSONResponse ErrorResponse
 
-func (response GetUserId500JSONResponse) VisitGetUserIdResponse(ctx *fiber.Ctx) error {
+func (response GetUser500JSONResponse) VisitGetUserResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
 	return ctx.JSON(&response)
 }
 
-type PutUserIdRequestObject struct {
+type UpdateUserRequestObject struct {
 	Id   string `json:"id"`
-	Body *PutUserIdJSONRequestBody
+	Body *UpdateUserJSONRequestBody
 }
 
-type PutUserIdResponseObject interface {
-	VisitPutUserIdResponse(ctx *fiber.Ctx) error
+type UpdateUserResponseObject interface {
+	VisitUpdateUserResponse(ctx *fiber.Ctx) error
 }
 
-type PutUserId200JSONResponse User
+type UpdateUser200JSONResponse User
 
-func (response PutUserId200JSONResponse) VisitPutUserIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateUser200JSONResponse) VisitUpdateUserResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type PutUserId404JSONResponse ErrorResponse
+type UpdateUser404JSONResponse ErrorResponse
 
-func (response PutUserId404JSONResponse) VisitPutUserIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateUser404JSONResponse) VisitUpdateUserResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type PutUserId500JSONResponse ErrorResponse
+type UpdateUser500JSONResponse ErrorResponse
 
-func (response PutUserId500JSONResponse) VisitPutUserIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateUser500JSONResponse) VisitUpdateUserResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
@@ -1996,55 +1996,55 @@ type StrictServerInterface interface {
 	UnlockEnvironment(ctx context.Context, request UnlockEnvironmentRequestObject) (UnlockEnvironmentResponseObject, error)
 	// Get a list of projects
 	// (GET /project)
-	GetProject(ctx context.Context, request GetProjectRequestObject) (GetProjectResponseObject, error)
+	GetProjects(ctx context.Context, request GetProjectsRequestObject) (GetProjectsResponseObject, error)
 	// Create a new project
 	// (POST /project)
 	PostProject(ctx context.Context, request PostProjectRequestObject) (PostProjectResponseObject, error)
 	// Delete a project
 	// (DELETE /project/{id})
-	DeleteProjectId(ctx context.Context, request DeleteProjectIdRequestObject) (DeleteProjectIdResponseObject, error)
+	DeleteProject(ctx context.Context, request DeleteProjectRequestObject) (DeleteProjectResponseObject, error)
 	// Get a project
 	// (GET /project/{id})
-	GetProjectId(ctx context.Context, request GetProjectIdRequestObject) (GetProjectIdResponseObject, error)
+	GetProject(ctx context.Context, request GetProjectRequestObject) (GetProjectResponseObject, error)
 	// Update a project
 	// (PUT /project/{id})
-	PutProjectId(ctx context.Context, request PutProjectIdRequestObject) (PutProjectIdResponseObject, error)
+	UpdateProject(ctx context.Context, request UpdateProjectRequestObject) (UpdateProjectResponseObject, error)
 	// Get a list of environments
 	// (GET /project/{projectId}/environment)
-	GetProjectProjectIdEnvironment(ctx context.Context, request GetProjectProjectIdEnvironmentRequestObject) (GetProjectProjectIdEnvironmentResponseObject, error)
+	GetEnvironments(ctx context.Context, request GetEnvironmentsRequestObject) (GetEnvironmentsResponseObject, error)
 	// Create a new environment
 	// (POST /project/{projectId}/environment)
 	PostProjectProjectIdEnvironment(ctx context.Context, request PostProjectProjectIdEnvironmentRequestObject) (PostProjectProjectIdEnvironmentResponseObject, error)
 	// Delete an environment
 	// (DELETE /project/{projectId}/environment/{environmentId})
-	DeleteProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, request DeleteProjectProjectIdEnvironmentEnvironmentIdRequestObject) (DeleteProjectProjectIdEnvironmentEnvironmentIdResponseObject, error)
+	DeleteEnvironment(ctx context.Context, request DeleteEnvironmentRequestObject) (DeleteEnvironmentResponseObject, error)
 	// Get an environment
 	// (GET /project/{projectId}/environment/{environmentId})
-	GetProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, request GetProjectProjectIdEnvironmentEnvironmentIdRequestObject) (GetProjectProjectIdEnvironmentEnvironmentIdResponseObject, error)
+	GetEnvironment(ctx context.Context, request GetEnvironmentRequestObject) (GetEnvironmentResponseObject, error)
 	// Update an environment
 	// (PUT /project/{projectId}/environment/{environmentId})
-	PutProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, request PutProjectProjectIdEnvironmentEnvironmentIdRequestObject) (PutProjectProjectIdEnvironmentEnvironmentIdResponseObject, error)
+	UpdateEnvironment(ctx context.Context, request UpdateEnvironmentRequestObject) (UpdateEnvironmentResponseObject, error)
 	// Get a list of snapshots
 	// (GET /snapshot)
-	GetSnapshot(ctx context.Context, request GetSnapshotRequestObject) (GetSnapshotResponseObject, error)
+	GetSnapshots(ctx context.Context, request GetSnapshotsRequestObject) (GetSnapshotsResponseObject, error)
 	// Create a new snapshot
 	// (POST /snapshot)
 	CreateSnapshot(ctx context.Context, request CreateSnapshotRequestObject) (CreateSnapshotResponseObject, error)
 	// Delete a snapshot
 	// (DELETE /snapshot/{id})
-	DeleteSnapshotId(ctx context.Context, request DeleteSnapshotIdRequestObject) (DeleteSnapshotIdResponseObject, error)
+	DeleteSnapshot(ctx context.Context, request DeleteSnapshotRequestObject) (DeleteSnapshotResponseObject, error)
 	// Get a snapshot
 	// (GET /snapshot/{id})
-	GetSnapshotId(ctx context.Context, request GetSnapshotIdRequestObject) (GetSnapshotIdResponseObject, error)
+	GetSnapshot(ctx context.Context, request GetSnapshotRequestObject) (GetSnapshotResponseObject, error)
 	// Update a snapshot
 	// (PUT /snapshot/{id})
-	PutSnapshotId(ctx context.Context, request PutSnapshotIdRequestObject) (PutSnapshotIdResponseObject, error)
+	UpdateSnapshot(ctx context.Context, request UpdateSnapshotRequestObject) (UpdateSnapshotResponseObject, error)
 	// Get a task
 	// (GET /task/{id})
-	GetTaskId(ctx context.Context, request GetTaskIdRequestObject) (GetTaskIdResponseObject, error)
+	GetTask(ctx context.Context, request GetTaskRequestObject) (GetTaskResponseObject, error)
 	// Get a list of teams
 	// (GET /team)
-	GetTeam(ctx context.Context, request GetTeamRequestObject) (GetTeamResponseObject, error)
+	GetTeams(ctx context.Context, request GetTeamsRequestObject) (GetTeamsResponseObject, error)
 	// Create a new team
 	// (POST /team)
 	PostTeam(ctx context.Context, request PostTeamRequestObject) (PostTeamResponseObject, error)
@@ -2053,25 +2053,25 @@ type StrictServerInterface interface {
 	DeleteTeamId(ctx context.Context, request DeleteTeamIdRequestObject) (DeleteTeamIdResponseObject, error)
 	// Get a team
 	// (GET /team/{id})
-	GetTeamId(ctx context.Context, request GetTeamIdRequestObject) (GetTeamIdResponseObject, error)
+	GetTeam(ctx context.Context, request GetTeamRequestObject) (GetTeamResponseObject, error)
 	// Update a team
 	// (PUT /team/{id})
 	PutTeamId(ctx context.Context, request PutTeamIdRequestObject) (PutTeamIdResponseObject, error)
 	// Get a list of users
 	// (GET /user)
-	GetUser(ctx context.Context, request GetUserRequestObject) (GetUserResponseObject, error)
+	GetUsers(ctx context.Context, request GetUsersRequestObject) (GetUsersResponseObject, error)
 	// Create a new user
 	// (POST /user)
 	PostUser(ctx context.Context, request PostUserRequestObject) (PostUserResponseObject, error)
 	// Delete a user
 	// (DELETE /user/{id})
-	DeleteUserId(ctx context.Context, request DeleteUserIdRequestObject) (DeleteUserIdResponseObject, error)
+	DeleteUser(ctx context.Context, request DeleteUserRequestObject) (DeleteUserResponseObject, error)
 	// Get a user
 	// (GET /user/{id})
-	GetUserId(ctx context.Context, request GetUserIdRequestObject) (GetUserIdResponseObject, error)
+	GetUser(ctx context.Context, request GetUserRequestObject) (GetUserResponseObject, error)
 	// Update a user
 	// (PUT /user/{id})
-	PutUserId(ctx context.Context, request PutUserIdRequestObject) (PutUserIdResponseObject, error)
+	UpdateUser(ctx context.Context, request UpdateUserRequestObject) (UpdateUserResponseObject, error)
 }
 
 type StrictHandlerFunc func(ctx *fiber.Ctx, args interface{}) (interface{}, error)
@@ -2272,25 +2272,25 @@ func (sh *strictHandler) UnlockEnvironment(ctx *fiber.Ctx, teamId TeamId, projec
 	return nil
 }
 
-// GetProject operation middleware
-func (sh *strictHandler) GetProject(ctx *fiber.Ctx, params GetProjectParams) error {
-	var request GetProjectRequestObject
+// GetProjects operation middleware
+func (sh *strictHandler) GetProjects(ctx *fiber.Ctx, params GetProjectsParams) error {
+	var request GetProjectsRequestObject
 
 	request.Params = params
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetProject(ctx.UserContext(), request.(GetProjectRequestObject))
+		return sh.ssi.GetProjects(ctx.UserContext(), request.(GetProjectsRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetProject")
+		handler = middleware(handler, "GetProjects")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetProjectResponseObject); ok {
-		if err := validResponse.VisitGetProjectResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(GetProjectsResponseObject); ok {
+		if err := validResponse.VisitGetProjectsResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2330,25 +2330,25 @@ func (sh *strictHandler) PostProject(ctx *fiber.Ctx) error {
 	return nil
 }
 
-// DeleteProjectId operation middleware
-func (sh *strictHandler) DeleteProjectId(ctx *fiber.Ctx, id string) error {
-	var request DeleteProjectIdRequestObject
+// DeleteProject operation middleware
+func (sh *strictHandler) DeleteProject(ctx *fiber.Ctx, id string) error {
+	var request DeleteProjectRequestObject
 
 	request.Id = id
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.DeleteProjectId(ctx.UserContext(), request.(DeleteProjectIdRequestObject))
+		return sh.ssi.DeleteProject(ctx.UserContext(), request.(DeleteProjectRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "DeleteProjectId")
+		handler = middleware(handler, "DeleteProject")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(DeleteProjectIdResponseObject); ok {
-		if err := validResponse.VisitDeleteProjectIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(DeleteProjectResponseObject); ok {
+		if err := validResponse.VisitDeleteProjectResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2357,25 +2357,25 @@ func (sh *strictHandler) DeleteProjectId(ctx *fiber.Ctx, id string) error {
 	return nil
 }
 
-// GetProjectId operation middleware
-func (sh *strictHandler) GetProjectId(ctx *fiber.Ctx, id string) error {
-	var request GetProjectIdRequestObject
+// GetProject operation middleware
+func (sh *strictHandler) GetProject(ctx *fiber.Ctx, id string) error {
+	var request GetProjectRequestObject
 
 	request.Id = id
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetProjectId(ctx.UserContext(), request.(GetProjectIdRequestObject))
+		return sh.ssi.GetProject(ctx.UserContext(), request.(GetProjectRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetProjectId")
+		handler = middleware(handler, "GetProject")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetProjectIdResponseObject); ok {
-		if err := validResponse.VisitGetProjectIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(GetProjectResponseObject); ok {
+		if err := validResponse.VisitGetProjectResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2384,31 +2384,31 @@ func (sh *strictHandler) GetProjectId(ctx *fiber.Ctx, id string) error {
 	return nil
 }
 
-// PutProjectId operation middleware
-func (sh *strictHandler) PutProjectId(ctx *fiber.Ctx, id string) error {
-	var request PutProjectIdRequestObject
+// UpdateProject operation middleware
+func (sh *strictHandler) UpdateProject(ctx *fiber.Ctx, id string) error {
+	var request UpdateProjectRequestObject
 
 	request.Id = id
 
-	var body PutProjectIdJSONRequestBody
+	var body UpdateProjectJSONRequestBody
 	if err := ctx.BodyParser(&body); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 	request.Body = &body
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.PutProjectId(ctx.UserContext(), request.(PutProjectIdRequestObject))
+		return sh.ssi.UpdateProject(ctx.UserContext(), request.(UpdateProjectRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "PutProjectId")
+		handler = middleware(handler, "UpdateProject")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(PutProjectIdResponseObject); ok {
-		if err := validResponse.VisitPutProjectIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(UpdateProjectResponseObject); ok {
+		if err := validResponse.VisitUpdateProjectResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2417,26 +2417,26 @@ func (sh *strictHandler) PutProjectId(ctx *fiber.Ctx, id string) error {
 	return nil
 }
 
-// GetProjectProjectIdEnvironment operation middleware
-func (sh *strictHandler) GetProjectProjectIdEnvironment(ctx *fiber.Ctx, projectId string, params GetProjectProjectIdEnvironmentParams) error {
-	var request GetProjectProjectIdEnvironmentRequestObject
+// GetEnvironments operation middleware
+func (sh *strictHandler) GetEnvironments(ctx *fiber.Ctx, projectId string, params GetEnvironmentsParams) error {
+	var request GetEnvironmentsRequestObject
 
 	request.ProjectId = projectId
 	request.Params = params
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetProjectProjectIdEnvironment(ctx.UserContext(), request.(GetProjectProjectIdEnvironmentRequestObject))
+		return sh.ssi.GetEnvironments(ctx.UserContext(), request.(GetEnvironmentsRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetProjectProjectIdEnvironment")
+		handler = middleware(handler, "GetEnvironments")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetProjectProjectIdEnvironmentResponseObject); ok {
-		if err := validResponse.VisitGetProjectProjectIdEnvironmentResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(GetEnvironmentsResponseObject); ok {
+		if err := validResponse.VisitGetEnvironmentsResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2478,26 +2478,26 @@ func (sh *strictHandler) PostProjectProjectIdEnvironment(ctx *fiber.Ctx, project
 	return nil
 }
 
-// DeleteProjectProjectIdEnvironmentEnvironmentId operation middleware
-func (sh *strictHandler) DeleteProjectProjectIdEnvironmentEnvironmentId(ctx *fiber.Ctx, projectId string, environmentId string) error {
-	var request DeleteProjectProjectIdEnvironmentEnvironmentIdRequestObject
+// DeleteEnvironment operation middleware
+func (sh *strictHandler) DeleteEnvironment(ctx *fiber.Ctx, projectId string, environmentId string) error {
+	var request DeleteEnvironmentRequestObject
 
 	request.ProjectId = projectId
 	request.EnvironmentId = environmentId
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.DeleteProjectProjectIdEnvironmentEnvironmentId(ctx.UserContext(), request.(DeleteProjectProjectIdEnvironmentEnvironmentIdRequestObject))
+		return sh.ssi.DeleteEnvironment(ctx.UserContext(), request.(DeleteEnvironmentRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "DeleteProjectProjectIdEnvironmentEnvironmentId")
+		handler = middleware(handler, "DeleteEnvironment")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(DeleteProjectProjectIdEnvironmentEnvironmentIdResponseObject); ok {
-		if err := validResponse.VisitDeleteProjectProjectIdEnvironmentEnvironmentIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(DeleteEnvironmentResponseObject); ok {
+		if err := validResponse.VisitDeleteEnvironmentResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2506,26 +2506,26 @@ func (sh *strictHandler) DeleteProjectProjectIdEnvironmentEnvironmentId(ctx *fib
 	return nil
 }
 
-// GetProjectProjectIdEnvironmentEnvironmentId operation middleware
-func (sh *strictHandler) GetProjectProjectIdEnvironmentEnvironmentId(ctx *fiber.Ctx, projectId string, environmentId string) error {
-	var request GetProjectProjectIdEnvironmentEnvironmentIdRequestObject
+// GetEnvironment operation middleware
+func (sh *strictHandler) GetEnvironment(ctx *fiber.Ctx, projectId string, environmentId string) error {
+	var request GetEnvironmentRequestObject
 
 	request.ProjectId = projectId
 	request.EnvironmentId = environmentId
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetProjectProjectIdEnvironmentEnvironmentId(ctx.UserContext(), request.(GetProjectProjectIdEnvironmentEnvironmentIdRequestObject))
+		return sh.ssi.GetEnvironment(ctx.UserContext(), request.(GetEnvironmentRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetProjectProjectIdEnvironmentEnvironmentId")
+		handler = middleware(handler, "GetEnvironment")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetProjectProjectIdEnvironmentEnvironmentIdResponseObject); ok {
-		if err := validResponse.VisitGetProjectProjectIdEnvironmentEnvironmentIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(GetEnvironmentResponseObject); ok {
+		if err := validResponse.VisitGetEnvironmentResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2534,32 +2534,32 @@ func (sh *strictHandler) GetProjectProjectIdEnvironmentEnvironmentId(ctx *fiber.
 	return nil
 }
 
-// PutProjectProjectIdEnvironmentEnvironmentId operation middleware
-func (sh *strictHandler) PutProjectProjectIdEnvironmentEnvironmentId(ctx *fiber.Ctx, projectId string, environmentId string) error {
-	var request PutProjectProjectIdEnvironmentEnvironmentIdRequestObject
+// UpdateEnvironment operation middleware
+func (sh *strictHandler) UpdateEnvironment(ctx *fiber.Ctx, projectId string, environmentId string) error {
+	var request UpdateEnvironmentRequestObject
 
 	request.ProjectId = projectId
 	request.EnvironmentId = environmentId
 
-	var body PutProjectProjectIdEnvironmentEnvironmentIdJSONRequestBody
+	var body UpdateEnvironmentJSONRequestBody
 	if err := ctx.BodyParser(&body); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 	request.Body = &body
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.PutProjectProjectIdEnvironmentEnvironmentId(ctx.UserContext(), request.(PutProjectProjectIdEnvironmentEnvironmentIdRequestObject))
+		return sh.ssi.UpdateEnvironment(ctx.UserContext(), request.(UpdateEnvironmentRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "PutProjectProjectIdEnvironmentEnvironmentId")
+		handler = middleware(handler, "UpdateEnvironment")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(PutProjectProjectIdEnvironmentEnvironmentIdResponseObject); ok {
-		if err := validResponse.VisitPutProjectProjectIdEnvironmentEnvironmentIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(UpdateEnvironmentResponseObject); ok {
+		if err := validResponse.VisitUpdateEnvironmentResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2568,25 +2568,25 @@ func (sh *strictHandler) PutProjectProjectIdEnvironmentEnvironmentId(ctx *fiber.
 	return nil
 }
 
-// GetSnapshot operation middleware
-func (sh *strictHandler) GetSnapshot(ctx *fiber.Ctx, params GetSnapshotParams) error {
-	var request GetSnapshotRequestObject
+// GetSnapshots operation middleware
+func (sh *strictHandler) GetSnapshots(ctx *fiber.Ctx, params GetSnapshotsParams) error {
+	var request GetSnapshotsRequestObject
 
 	request.Params = params
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetSnapshot(ctx.UserContext(), request.(GetSnapshotRequestObject))
+		return sh.ssi.GetSnapshots(ctx.UserContext(), request.(GetSnapshotsRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetSnapshot")
+		handler = middleware(handler, "GetSnapshots")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetSnapshotResponseObject); ok {
-		if err := validResponse.VisitGetSnapshotResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(GetSnapshotsResponseObject); ok {
+		if err := validResponse.VisitGetSnapshotsResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2626,25 +2626,25 @@ func (sh *strictHandler) CreateSnapshot(ctx *fiber.Ctx) error {
 	return nil
 }
 
-// DeleteSnapshotId operation middleware
-func (sh *strictHandler) DeleteSnapshotId(ctx *fiber.Ctx, id string) error {
-	var request DeleteSnapshotIdRequestObject
+// DeleteSnapshot operation middleware
+func (sh *strictHandler) DeleteSnapshot(ctx *fiber.Ctx, id string) error {
+	var request DeleteSnapshotRequestObject
 
 	request.Id = id
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.DeleteSnapshotId(ctx.UserContext(), request.(DeleteSnapshotIdRequestObject))
+		return sh.ssi.DeleteSnapshot(ctx.UserContext(), request.(DeleteSnapshotRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "DeleteSnapshotId")
+		handler = middleware(handler, "DeleteSnapshot")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(DeleteSnapshotIdResponseObject); ok {
-		if err := validResponse.VisitDeleteSnapshotIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(DeleteSnapshotResponseObject); ok {
+		if err := validResponse.VisitDeleteSnapshotResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2653,25 +2653,25 @@ func (sh *strictHandler) DeleteSnapshotId(ctx *fiber.Ctx, id string) error {
 	return nil
 }
 
-// GetSnapshotId operation middleware
-func (sh *strictHandler) GetSnapshotId(ctx *fiber.Ctx, id string) error {
-	var request GetSnapshotIdRequestObject
+// GetSnapshot operation middleware
+func (sh *strictHandler) GetSnapshot(ctx *fiber.Ctx, id string) error {
+	var request GetSnapshotRequestObject
 
 	request.Id = id
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetSnapshotId(ctx.UserContext(), request.(GetSnapshotIdRequestObject))
+		return sh.ssi.GetSnapshot(ctx.UserContext(), request.(GetSnapshotRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetSnapshotId")
+		handler = middleware(handler, "GetSnapshot")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetSnapshotIdResponseObject); ok {
-		if err := validResponse.VisitGetSnapshotIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(GetSnapshotResponseObject); ok {
+		if err := validResponse.VisitGetSnapshotResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2680,31 +2680,31 @@ func (sh *strictHandler) GetSnapshotId(ctx *fiber.Ctx, id string) error {
 	return nil
 }
 
-// PutSnapshotId operation middleware
-func (sh *strictHandler) PutSnapshotId(ctx *fiber.Ctx, id string) error {
-	var request PutSnapshotIdRequestObject
+// UpdateSnapshot operation middleware
+func (sh *strictHandler) UpdateSnapshot(ctx *fiber.Ctx, id string) error {
+	var request UpdateSnapshotRequestObject
 
 	request.Id = id
 
-	var body PutSnapshotIdJSONRequestBody
+	var body UpdateSnapshotJSONRequestBody
 	if err := ctx.BodyParser(&body); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 	request.Body = &body
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.PutSnapshotId(ctx.UserContext(), request.(PutSnapshotIdRequestObject))
+		return sh.ssi.UpdateSnapshot(ctx.UserContext(), request.(UpdateSnapshotRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "PutSnapshotId")
+		handler = middleware(handler, "UpdateSnapshot")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(PutSnapshotIdResponseObject); ok {
-		if err := validResponse.VisitPutSnapshotIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(UpdateSnapshotResponseObject); ok {
+		if err := validResponse.VisitUpdateSnapshotResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2713,25 +2713,25 @@ func (sh *strictHandler) PutSnapshotId(ctx *fiber.Ctx, id string) error {
 	return nil
 }
 
-// GetTaskId operation middleware
-func (sh *strictHandler) GetTaskId(ctx *fiber.Ctx, id string) error {
-	var request GetTaskIdRequestObject
+// GetTask operation middleware
+func (sh *strictHandler) GetTask(ctx *fiber.Ctx, id string) error {
+	var request GetTaskRequestObject
 
 	request.Id = id
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetTaskId(ctx.UserContext(), request.(GetTaskIdRequestObject))
+		return sh.ssi.GetTask(ctx.UserContext(), request.(GetTaskRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetTaskId")
+		handler = middleware(handler, "GetTask")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetTaskIdResponseObject); ok {
-		if err := validResponse.VisitGetTaskIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(GetTaskResponseObject); ok {
+		if err := validResponse.VisitGetTaskResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2740,25 +2740,25 @@ func (sh *strictHandler) GetTaskId(ctx *fiber.Ctx, id string) error {
 	return nil
 }
 
-// GetTeam operation middleware
-func (sh *strictHandler) GetTeam(ctx *fiber.Ctx, params GetTeamParams) error {
-	var request GetTeamRequestObject
+// GetTeams operation middleware
+func (sh *strictHandler) GetTeams(ctx *fiber.Ctx, params GetTeamsParams) error {
+	var request GetTeamsRequestObject
 
 	request.Params = params
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetTeam(ctx.UserContext(), request.(GetTeamRequestObject))
+		return sh.ssi.GetTeams(ctx.UserContext(), request.(GetTeamsRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetTeam")
+		handler = middleware(handler, "GetTeams")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetTeamResponseObject); ok {
-		if err := validResponse.VisitGetTeamResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(GetTeamsResponseObject); ok {
+		if err := validResponse.VisitGetTeamsResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2825,25 +2825,25 @@ func (sh *strictHandler) DeleteTeamId(ctx *fiber.Ctx, id string) error {
 	return nil
 }
 
-// GetTeamId operation middleware
-func (sh *strictHandler) GetTeamId(ctx *fiber.Ctx, id string) error {
-	var request GetTeamIdRequestObject
+// GetTeam operation middleware
+func (sh *strictHandler) GetTeam(ctx *fiber.Ctx, id string) error {
+	var request GetTeamRequestObject
 
 	request.Id = id
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetTeamId(ctx.UserContext(), request.(GetTeamIdRequestObject))
+		return sh.ssi.GetTeam(ctx.UserContext(), request.(GetTeamRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetTeamId")
+		handler = middleware(handler, "GetTeam")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetTeamIdResponseObject); ok {
-		if err := validResponse.VisitGetTeamIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(GetTeamResponseObject); ok {
+		if err := validResponse.VisitGetTeamResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2885,25 +2885,25 @@ func (sh *strictHandler) PutTeamId(ctx *fiber.Ctx, id string) error {
 	return nil
 }
 
-// GetUser operation middleware
-func (sh *strictHandler) GetUser(ctx *fiber.Ctx, params GetUserParams) error {
-	var request GetUserRequestObject
+// GetUsers operation middleware
+func (sh *strictHandler) GetUsers(ctx *fiber.Ctx, params GetUsersParams) error {
+	var request GetUsersRequestObject
 
 	request.Params = params
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetUser(ctx.UserContext(), request.(GetUserRequestObject))
+		return sh.ssi.GetUsers(ctx.UserContext(), request.(GetUsersRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetUser")
+		handler = middleware(handler, "GetUsers")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetUserResponseObject); ok {
-		if err := validResponse.VisitGetUserResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(GetUsersResponseObject); ok {
+		if err := validResponse.VisitGetUsersResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2943,25 +2943,25 @@ func (sh *strictHandler) PostUser(ctx *fiber.Ctx) error {
 	return nil
 }
 
-// DeleteUserId operation middleware
-func (sh *strictHandler) DeleteUserId(ctx *fiber.Ctx, id string) error {
-	var request DeleteUserIdRequestObject
+// DeleteUser operation middleware
+func (sh *strictHandler) DeleteUser(ctx *fiber.Ctx, id string) error {
+	var request DeleteUserRequestObject
 
 	request.Id = id
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.DeleteUserId(ctx.UserContext(), request.(DeleteUserIdRequestObject))
+		return sh.ssi.DeleteUser(ctx.UserContext(), request.(DeleteUserRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "DeleteUserId")
+		handler = middleware(handler, "DeleteUser")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(DeleteUserIdResponseObject); ok {
-		if err := validResponse.VisitDeleteUserIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(DeleteUserResponseObject); ok {
+		if err := validResponse.VisitDeleteUserResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2970,25 +2970,25 @@ func (sh *strictHandler) DeleteUserId(ctx *fiber.Ctx, id string) error {
 	return nil
 }
 
-// GetUserId operation middleware
-func (sh *strictHandler) GetUserId(ctx *fiber.Ctx, id string) error {
-	var request GetUserIdRequestObject
+// GetUser operation middleware
+func (sh *strictHandler) GetUser(ctx *fiber.Ctx, id string) error {
+	var request GetUserRequestObject
 
 	request.Id = id
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetUserId(ctx.UserContext(), request.(GetUserIdRequestObject))
+		return sh.ssi.GetUser(ctx.UserContext(), request.(GetUserRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetUserId")
+		handler = middleware(handler, "GetUser")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetUserIdResponseObject); ok {
-		if err := validResponse.VisitGetUserIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(GetUserResponseObject); ok {
+		if err := validResponse.VisitGetUserResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2997,31 +2997,31 @@ func (sh *strictHandler) GetUserId(ctx *fiber.Ctx, id string) error {
 	return nil
 }
 
-// PutUserId operation middleware
-func (sh *strictHandler) PutUserId(ctx *fiber.Ctx, id string) error {
-	var request PutUserIdRequestObject
+// UpdateUser operation middleware
+func (sh *strictHandler) UpdateUser(ctx *fiber.Ctx, id string) error {
+	var request UpdateUserRequestObject
 
 	request.Id = id
 
-	var body PutUserIdJSONRequestBody
+	var body UpdateUserJSONRequestBody
 	if err := ctx.BodyParser(&body); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 	request.Body = &body
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.PutUserId(ctx.UserContext(), request.(PutUserIdRequestObject))
+		return sh.ssi.UpdateUser(ctx.UserContext(), request.(UpdateUserRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "PutUserId")
+		handler = middleware(handler, "UpdateUser")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(PutUserIdResponseObject); ok {
-		if err := validResponse.VisitPutUserIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(UpdateUserResponseObject); ok {
+		if err := validResponse.VisitUpdateUserResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {

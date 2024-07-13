@@ -1,42 +1,19 @@
 package cfg
 
 import (
-	"fmt"
 	"os"
 )
 
-// DB ...
-type DB struct {
-	Addr     string
-	Database string
-	Password string
-	Port     int
-	Username string
-}
-
 // Flags contains the command line flags.
 type Flags struct {
-	Addr string
-	DB   *DB
-}
-
-// DSN for PostgreSQL.
-func (c *Config) DSN() string {
-	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", c.Flags.DB.Addr, c.Flags.DB.Username, c.Flags.DB.Password, c.Flags.DB.Database, c.Flags.DB.Port)
+	Addr                string `envconfig:"KNOX_ADDR" default:":8084"`
+	DatabaseURI         string `envconfig:"KNOX_DATABASE_URI" default:"postgres://root@host.docker.internal:26257/defaultdb?sslmode=disable"`
+	DatabaseTablePrefix string `envconfig:"KNOX_DATABASE_TABLE_PREFIX" default:"knox_"`
 }
 
 // NewFlags ...
 func NewFlags() *Flags {
-	return &Flags{
-		Addr: ":8080",
-		DB: &DB{
-			Addr:     "host.docker.internal",
-			Database: "example",
-			Password: "example",
-			Port:     5432,
-			Username: "example",
-		},
-	}
+	return &Flags{}
 }
 
 // New ...

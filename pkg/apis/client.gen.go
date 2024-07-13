@@ -113,68 +113,68 @@ type ClientInterface interface {
 
 	UnlockEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UnlockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetProject request
-	GetProject(ctx context.Context, params *GetProjectParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetProjects request
+	GetProjects(ctx context.Context, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// PostProjectWithBody request with any body
 	PostProjectWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	PostProject(ctx context.Context, body PostProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteProjectId request
-	DeleteProjectId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteProject request
+	DeleteProject(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetProjectId request
-	GetProjectId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetProject request
+	GetProject(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PutProjectIdWithBody request with any body
-	PutProjectIdWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateProjectWithBody request with any body
+	UpdateProjectWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PutProjectId(ctx context.Context, id string, body PutProjectIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateProject(ctx context.Context, id string, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetProjectProjectIdEnvironment request
-	GetProjectProjectIdEnvironment(ctx context.Context, projectId string, params *GetProjectProjectIdEnvironmentParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetEnvironments request
+	GetEnvironments(ctx context.Context, projectId string, params *GetEnvironmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// PostProjectProjectIdEnvironmentWithBody request with any body
 	PostProjectProjectIdEnvironmentWithBody(ctx context.Context, projectId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	PostProjectProjectIdEnvironment(ctx context.Context, projectId string, body PostProjectProjectIdEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteProjectProjectIdEnvironmentEnvironmentId request
-	DeleteProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteEnvironment request
+	DeleteEnvironment(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetProjectProjectIdEnvironmentEnvironmentId request
-	GetProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetEnvironment request
+	GetEnvironment(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PutProjectProjectIdEnvironmentEnvironmentIdWithBody request with any body
-	PutProjectProjectIdEnvironmentEnvironmentIdWithBody(ctx context.Context, projectId string, environmentId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateEnvironmentWithBody request with any body
+	UpdateEnvironmentWithBody(ctx context.Context, projectId string, environmentId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PutProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, projectId string, environmentId string, body PutProjectProjectIdEnvironmentEnvironmentIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateEnvironment(ctx context.Context, projectId string, environmentId string, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetSnapshot request
-	GetSnapshot(ctx context.Context, params *GetSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetSnapshots request
+	GetSnapshots(ctx context.Context, params *GetSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateSnapshotWithBody request with any body
 	CreateSnapshotWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateSnapshot(ctx context.Context, body CreateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteSnapshotId request
-	DeleteSnapshotId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteSnapshot request
+	DeleteSnapshot(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetSnapshotId request
-	GetSnapshotId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetSnapshot request
+	GetSnapshot(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PutSnapshotIdWithBody request with any body
-	PutSnapshotIdWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateSnapshotWithBody request with any body
+	UpdateSnapshotWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PutSnapshotId(ctx context.Context, id string, body PutSnapshotIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateSnapshot(ctx context.Context, id string, body UpdateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetTaskId request
-	GetTaskId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetTask request
+	GetTask(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetTeam request
-	GetTeam(ctx context.Context, params *GetTeamParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetTeams request
+	GetTeams(ctx context.Context, params *GetTeamsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// PostTeamWithBody request with any body
 	PostTeamWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -184,32 +184,32 @@ type ClientInterface interface {
 	// DeleteTeamId request
 	DeleteTeamId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetTeamId request
-	GetTeamId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetTeam request
+	GetTeam(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// PutTeamIdWithBody request with any body
 	PutTeamIdWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	PutTeamId(ctx context.Context, id string, body PutTeamIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUser request
-	GetUser(ctx context.Context, params *GetUserParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetUsers request
+	GetUsers(ctx context.Context, params *GetUsersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// PostUserWithBody request with any body
 	PostUserWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	PostUser(ctx context.Context, body PostUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteUserId request
-	DeleteUserId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteUser request
+	DeleteUser(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUserId request
-	GetUserId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetUser request
+	GetUser(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PutUserIdWithBody request with any body
-	PutUserIdWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateUserWithBody request with any body
+	UpdateUserWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PutUserId(ctx context.Context, id string, body PutUserIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateUser(ctx context.Context, id string, body UpdateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetHealth(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -320,8 +320,8 @@ func (c *Client) UnlockEnvironment(ctx context.Context, teamId TeamId, projectId
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetProject(ctx context.Context, params *GetProjectParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetProjectRequest(c.Server, params)
+func (c *Client) GetProjects(ctx context.Context, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetProjectsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -356,8 +356,8 @@ func (c *Client) PostProject(ctx context.Context, body PostProjectJSONRequestBod
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteProjectId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteProjectIdRequest(c.Server, id)
+func (c *Client) DeleteProject(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteProjectRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -368,8 +368,8 @@ func (c *Client) DeleteProjectId(ctx context.Context, id string, reqEditors ...R
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetProjectId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetProjectIdRequest(c.Server, id)
+func (c *Client) GetProject(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetProjectRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -380,8 +380,8 @@ func (c *Client) GetProjectId(ctx context.Context, id string, reqEditors ...Requ
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutProjectIdWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutProjectIdRequestWithBody(c.Server, id, contentType, body)
+func (c *Client) UpdateProjectWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateProjectRequestWithBody(c.Server, id, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -392,8 +392,8 @@ func (c *Client) PutProjectIdWithBody(ctx context.Context, id string, contentTyp
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutProjectId(ctx context.Context, id string, body PutProjectIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutProjectIdRequest(c.Server, id, body)
+func (c *Client) UpdateProject(ctx context.Context, id string, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateProjectRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -404,8 +404,8 @@ func (c *Client) PutProjectId(ctx context.Context, id string, body PutProjectIdJ
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetProjectProjectIdEnvironment(ctx context.Context, projectId string, params *GetProjectProjectIdEnvironmentParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetProjectProjectIdEnvironmentRequest(c.Server, projectId, params)
+func (c *Client) GetEnvironments(ctx context.Context, projectId string, params *GetEnvironmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetEnvironmentsRequest(c.Server, projectId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -440,8 +440,8 @@ func (c *Client) PostProjectProjectIdEnvironment(ctx context.Context, projectId 
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteProjectProjectIdEnvironmentEnvironmentIdRequest(c.Server, projectId, environmentId)
+func (c *Client) DeleteEnvironment(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteEnvironmentRequest(c.Server, projectId, environmentId)
 	if err != nil {
 		return nil, err
 	}
@@ -452,8 +452,8 @@ func (c *Client) DeleteProjectProjectIdEnvironmentEnvironmentId(ctx context.Cont
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetProjectProjectIdEnvironmentEnvironmentIdRequest(c.Server, projectId, environmentId)
+func (c *Client) GetEnvironment(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetEnvironmentRequest(c.Server, projectId, environmentId)
 	if err != nil {
 		return nil, err
 	}
@@ -464,8 +464,8 @@ func (c *Client) GetProjectProjectIdEnvironmentEnvironmentId(ctx context.Context
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutProjectProjectIdEnvironmentEnvironmentIdWithBody(ctx context.Context, projectId string, environmentId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutProjectProjectIdEnvironmentEnvironmentIdRequestWithBody(c.Server, projectId, environmentId, contentType, body)
+func (c *Client) UpdateEnvironmentWithBody(ctx context.Context, projectId string, environmentId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEnvironmentRequestWithBody(c.Server, projectId, environmentId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -476,8 +476,8 @@ func (c *Client) PutProjectProjectIdEnvironmentEnvironmentIdWithBody(ctx context
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutProjectProjectIdEnvironmentEnvironmentId(ctx context.Context, projectId string, environmentId string, body PutProjectProjectIdEnvironmentEnvironmentIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutProjectProjectIdEnvironmentEnvironmentIdRequest(c.Server, projectId, environmentId, body)
+func (c *Client) UpdateEnvironment(ctx context.Context, projectId string, environmentId string, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEnvironmentRequest(c.Server, projectId, environmentId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -488,8 +488,8 @@ func (c *Client) PutProjectProjectIdEnvironmentEnvironmentId(ctx context.Context
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetSnapshot(ctx context.Context, params *GetSnapshotParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetSnapshotRequest(c.Server, params)
+func (c *Client) GetSnapshots(ctx context.Context, params *GetSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSnapshotsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -524,8 +524,8 @@ func (c *Client) CreateSnapshot(ctx context.Context, body CreateSnapshotJSONRequ
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteSnapshotId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteSnapshotIdRequest(c.Server, id)
+func (c *Client) DeleteSnapshot(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteSnapshotRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -536,8 +536,8 @@ func (c *Client) DeleteSnapshotId(ctx context.Context, id string, reqEditors ...
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetSnapshotId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetSnapshotIdRequest(c.Server, id)
+func (c *Client) GetSnapshot(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSnapshotRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -548,8 +548,8 @@ func (c *Client) GetSnapshotId(ctx context.Context, id string, reqEditors ...Req
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutSnapshotIdWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutSnapshotIdRequestWithBody(c.Server, id, contentType, body)
+func (c *Client) UpdateSnapshotWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSnapshotRequestWithBody(c.Server, id, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -560,8 +560,8 @@ func (c *Client) PutSnapshotIdWithBody(ctx context.Context, id string, contentTy
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutSnapshotId(ctx context.Context, id string, body PutSnapshotIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutSnapshotIdRequest(c.Server, id, body)
+func (c *Client) UpdateSnapshot(ctx context.Context, id string, body UpdateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSnapshotRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -572,8 +572,8 @@ func (c *Client) PutSnapshotId(ctx context.Context, id string, body PutSnapshotI
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetTaskId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetTaskIdRequest(c.Server, id)
+func (c *Client) GetTask(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTaskRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -584,8 +584,8 @@ func (c *Client) GetTaskId(ctx context.Context, id string, reqEditors ...Request
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetTeam(ctx context.Context, params *GetTeamParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetTeamRequest(c.Server, params)
+func (c *Client) GetTeams(ctx context.Context, params *GetTeamsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTeamsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -632,8 +632,8 @@ func (c *Client) DeleteTeamId(ctx context.Context, id string, reqEditors ...Requ
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetTeamId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetTeamIdRequest(c.Server, id)
+func (c *Client) GetTeam(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTeamRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -668,8 +668,8 @@ func (c *Client) PutTeamId(ctx context.Context, id string, body PutTeamIdJSONReq
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUser(ctx context.Context, params *GetUserParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserRequest(c.Server, params)
+func (c *Client) GetUsers(ctx context.Context, params *GetUsersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetUsersRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -704,8 +704,8 @@ func (c *Client) PostUser(ctx context.Context, body PostUserJSONRequestBody, req
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteUserId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteUserIdRequest(c.Server, id)
+func (c *Client) DeleteUser(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteUserRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -716,8 +716,8 @@ func (c *Client) DeleteUserId(ctx context.Context, id string, reqEditors ...Requ
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUserId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserIdRequest(c.Server, id)
+func (c *Client) GetUser(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetUserRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -728,8 +728,8 @@ func (c *Client) GetUserId(ctx context.Context, id string, reqEditors ...Request
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutUserIdWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutUserIdRequestWithBody(c.Server, id, contentType, body)
+func (c *Client) UpdateUserWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateUserRequestWithBody(c.Server, id, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -740,8 +740,8 @@ func (c *Client) PutUserIdWithBody(ctx context.Context, id string, contentType s
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutUserId(ctx context.Context, id string, body PutUserIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutUserIdRequest(c.Server, id, body)
+func (c *Client) UpdateUser(ctx context.Context, id string, body UpdateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateUserRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1059,8 +1059,8 @@ func NewUnlockEnvironmentRequestWithBody(server string, teamId TeamId, projectId
 	return req, nil
 }
 
-// NewGetProjectRequest generates requests for GetProject
-func NewGetProjectRequest(server string, params *GetProjectParams) (*http.Request, error) {
+// NewGetProjectsRequest generates requests for GetProjects
+func NewGetProjectsRequest(server string, params *GetProjectsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -1164,8 +1164,8 @@ func NewPostProjectRequestWithBody(server string, contentType string, body io.Re
 	return req, nil
 }
 
-// NewDeleteProjectIdRequest generates requests for DeleteProjectId
-func NewDeleteProjectIdRequest(server string, id string) (*http.Request, error) {
+// NewDeleteProjectRequest generates requests for DeleteProject
+func NewDeleteProjectRequest(server string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1198,8 +1198,8 @@ func NewDeleteProjectIdRequest(server string, id string) (*http.Request, error) 
 	return req, nil
 }
 
-// NewGetProjectIdRequest generates requests for GetProjectId
-func NewGetProjectIdRequest(server string, id string) (*http.Request, error) {
+// NewGetProjectRequest generates requests for GetProject
+func NewGetProjectRequest(server string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1232,19 +1232,19 @@ func NewGetProjectIdRequest(server string, id string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewPutProjectIdRequest calls the generic PutProjectId builder with application/json body
-func NewPutProjectIdRequest(server string, id string, body PutProjectIdJSONRequestBody) (*http.Request, error) {
+// NewUpdateProjectRequest calls the generic UpdateProject builder with application/json body
+func NewUpdateProjectRequest(server string, id string, body UpdateProjectJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPutProjectIdRequestWithBody(server, id, "application/json", bodyReader)
+	return NewUpdateProjectRequestWithBody(server, id, "application/json", bodyReader)
 }
 
-// NewPutProjectIdRequestWithBody generates requests for PutProjectId with any type of body
-func NewPutProjectIdRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
+// NewUpdateProjectRequestWithBody generates requests for UpdateProject with any type of body
+func NewUpdateProjectRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1279,8 +1279,8 @@ func NewPutProjectIdRequestWithBody(server string, id string, contentType string
 	return req, nil
 }
 
-// NewGetProjectProjectIdEnvironmentRequest generates requests for GetProjectProjectIdEnvironment
-func NewGetProjectProjectIdEnvironmentRequest(server string, projectId string, params *GetProjectProjectIdEnvironmentParams) (*http.Request, error) {
+// NewGetEnvironmentsRequest generates requests for GetEnvironments
+func NewGetEnvironmentsRequest(server string, projectId string, params *GetEnvironmentsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1398,8 +1398,8 @@ func NewPostProjectProjectIdEnvironmentRequestWithBody(server string, projectId 
 	return req, nil
 }
 
-// NewDeleteProjectProjectIdEnvironmentEnvironmentIdRequest generates requests for DeleteProjectProjectIdEnvironmentEnvironmentId
-func NewDeleteProjectProjectIdEnvironmentEnvironmentIdRequest(server string, projectId string, environmentId string) (*http.Request, error) {
+// NewDeleteEnvironmentRequest generates requests for DeleteEnvironment
+func NewDeleteEnvironmentRequest(server string, projectId string, environmentId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1439,8 +1439,8 @@ func NewDeleteProjectProjectIdEnvironmentEnvironmentIdRequest(server string, pro
 	return req, nil
 }
 
-// NewGetProjectProjectIdEnvironmentEnvironmentIdRequest generates requests for GetProjectProjectIdEnvironmentEnvironmentId
-func NewGetProjectProjectIdEnvironmentEnvironmentIdRequest(server string, projectId string, environmentId string) (*http.Request, error) {
+// NewGetEnvironmentRequest generates requests for GetEnvironment
+func NewGetEnvironmentRequest(server string, projectId string, environmentId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1480,19 +1480,19 @@ func NewGetProjectProjectIdEnvironmentEnvironmentIdRequest(server string, projec
 	return req, nil
 }
 
-// NewPutProjectProjectIdEnvironmentEnvironmentIdRequest calls the generic PutProjectProjectIdEnvironmentEnvironmentId builder with application/json body
-func NewPutProjectProjectIdEnvironmentEnvironmentIdRequest(server string, projectId string, environmentId string, body PutProjectProjectIdEnvironmentEnvironmentIdJSONRequestBody) (*http.Request, error) {
+// NewUpdateEnvironmentRequest calls the generic UpdateEnvironment builder with application/json body
+func NewUpdateEnvironmentRequest(server string, projectId string, environmentId string, body UpdateEnvironmentJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPutProjectProjectIdEnvironmentEnvironmentIdRequestWithBody(server, projectId, environmentId, "application/json", bodyReader)
+	return NewUpdateEnvironmentRequestWithBody(server, projectId, environmentId, "application/json", bodyReader)
 }
 
-// NewPutProjectProjectIdEnvironmentEnvironmentIdRequestWithBody generates requests for PutProjectProjectIdEnvironmentEnvironmentId with any type of body
-func NewPutProjectProjectIdEnvironmentEnvironmentIdRequestWithBody(server string, projectId string, environmentId string, contentType string, body io.Reader) (*http.Request, error) {
+// NewUpdateEnvironmentRequestWithBody generates requests for UpdateEnvironment with any type of body
+func NewUpdateEnvironmentRequestWithBody(server string, projectId string, environmentId string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1534,8 +1534,8 @@ func NewPutProjectProjectIdEnvironmentEnvironmentIdRequestWithBody(server string
 	return req, nil
 }
 
-// NewGetSnapshotRequest generates requests for GetSnapshot
-func NewGetSnapshotRequest(server string, params *GetSnapshotParams) (*http.Request, error) {
+// NewGetSnapshotsRequest generates requests for GetSnapshots
+func NewGetSnapshotsRequest(server string, params *GetSnapshotsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -1639,8 +1639,8 @@ func NewCreateSnapshotRequestWithBody(server string, contentType string, body io
 	return req, nil
 }
 
-// NewDeleteSnapshotIdRequest generates requests for DeleteSnapshotId
-func NewDeleteSnapshotIdRequest(server string, id string) (*http.Request, error) {
+// NewDeleteSnapshotRequest generates requests for DeleteSnapshot
+func NewDeleteSnapshotRequest(server string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1673,8 +1673,8 @@ func NewDeleteSnapshotIdRequest(server string, id string) (*http.Request, error)
 	return req, nil
 }
 
-// NewGetSnapshotIdRequest generates requests for GetSnapshotId
-func NewGetSnapshotIdRequest(server string, id string) (*http.Request, error) {
+// NewGetSnapshotRequest generates requests for GetSnapshot
+func NewGetSnapshotRequest(server string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1707,19 +1707,19 @@ func NewGetSnapshotIdRequest(server string, id string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewPutSnapshotIdRequest calls the generic PutSnapshotId builder with application/json body
-func NewPutSnapshotIdRequest(server string, id string, body PutSnapshotIdJSONRequestBody) (*http.Request, error) {
+// NewUpdateSnapshotRequest calls the generic UpdateSnapshot builder with application/json body
+func NewUpdateSnapshotRequest(server string, id string, body UpdateSnapshotJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPutSnapshotIdRequestWithBody(server, id, "application/json", bodyReader)
+	return NewUpdateSnapshotRequestWithBody(server, id, "application/json", bodyReader)
 }
 
-// NewPutSnapshotIdRequestWithBody generates requests for PutSnapshotId with any type of body
-func NewPutSnapshotIdRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
+// NewUpdateSnapshotRequestWithBody generates requests for UpdateSnapshot with any type of body
+func NewUpdateSnapshotRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1754,8 +1754,8 @@ func NewPutSnapshotIdRequestWithBody(server string, id string, contentType strin
 	return req, nil
 }
 
-// NewGetTaskIdRequest generates requests for GetTaskId
-func NewGetTaskIdRequest(server string, id string) (*http.Request, error) {
+// NewGetTaskRequest generates requests for GetTask
+func NewGetTaskRequest(server string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1788,8 +1788,8 @@ func NewGetTaskIdRequest(server string, id string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewGetTeamRequest generates requests for GetTeam
-func NewGetTeamRequest(server string, params *GetTeamParams) (*http.Request, error) {
+// NewGetTeamsRequest generates requests for GetTeams
+func NewGetTeamsRequest(server string, params *GetTeamsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -1927,8 +1927,8 @@ func NewDeleteTeamIdRequest(server string, id string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewGetTeamIdRequest generates requests for GetTeamId
-func NewGetTeamIdRequest(server string, id string) (*http.Request, error) {
+// NewGetTeamRequest generates requests for GetTeam
+func NewGetTeamRequest(server string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -2008,8 +2008,8 @@ func NewPutTeamIdRequestWithBody(server string, id string, contentType string, b
 	return req, nil
 }
 
-// NewGetUserRequest generates requests for GetUser
-func NewGetUserRequest(server string, params *GetUserParams) (*http.Request, error) {
+// NewGetUsersRequest generates requests for GetUsers
+func NewGetUsersRequest(server string, params *GetUsersParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -2113,8 +2113,8 @@ func NewPostUserRequestWithBody(server string, contentType string, body io.Reade
 	return req, nil
 }
 
-// NewDeleteUserIdRequest generates requests for DeleteUserId
-func NewDeleteUserIdRequest(server string, id string) (*http.Request, error) {
+// NewDeleteUserRequest generates requests for DeleteUser
+func NewDeleteUserRequest(server string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -2147,8 +2147,8 @@ func NewDeleteUserIdRequest(server string, id string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewGetUserIdRequest generates requests for GetUserId
-func NewGetUserIdRequest(server string, id string) (*http.Request, error) {
+// NewGetUserRequest generates requests for GetUser
+func NewGetUserRequest(server string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -2181,19 +2181,19 @@ func NewGetUserIdRequest(server string, id string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewPutUserIdRequest calls the generic PutUserId builder with application/json body
-func NewPutUserIdRequest(server string, id string, body PutUserIdJSONRequestBody) (*http.Request, error) {
+// NewUpdateUserRequest calls the generic UpdateUser builder with application/json body
+func NewUpdateUserRequest(server string, id string, body UpdateUserJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPutUserIdRequestWithBody(server, id, "application/json", bodyReader)
+	return NewUpdateUserRequestWithBody(server, id, "application/json", bodyReader)
 }
 
-// NewPutUserIdRequestWithBody generates requests for PutUserId with any type of body
-func NewPutUserIdRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
+// NewUpdateUserRequestWithBody generates requests for UpdateUser with any type of body
+func NewUpdateUserRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -2295,68 +2295,68 @@ type ClientWithResponsesInterface interface {
 
 	UnlockEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UnlockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UnlockEnvironmentResponse, error)
 
-	// GetProjectWithResponse request
-	GetProjectWithResponse(ctx context.Context, params *GetProjectParams, reqEditors ...RequestEditorFn) (*GetProjectResponse, error)
+	// GetProjectsWithResponse request
+	GetProjectsWithResponse(ctx context.Context, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*GetProjectsResponse, error)
 
 	// PostProjectWithBodyWithResponse request with any body
 	PostProjectWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostProjectResponse, error)
 
 	PostProjectWithResponse(ctx context.Context, body PostProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*PostProjectResponse, error)
 
-	// DeleteProjectIdWithResponse request
-	DeleteProjectIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteProjectIdResponse, error)
+	// DeleteProjectWithResponse request
+	DeleteProjectWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteProjectResponse, error)
 
-	// GetProjectIdWithResponse request
-	GetProjectIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetProjectIdResponse, error)
+	// GetProjectWithResponse request
+	GetProjectWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetProjectResponse, error)
 
-	// PutProjectIdWithBodyWithResponse request with any body
-	PutProjectIdWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutProjectIdResponse, error)
+	// UpdateProjectWithBodyWithResponse request with any body
+	UpdateProjectWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error)
 
-	PutProjectIdWithResponse(ctx context.Context, id string, body PutProjectIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PutProjectIdResponse, error)
+	UpdateProjectWithResponse(ctx context.Context, id string, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error)
 
-	// GetProjectProjectIdEnvironmentWithResponse request
-	GetProjectProjectIdEnvironmentWithResponse(ctx context.Context, projectId string, params *GetProjectProjectIdEnvironmentParams, reqEditors ...RequestEditorFn) (*GetProjectProjectIdEnvironmentResponse, error)
+	// GetEnvironmentsWithResponse request
+	GetEnvironmentsWithResponse(ctx context.Context, projectId string, params *GetEnvironmentsParams, reqEditors ...RequestEditorFn) (*GetEnvironmentsResponse, error)
 
 	// PostProjectProjectIdEnvironmentWithBodyWithResponse request with any body
 	PostProjectProjectIdEnvironmentWithBodyWithResponse(ctx context.Context, projectId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostProjectProjectIdEnvironmentResponse, error)
 
 	PostProjectProjectIdEnvironmentWithResponse(ctx context.Context, projectId string, body PostProjectProjectIdEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*PostProjectProjectIdEnvironmentResponse, error)
 
-	// DeleteProjectProjectIdEnvironmentEnvironmentIdWithResponse request
-	DeleteProjectProjectIdEnvironmentEnvironmentIdWithResponse(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*DeleteProjectProjectIdEnvironmentEnvironmentIdResponse, error)
+	// DeleteEnvironmentWithResponse request
+	DeleteEnvironmentWithResponse(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*DeleteEnvironmentResponse, error)
 
-	// GetProjectProjectIdEnvironmentEnvironmentIdWithResponse request
-	GetProjectProjectIdEnvironmentEnvironmentIdWithResponse(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*GetProjectProjectIdEnvironmentEnvironmentIdResponse, error)
+	// GetEnvironmentWithResponse request
+	GetEnvironmentWithResponse(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*GetEnvironmentResponse, error)
 
-	// PutProjectProjectIdEnvironmentEnvironmentIdWithBodyWithResponse request with any body
-	PutProjectProjectIdEnvironmentEnvironmentIdWithBodyWithResponse(ctx context.Context, projectId string, environmentId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutProjectProjectIdEnvironmentEnvironmentIdResponse, error)
+	// UpdateEnvironmentWithBodyWithResponse request with any body
+	UpdateEnvironmentWithBodyWithResponse(ctx context.Context, projectId string, environmentId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error)
 
-	PutProjectProjectIdEnvironmentEnvironmentIdWithResponse(ctx context.Context, projectId string, environmentId string, body PutProjectProjectIdEnvironmentEnvironmentIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PutProjectProjectIdEnvironmentEnvironmentIdResponse, error)
+	UpdateEnvironmentWithResponse(ctx context.Context, projectId string, environmentId string, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error)
 
-	// GetSnapshotWithResponse request
-	GetSnapshotWithResponse(ctx context.Context, params *GetSnapshotParams, reqEditors ...RequestEditorFn) (*GetSnapshotResponse, error)
+	// GetSnapshotsWithResponse request
+	GetSnapshotsWithResponse(ctx context.Context, params *GetSnapshotsParams, reqEditors ...RequestEditorFn) (*GetSnapshotsResponse, error)
 
 	// CreateSnapshotWithBodyWithResponse request with any body
 	CreateSnapshotWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSnapshotResponse, error)
 
 	CreateSnapshotWithResponse(ctx context.Context, body CreateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSnapshotResponse, error)
 
-	// DeleteSnapshotIdWithResponse request
-	DeleteSnapshotIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteSnapshotIdResponse, error)
+	// DeleteSnapshotWithResponse request
+	DeleteSnapshotWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteSnapshotResponse, error)
 
-	// GetSnapshotIdWithResponse request
-	GetSnapshotIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetSnapshotIdResponse, error)
+	// GetSnapshotWithResponse request
+	GetSnapshotWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetSnapshotResponse, error)
 
-	// PutSnapshotIdWithBodyWithResponse request with any body
-	PutSnapshotIdWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutSnapshotIdResponse, error)
+	// UpdateSnapshotWithBodyWithResponse request with any body
+	UpdateSnapshotWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSnapshotResponse, error)
 
-	PutSnapshotIdWithResponse(ctx context.Context, id string, body PutSnapshotIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PutSnapshotIdResponse, error)
+	UpdateSnapshotWithResponse(ctx context.Context, id string, body UpdateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSnapshotResponse, error)
 
-	// GetTaskIdWithResponse request
-	GetTaskIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetTaskIdResponse, error)
+	// GetTaskWithResponse request
+	GetTaskWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetTaskResponse, error)
 
-	// GetTeamWithResponse request
-	GetTeamWithResponse(ctx context.Context, params *GetTeamParams, reqEditors ...RequestEditorFn) (*GetTeamResponse, error)
+	// GetTeamsWithResponse request
+	GetTeamsWithResponse(ctx context.Context, params *GetTeamsParams, reqEditors ...RequestEditorFn) (*GetTeamsResponse, error)
 
 	// PostTeamWithBodyWithResponse request with any body
 	PostTeamWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostTeamResponse, error)
@@ -2366,32 +2366,32 @@ type ClientWithResponsesInterface interface {
 	// DeleteTeamIdWithResponse request
 	DeleteTeamIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteTeamIdResponse, error)
 
-	// GetTeamIdWithResponse request
-	GetTeamIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetTeamIdResponse, error)
+	// GetTeamWithResponse request
+	GetTeamWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetTeamResponse, error)
 
 	// PutTeamIdWithBodyWithResponse request with any body
 	PutTeamIdWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutTeamIdResponse, error)
 
 	PutTeamIdWithResponse(ctx context.Context, id string, body PutTeamIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PutTeamIdResponse, error)
 
-	// GetUserWithResponse request
-	GetUserWithResponse(ctx context.Context, params *GetUserParams, reqEditors ...RequestEditorFn) (*GetUserResponse, error)
+	// GetUsersWithResponse request
+	GetUsersWithResponse(ctx context.Context, params *GetUsersParams, reqEditors ...RequestEditorFn) (*GetUsersResponse, error)
 
 	// PostUserWithBodyWithResponse request with any body
 	PostUserWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostUserResponse, error)
 
 	PostUserWithResponse(ctx context.Context, body PostUserJSONRequestBody, reqEditors ...RequestEditorFn) (*PostUserResponse, error)
 
-	// DeleteUserIdWithResponse request
-	DeleteUserIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteUserIdResponse, error)
+	// DeleteUserWithResponse request
+	DeleteUserWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteUserResponse, error)
 
-	// GetUserIdWithResponse request
-	GetUserIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetUserIdResponse, error)
+	// GetUserWithResponse request
+	GetUserWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetUserResponse, error)
 
-	// PutUserIdWithBodyWithResponse request with any body
-	PutUserIdWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutUserIdResponse, error)
+	// UpdateUserWithBodyWithResponse request with any body
+	UpdateUserWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateUserResponse, error)
 
-	PutUserIdWithResponse(ctx context.Context, id string, body PutUserIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PutUserIdResponse, error)
+	UpdateUserWithResponse(ctx context.Context, id string, body UpdateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateUserResponse, error)
 }
 
 type GetHealthResponse struct {
@@ -2535,7 +2535,7 @@ func (r UnlockEnvironmentResponse) StatusCode() int {
 	return 0
 }
 
-type GetProjectResponse struct {
+type GetProjectsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2550,7 +2550,7 @@ type GetProjectResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetProjectResponse) Status() string {
+func (r GetProjectsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2558,7 +2558,7 @@ func (r GetProjectResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetProjectResponse) StatusCode() int {
+func (r GetProjectsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2588,7 +2588,7 @@ func (r PostProjectResponse) StatusCode() int {
 	return 0
 }
 
-type DeleteProjectIdResponse struct {
+type DeleteProjectResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON404      *ErrorResponse
@@ -2596,7 +2596,7 @@ type DeleteProjectIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteProjectIdResponse) Status() string {
+func (r DeleteProjectResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2604,38 +2604,14 @@ func (r DeleteProjectIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteProjectIdResponse) StatusCode() int {
+func (r DeleteProjectResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetProjectIdResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Project
-	JSON404      *ErrorResponse
-	JSON500      *ErrorResponse
-}
-
-// Status returns HTTPResponse.Status
-func (r GetProjectIdResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetProjectIdResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type PutProjectIdResponse struct {
+type GetProjectResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Project
@@ -2644,7 +2620,7 @@ type PutProjectIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PutProjectIdResponse) Status() string {
+func (r GetProjectResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2652,14 +2628,38 @@ func (r PutProjectIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PutProjectIdResponse) StatusCode() int {
+func (r GetProjectResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetProjectProjectIdEnvironmentResponse struct {
+type UpdateProjectResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Project
+	JSON404      *ErrorResponse
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateProjectResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateProjectResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetEnvironmentsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2674,7 +2674,7 @@ type GetProjectProjectIdEnvironmentResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetProjectProjectIdEnvironmentResponse) Status() string {
+func (r GetEnvironmentsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2682,7 +2682,7 @@ func (r GetProjectProjectIdEnvironmentResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetProjectProjectIdEnvironmentResponse) StatusCode() int {
+func (r GetEnvironmentsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2712,7 +2712,7 @@ func (r PostProjectProjectIdEnvironmentResponse) StatusCode() int {
 	return 0
 }
 
-type DeleteProjectProjectIdEnvironmentEnvironmentIdResponse struct {
+type DeleteEnvironmentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON404      *ErrorResponse
@@ -2720,7 +2720,7 @@ type DeleteProjectProjectIdEnvironmentEnvironmentIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteProjectProjectIdEnvironmentEnvironmentIdResponse) Status() string {
+func (r DeleteEnvironmentResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2728,38 +2728,14 @@ func (r DeleteProjectProjectIdEnvironmentEnvironmentIdResponse) Status() string 
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteProjectProjectIdEnvironmentEnvironmentIdResponse) StatusCode() int {
+func (r DeleteEnvironmentResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetProjectProjectIdEnvironmentEnvironmentIdResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Environment
-	JSON404      *ErrorResponse
-	JSON500      *ErrorResponse
-}
-
-// Status returns HTTPResponse.Status
-func (r GetProjectProjectIdEnvironmentEnvironmentIdResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetProjectProjectIdEnvironmentEnvironmentIdResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type PutProjectProjectIdEnvironmentEnvironmentIdResponse struct {
+type GetEnvironmentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Environment
@@ -2768,7 +2744,7 @@ type PutProjectProjectIdEnvironmentEnvironmentIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PutProjectProjectIdEnvironmentEnvironmentIdResponse) Status() string {
+func (r GetEnvironmentResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2776,14 +2752,38 @@ func (r PutProjectProjectIdEnvironmentEnvironmentIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PutProjectProjectIdEnvironmentEnvironmentIdResponse) StatusCode() int {
+func (r GetEnvironmentResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetSnapshotResponse struct {
+type UpdateEnvironmentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Environment
+	JSON404      *ErrorResponse
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateEnvironmentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateEnvironmentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetSnapshotsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2798,7 +2798,7 @@ type GetSnapshotResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetSnapshotResponse) Status() string {
+func (r GetSnapshotsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2806,7 +2806,7 @@ func (r GetSnapshotResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetSnapshotResponse) StatusCode() int {
+func (r GetSnapshotsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2836,7 +2836,7 @@ func (r CreateSnapshotResponse) StatusCode() int {
 	return 0
 }
 
-type DeleteSnapshotIdResponse struct {
+type DeleteSnapshotResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON404      *ErrorResponse
@@ -2844,7 +2844,7 @@ type DeleteSnapshotIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteSnapshotIdResponse) Status() string {
+func (r DeleteSnapshotResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2852,38 +2852,14 @@ func (r DeleteSnapshotIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteSnapshotIdResponse) StatusCode() int {
+func (r DeleteSnapshotResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetSnapshotIdResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Snapshot
-	JSON404      *ErrorResponse
-	JSON500      *ErrorResponse
-}
-
-// Status returns HTTPResponse.Status
-func (r GetSnapshotIdResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetSnapshotIdResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type PutSnapshotIdResponse struct {
+type GetSnapshotResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Snapshot
@@ -2892,7 +2868,7 @@ type PutSnapshotIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PutSnapshotIdResponse) Status() string {
+func (r GetSnapshotResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2900,14 +2876,38 @@ func (r PutSnapshotIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PutSnapshotIdResponse) StatusCode() int {
+func (r GetSnapshotResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetTaskIdResponse struct {
+type UpdateSnapshotResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Snapshot
+	JSON404      *ErrorResponse
+	JSON500      *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateSnapshotResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateSnapshotResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetTaskResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Task
@@ -2916,7 +2916,7 @@ type GetTaskIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetTaskIdResponse) Status() string {
+func (r GetTaskResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2924,14 +2924,14 @@ func (r GetTaskIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetTaskIdResponse) StatusCode() int {
+func (r GetTaskResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetTeamResponse struct {
+type GetTeamsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2946,7 +2946,7 @@ type GetTeamResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetTeamResponse) Status() string {
+func (r GetTeamsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2954,7 +2954,7 @@ func (r GetTeamResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetTeamResponse) StatusCode() int {
+func (r GetTeamsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -3007,7 +3007,7 @@ func (r DeleteTeamIdResponse) StatusCode() int {
 	return 0
 }
 
-type GetTeamIdResponse struct {
+type GetTeamResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Team
@@ -3016,7 +3016,7 @@ type GetTeamIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetTeamIdResponse) Status() string {
+func (r GetTeamResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -3024,7 +3024,7 @@ func (r GetTeamIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetTeamIdResponse) StatusCode() int {
+func (r GetTeamResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -3055,7 +3055,7 @@ func (r PutTeamIdResponse) StatusCode() int {
 	return 0
 }
 
-type GetUserResponse struct {
+type GetUsersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -3070,7 +3070,7 @@ type GetUserResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserResponse) Status() string {
+func (r GetUsersResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -3078,7 +3078,7 @@ func (r GetUserResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserResponse) StatusCode() int {
+func (r GetUsersResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -3108,7 +3108,7 @@ func (r PostUserResponse) StatusCode() int {
 	return 0
 }
 
-type DeleteUserIdResponse struct {
+type DeleteUserResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON404      *ErrorResponse
@@ -3116,7 +3116,7 @@ type DeleteUserIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteUserIdResponse) Status() string {
+func (r DeleteUserResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -3124,14 +3124,14 @@ func (r DeleteUserIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteUserIdResponse) StatusCode() int {
+func (r DeleteUserResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetUserIdResponse struct {
+type GetUserResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *User
@@ -3140,7 +3140,7 @@ type GetUserIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetUserIdResponse) Status() string {
+func (r GetUserResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -3148,14 +3148,14 @@ func (r GetUserIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetUserIdResponse) StatusCode() int {
+func (r GetUserResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PutUserIdResponse struct {
+type UpdateUserResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *User
@@ -3164,7 +3164,7 @@ type PutUserIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PutUserIdResponse) Status() string {
+func (r UpdateUserResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -3172,7 +3172,7 @@ func (r PutUserIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PutUserIdResponse) StatusCode() int {
+func (r UpdateUserResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -3257,13 +3257,13 @@ func (c *ClientWithResponses) UnlockEnvironmentWithResponse(ctx context.Context,
 	return ParseUnlockEnvironmentResponse(rsp)
 }
 
-// GetProjectWithResponse request returning *GetProjectResponse
-func (c *ClientWithResponses) GetProjectWithResponse(ctx context.Context, params *GetProjectParams, reqEditors ...RequestEditorFn) (*GetProjectResponse, error) {
-	rsp, err := c.GetProject(ctx, params, reqEditors...)
+// GetProjectsWithResponse request returning *GetProjectsResponse
+func (c *ClientWithResponses) GetProjectsWithResponse(ctx context.Context, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*GetProjectsResponse, error) {
+	rsp, err := c.GetProjects(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetProjectResponse(rsp)
+	return ParseGetProjectsResponse(rsp)
 }
 
 // PostProjectWithBodyWithResponse request with arbitrary body returning *PostProjectResponse
@@ -3283,48 +3283,48 @@ func (c *ClientWithResponses) PostProjectWithResponse(ctx context.Context, body 
 	return ParsePostProjectResponse(rsp)
 }
 
-// DeleteProjectIdWithResponse request returning *DeleteProjectIdResponse
-func (c *ClientWithResponses) DeleteProjectIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteProjectIdResponse, error) {
-	rsp, err := c.DeleteProjectId(ctx, id, reqEditors...)
+// DeleteProjectWithResponse request returning *DeleteProjectResponse
+func (c *ClientWithResponses) DeleteProjectWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteProjectResponse, error) {
+	rsp, err := c.DeleteProject(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteProjectIdResponse(rsp)
+	return ParseDeleteProjectResponse(rsp)
 }
 
-// GetProjectIdWithResponse request returning *GetProjectIdResponse
-func (c *ClientWithResponses) GetProjectIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetProjectIdResponse, error) {
-	rsp, err := c.GetProjectId(ctx, id, reqEditors...)
+// GetProjectWithResponse request returning *GetProjectResponse
+func (c *ClientWithResponses) GetProjectWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetProjectResponse, error) {
+	rsp, err := c.GetProject(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetProjectIdResponse(rsp)
+	return ParseGetProjectResponse(rsp)
 }
 
-// PutProjectIdWithBodyWithResponse request with arbitrary body returning *PutProjectIdResponse
-func (c *ClientWithResponses) PutProjectIdWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutProjectIdResponse, error) {
-	rsp, err := c.PutProjectIdWithBody(ctx, id, contentType, body, reqEditors...)
+// UpdateProjectWithBodyWithResponse request with arbitrary body returning *UpdateProjectResponse
+func (c *ClientWithResponses) UpdateProjectWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error) {
+	rsp, err := c.UpdateProjectWithBody(ctx, id, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutProjectIdResponse(rsp)
+	return ParseUpdateProjectResponse(rsp)
 }
 
-func (c *ClientWithResponses) PutProjectIdWithResponse(ctx context.Context, id string, body PutProjectIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PutProjectIdResponse, error) {
-	rsp, err := c.PutProjectId(ctx, id, body, reqEditors...)
+func (c *ClientWithResponses) UpdateProjectWithResponse(ctx context.Context, id string, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error) {
+	rsp, err := c.UpdateProject(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutProjectIdResponse(rsp)
+	return ParseUpdateProjectResponse(rsp)
 }
 
-// GetProjectProjectIdEnvironmentWithResponse request returning *GetProjectProjectIdEnvironmentResponse
-func (c *ClientWithResponses) GetProjectProjectIdEnvironmentWithResponse(ctx context.Context, projectId string, params *GetProjectProjectIdEnvironmentParams, reqEditors ...RequestEditorFn) (*GetProjectProjectIdEnvironmentResponse, error) {
-	rsp, err := c.GetProjectProjectIdEnvironment(ctx, projectId, params, reqEditors...)
+// GetEnvironmentsWithResponse request returning *GetEnvironmentsResponse
+func (c *ClientWithResponses) GetEnvironmentsWithResponse(ctx context.Context, projectId string, params *GetEnvironmentsParams, reqEditors ...RequestEditorFn) (*GetEnvironmentsResponse, error) {
+	rsp, err := c.GetEnvironments(ctx, projectId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetProjectProjectIdEnvironmentResponse(rsp)
+	return ParseGetEnvironmentsResponse(rsp)
 }
 
 // PostProjectProjectIdEnvironmentWithBodyWithResponse request with arbitrary body returning *PostProjectProjectIdEnvironmentResponse
@@ -3344,48 +3344,48 @@ func (c *ClientWithResponses) PostProjectProjectIdEnvironmentWithResponse(ctx co
 	return ParsePostProjectProjectIdEnvironmentResponse(rsp)
 }
 
-// DeleteProjectProjectIdEnvironmentEnvironmentIdWithResponse request returning *DeleteProjectProjectIdEnvironmentEnvironmentIdResponse
-func (c *ClientWithResponses) DeleteProjectProjectIdEnvironmentEnvironmentIdWithResponse(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*DeleteProjectProjectIdEnvironmentEnvironmentIdResponse, error) {
-	rsp, err := c.DeleteProjectProjectIdEnvironmentEnvironmentId(ctx, projectId, environmentId, reqEditors...)
+// DeleteEnvironmentWithResponse request returning *DeleteEnvironmentResponse
+func (c *ClientWithResponses) DeleteEnvironmentWithResponse(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*DeleteEnvironmentResponse, error) {
+	rsp, err := c.DeleteEnvironment(ctx, projectId, environmentId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteProjectProjectIdEnvironmentEnvironmentIdResponse(rsp)
+	return ParseDeleteEnvironmentResponse(rsp)
 }
 
-// GetProjectProjectIdEnvironmentEnvironmentIdWithResponse request returning *GetProjectProjectIdEnvironmentEnvironmentIdResponse
-func (c *ClientWithResponses) GetProjectProjectIdEnvironmentEnvironmentIdWithResponse(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*GetProjectProjectIdEnvironmentEnvironmentIdResponse, error) {
-	rsp, err := c.GetProjectProjectIdEnvironmentEnvironmentId(ctx, projectId, environmentId, reqEditors...)
+// GetEnvironmentWithResponse request returning *GetEnvironmentResponse
+func (c *ClientWithResponses) GetEnvironmentWithResponse(ctx context.Context, projectId string, environmentId string, reqEditors ...RequestEditorFn) (*GetEnvironmentResponse, error) {
+	rsp, err := c.GetEnvironment(ctx, projectId, environmentId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetProjectProjectIdEnvironmentEnvironmentIdResponse(rsp)
+	return ParseGetEnvironmentResponse(rsp)
 }
 
-// PutProjectProjectIdEnvironmentEnvironmentIdWithBodyWithResponse request with arbitrary body returning *PutProjectProjectIdEnvironmentEnvironmentIdResponse
-func (c *ClientWithResponses) PutProjectProjectIdEnvironmentEnvironmentIdWithBodyWithResponse(ctx context.Context, projectId string, environmentId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutProjectProjectIdEnvironmentEnvironmentIdResponse, error) {
-	rsp, err := c.PutProjectProjectIdEnvironmentEnvironmentIdWithBody(ctx, projectId, environmentId, contentType, body, reqEditors...)
+// UpdateEnvironmentWithBodyWithResponse request with arbitrary body returning *UpdateEnvironmentResponse
+func (c *ClientWithResponses) UpdateEnvironmentWithBodyWithResponse(ctx context.Context, projectId string, environmentId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error) {
+	rsp, err := c.UpdateEnvironmentWithBody(ctx, projectId, environmentId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutProjectProjectIdEnvironmentEnvironmentIdResponse(rsp)
+	return ParseUpdateEnvironmentResponse(rsp)
 }
 
-func (c *ClientWithResponses) PutProjectProjectIdEnvironmentEnvironmentIdWithResponse(ctx context.Context, projectId string, environmentId string, body PutProjectProjectIdEnvironmentEnvironmentIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PutProjectProjectIdEnvironmentEnvironmentIdResponse, error) {
-	rsp, err := c.PutProjectProjectIdEnvironmentEnvironmentId(ctx, projectId, environmentId, body, reqEditors...)
+func (c *ClientWithResponses) UpdateEnvironmentWithResponse(ctx context.Context, projectId string, environmentId string, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error) {
+	rsp, err := c.UpdateEnvironment(ctx, projectId, environmentId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutProjectProjectIdEnvironmentEnvironmentIdResponse(rsp)
+	return ParseUpdateEnvironmentResponse(rsp)
 }
 
-// GetSnapshotWithResponse request returning *GetSnapshotResponse
-func (c *ClientWithResponses) GetSnapshotWithResponse(ctx context.Context, params *GetSnapshotParams, reqEditors ...RequestEditorFn) (*GetSnapshotResponse, error) {
-	rsp, err := c.GetSnapshot(ctx, params, reqEditors...)
+// GetSnapshotsWithResponse request returning *GetSnapshotsResponse
+func (c *ClientWithResponses) GetSnapshotsWithResponse(ctx context.Context, params *GetSnapshotsParams, reqEditors ...RequestEditorFn) (*GetSnapshotsResponse, error) {
+	rsp, err := c.GetSnapshots(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetSnapshotResponse(rsp)
+	return ParseGetSnapshotsResponse(rsp)
 }
 
 // CreateSnapshotWithBodyWithResponse request with arbitrary body returning *CreateSnapshotResponse
@@ -3405,57 +3405,57 @@ func (c *ClientWithResponses) CreateSnapshotWithResponse(ctx context.Context, bo
 	return ParseCreateSnapshotResponse(rsp)
 }
 
-// DeleteSnapshotIdWithResponse request returning *DeleteSnapshotIdResponse
-func (c *ClientWithResponses) DeleteSnapshotIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteSnapshotIdResponse, error) {
-	rsp, err := c.DeleteSnapshotId(ctx, id, reqEditors...)
+// DeleteSnapshotWithResponse request returning *DeleteSnapshotResponse
+func (c *ClientWithResponses) DeleteSnapshotWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteSnapshotResponse, error) {
+	rsp, err := c.DeleteSnapshot(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteSnapshotIdResponse(rsp)
+	return ParseDeleteSnapshotResponse(rsp)
 }
 
-// GetSnapshotIdWithResponse request returning *GetSnapshotIdResponse
-func (c *ClientWithResponses) GetSnapshotIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetSnapshotIdResponse, error) {
-	rsp, err := c.GetSnapshotId(ctx, id, reqEditors...)
+// GetSnapshotWithResponse request returning *GetSnapshotResponse
+func (c *ClientWithResponses) GetSnapshotWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetSnapshotResponse, error) {
+	rsp, err := c.GetSnapshot(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetSnapshotIdResponse(rsp)
+	return ParseGetSnapshotResponse(rsp)
 }
 
-// PutSnapshotIdWithBodyWithResponse request with arbitrary body returning *PutSnapshotIdResponse
-func (c *ClientWithResponses) PutSnapshotIdWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutSnapshotIdResponse, error) {
-	rsp, err := c.PutSnapshotIdWithBody(ctx, id, contentType, body, reqEditors...)
+// UpdateSnapshotWithBodyWithResponse request with arbitrary body returning *UpdateSnapshotResponse
+func (c *ClientWithResponses) UpdateSnapshotWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSnapshotResponse, error) {
+	rsp, err := c.UpdateSnapshotWithBody(ctx, id, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutSnapshotIdResponse(rsp)
+	return ParseUpdateSnapshotResponse(rsp)
 }
 
-func (c *ClientWithResponses) PutSnapshotIdWithResponse(ctx context.Context, id string, body PutSnapshotIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PutSnapshotIdResponse, error) {
-	rsp, err := c.PutSnapshotId(ctx, id, body, reqEditors...)
+func (c *ClientWithResponses) UpdateSnapshotWithResponse(ctx context.Context, id string, body UpdateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSnapshotResponse, error) {
+	rsp, err := c.UpdateSnapshot(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutSnapshotIdResponse(rsp)
+	return ParseUpdateSnapshotResponse(rsp)
 }
 
-// GetTaskIdWithResponse request returning *GetTaskIdResponse
-func (c *ClientWithResponses) GetTaskIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetTaskIdResponse, error) {
-	rsp, err := c.GetTaskId(ctx, id, reqEditors...)
+// GetTaskWithResponse request returning *GetTaskResponse
+func (c *ClientWithResponses) GetTaskWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetTaskResponse, error) {
+	rsp, err := c.GetTask(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetTaskIdResponse(rsp)
+	return ParseGetTaskResponse(rsp)
 }
 
-// GetTeamWithResponse request returning *GetTeamResponse
-func (c *ClientWithResponses) GetTeamWithResponse(ctx context.Context, params *GetTeamParams, reqEditors ...RequestEditorFn) (*GetTeamResponse, error) {
-	rsp, err := c.GetTeam(ctx, params, reqEditors...)
+// GetTeamsWithResponse request returning *GetTeamsResponse
+func (c *ClientWithResponses) GetTeamsWithResponse(ctx context.Context, params *GetTeamsParams, reqEditors ...RequestEditorFn) (*GetTeamsResponse, error) {
+	rsp, err := c.GetTeams(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetTeamResponse(rsp)
+	return ParseGetTeamsResponse(rsp)
 }
 
 // PostTeamWithBodyWithResponse request with arbitrary body returning *PostTeamResponse
@@ -3484,13 +3484,13 @@ func (c *ClientWithResponses) DeleteTeamIdWithResponse(ctx context.Context, id s
 	return ParseDeleteTeamIdResponse(rsp)
 }
 
-// GetTeamIdWithResponse request returning *GetTeamIdResponse
-func (c *ClientWithResponses) GetTeamIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetTeamIdResponse, error) {
-	rsp, err := c.GetTeamId(ctx, id, reqEditors...)
+// GetTeamWithResponse request returning *GetTeamResponse
+func (c *ClientWithResponses) GetTeamWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetTeamResponse, error) {
+	rsp, err := c.GetTeam(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetTeamIdResponse(rsp)
+	return ParseGetTeamResponse(rsp)
 }
 
 // PutTeamIdWithBodyWithResponse request with arbitrary body returning *PutTeamIdResponse
@@ -3510,13 +3510,13 @@ func (c *ClientWithResponses) PutTeamIdWithResponse(ctx context.Context, id stri
 	return ParsePutTeamIdResponse(rsp)
 }
 
-// GetUserWithResponse request returning *GetUserResponse
-func (c *ClientWithResponses) GetUserWithResponse(ctx context.Context, params *GetUserParams, reqEditors ...RequestEditorFn) (*GetUserResponse, error) {
-	rsp, err := c.GetUser(ctx, params, reqEditors...)
+// GetUsersWithResponse request returning *GetUsersResponse
+func (c *ClientWithResponses) GetUsersWithResponse(ctx context.Context, params *GetUsersParams, reqEditors ...RequestEditorFn) (*GetUsersResponse, error) {
+	rsp, err := c.GetUsers(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserResponse(rsp)
+	return ParseGetUsersResponse(rsp)
 }
 
 // PostUserWithBodyWithResponse request with arbitrary body returning *PostUserResponse
@@ -3536,39 +3536,39 @@ func (c *ClientWithResponses) PostUserWithResponse(ctx context.Context, body Pos
 	return ParsePostUserResponse(rsp)
 }
 
-// DeleteUserIdWithResponse request returning *DeleteUserIdResponse
-func (c *ClientWithResponses) DeleteUserIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteUserIdResponse, error) {
-	rsp, err := c.DeleteUserId(ctx, id, reqEditors...)
+// DeleteUserWithResponse request returning *DeleteUserResponse
+func (c *ClientWithResponses) DeleteUserWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteUserResponse, error) {
+	rsp, err := c.DeleteUser(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteUserIdResponse(rsp)
+	return ParseDeleteUserResponse(rsp)
 }
 
-// GetUserIdWithResponse request returning *GetUserIdResponse
-func (c *ClientWithResponses) GetUserIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetUserIdResponse, error) {
-	rsp, err := c.GetUserId(ctx, id, reqEditors...)
+// GetUserWithResponse request returning *GetUserResponse
+func (c *ClientWithResponses) GetUserWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetUserResponse, error) {
+	rsp, err := c.GetUser(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetUserIdResponse(rsp)
+	return ParseGetUserResponse(rsp)
 }
 
-// PutUserIdWithBodyWithResponse request with arbitrary body returning *PutUserIdResponse
-func (c *ClientWithResponses) PutUserIdWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutUserIdResponse, error) {
-	rsp, err := c.PutUserIdWithBody(ctx, id, contentType, body, reqEditors...)
+// UpdateUserWithBodyWithResponse request with arbitrary body returning *UpdateUserResponse
+func (c *ClientWithResponses) UpdateUserWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateUserResponse, error) {
+	rsp, err := c.UpdateUserWithBody(ctx, id, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutUserIdResponse(rsp)
+	return ParseUpdateUserResponse(rsp)
 }
 
-func (c *ClientWithResponses) PutUserIdWithResponse(ctx context.Context, id string, body PutUserIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PutUserIdResponse, error) {
-	rsp, err := c.PutUserId(ctx, id, body, reqEditors...)
+func (c *ClientWithResponses) UpdateUserWithResponse(ctx context.Context, id string, body UpdateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateUserResponse, error) {
+	rsp, err := c.UpdateUser(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutUserIdResponse(rsp)
+	return ParseUpdateUserResponse(rsp)
 }
 
 // ParseGetHealthResponse parses an HTTP response from a GetHealthWithResponse call
@@ -3790,15 +3790,15 @@ func ParseUnlockEnvironmentResponse(rsp *http.Response) (*UnlockEnvironmentRespo
 	return response, nil
 }
 
-// ParseGetProjectResponse parses an HTTP response from a GetProjectWithResponse call
-func ParseGetProjectResponse(rsp *http.Response) (*GetProjectResponse, error) {
+// ParseGetProjectsResponse parses an HTTP response from a GetProjectsWithResponse call
+func ParseGetProjectsResponse(rsp *http.Response) (*GetProjectsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetProjectResponse{
+	response := &GetProjectsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3863,15 +3863,15 @@ func ParsePostProjectResponse(rsp *http.Response) (*PostProjectResponse, error) 
 	return response, nil
 }
 
-// ParseDeleteProjectIdResponse parses an HTTP response from a DeleteProjectIdWithResponse call
-func ParseDeleteProjectIdResponse(rsp *http.Response) (*DeleteProjectIdResponse, error) {
+// ParseDeleteProjectResponse parses an HTTP response from a DeleteProjectWithResponse call
+func ParseDeleteProjectResponse(rsp *http.Response) (*DeleteProjectResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteProjectIdResponse{
+	response := &DeleteProjectResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3896,55 +3896,15 @@ func ParseDeleteProjectIdResponse(rsp *http.Response) (*DeleteProjectIdResponse,
 	return response, nil
 }
 
-// ParseGetProjectIdResponse parses an HTTP response from a GetProjectIdWithResponse call
-func ParseGetProjectIdResponse(rsp *http.Response) (*GetProjectIdResponse, error) {
+// ParseGetProjectResponse parses an HTTP response from a GetProjectWithResponse call
+func ParseGetProjectResponse(rsp *http.Response) (*GetProjectResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetProjectIdResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Project
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePutProjectIdResponse parses an HTTP response from a PutProjectIdWithResponse call
-func ParsePutProjectIdResponse(rsp *http.Response) (*PutProjectIdResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PutProjectIdResponse{
+	response := &GetProjectResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3976,15 +3936,55 @@ func ParsePutProjectIdResponse(rsp *http.Response) (*PutProjectIdResponse, error
 	return response, nil
 }
 
-// ParseGetProjectProjectIdEnvironmentResponse parses an HTTP response from a GetProjectProjectIdEnvironmentWithResponse call
-func ParseGetProjectProjectIdEnvironmentResponse(rsp *http.Response) (*GetProjectProjectIdEnvironmentResponse, error) {
+// ParseUpdateProjectResponse parses an HTTP response from a UpdateProjectWithResponse call
+func ParseUpdateProjectResponse(rsp *http.Response) (*UpdateProjectResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetProjectProjectIdEnvironmentResponse{
+	response := &UpdateProjectResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Project
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetEnvironmentsResponse parses an HTTP response from a GetEnvironmentsWithResponse call
+func ParseGetEnvironmentsResponse(rsp *http.Response) (*GetEnvironmentsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetEnvironmentsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4049,15 +4049,15 @@ func ParsePostProjectProjectIdEnvironmentResponse(rsp *http.Response) (*PostProj
 	return response, nil
 }
 
-// ParseDeleteProjectProjectIdEnvironmentEnvironmentIdResponse parses an HTTP response from a DeleteProjectProjectIdEnvironmentEnvironmentIdWithResponse call
-func ParseDeleteProjectProjectIdEnvironmentEnvironmentIdResponse(rsp *http.Response) (*DeleteProjectProjectIdEnvironmentEnvironmentIdResponse, error) {
+// ParseDeleteEnvironmentResponse parses an HTTP response from a DeleteEnvironmentWithResponse call
+func ParseDeleteEnvironmentResponse(rsp *http.Response) (*DeleteEnvironmentResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteProjectProjectIdEnvironmentEnvironmentIdResponse{
+	response := &DeleteEnvironmentResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4082,55 +4082,15 @@ func ParseDeleteProjectProjectIdEnvironmentEnvironmentIdResponse(rsp *http.Respo
 	return response, nil
 }
 
-// ParseGetProjectProjectIdEnvironmentEnvironmentIdResponse parses an HTTP response from a GetProjectProjectIdEnvironmentEnvironmentIdWithResponse call
-func ParseGetProjectProjectIdEnvironmentEnvironmentIdResponse(rsp *http.Response) (*GetProjectProjectIdEnvironmentEnvironmentIdResponse, error) {
+// ParseGetEnvironmentResponse parses an HTTP response from a GetEnvironmentWithResponse call
+func ParseGetEnvironmentResponse(rsp *http.Response) (*GetEnvironmentResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetProjectProjectIdEnvironmentEnvironmentIdResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Environment
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePutProjectProjectIdEnvironmentEnvironmentIdResponse parses an HTTP response from a PutProjectProjectIdEnvironmentEnvironmentIdWithResponse call
-func ParsePutProjectProjectIdEnvironmentEnvironmentIdResponse(rsp *http.Response) (*PutProjectProjectIdEnvironmentEnvironmentIdResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PutProjectProjectIdEnvironmentEnvironmentIdResponse{
+	response := &GetEnvironmentResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4162,15 +4122,55 @@ func ParsePutProjectProjectIdEnvironmentEnvironmentIdResponse(rsp *http.Response
 	return response, nil
 }
 
-// ParseGetSnapshotResponse parses an HTTP response from a GetSnapshotWithResponse call
-func ParseGetSnapshotResponse(rsp *http.Response) (*GetSnapshotResponse, error) {
+// ParseUpdateEnvironmentResponse parses an HTTP response from a UpdateEnvironmentWithResponse call
+func ParseUpdateEnvironmentResponse(rsp *http.Response) (*UpdateEnvironmentResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetSnapshotResponse{
+	response := &UpdateEnvironmentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Environment
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetSnapshotsResponse parses an HTTP response from a GetSnapshotsWithResponse call
+func ParseGetSnapshotsResponse(rsp *http.Response) (*GetSnapshotsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSnapshotsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4235,15 +4235,15 @@ func ParseCreateSnapshotResponse(rsp *http.Response) (*CreateSnapshotResponse, e
 	return response, nil
 }
 
-// ParseDeleteSnapshotIdResponse parses an HTTP response from a DeleteSnapshotIdWithResponse call
-func ParseDeleteSnapshotIdResponse(rsp *http.Response) (*DeleteSnapshotIdResponse, error) {
+// ParseDeleteSnapshotResponse parses an HTTP response from a DeleteSnapshotWithResponse call
+func ParseDeleteSnapshotResponse(rsp *http.Response) (*DeleteSnapshotResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteSnapshotIdResponse{
+	response := &DeleteSnapshotResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4268,55 +4268,15 @@ func ParseDeleteSnapshotIdResponse(rsp *http.Response) (*DeleteSnapshotIdRespons
 	return response, nil
 }
 
-// ParseGetSnapshotIdResponse parses an HTTP response from a GetSnapshotIdWithResponse call
-func ParseGetSnapshotIdResponse(rsp *http.Response) (*GetSnapshotIdResponse, error) {
+// ParseGetSnapshotResponse parses an HTTP response from a GetSnapshotWithResponse call
+func ParseGetSnapshotResponse(rsp *http.Response) (*GetSnapshotResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetSnapshotIdResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Snapshot
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePutSnapshotIdResponse parses an HTTP response from a PutSnapshotIdWithResponse call
-func ParsePutSnapshotIdResponse(rsp *http.Response) (*PutSnapshotIdResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PutSnapshotIdResponse{
+	response := &GetSnapshotResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4348,15 +4308,55 @@ func ParsePutSnapshotIdResponse(rsp *http.Response) (*PutSnapshotIdResponse, err
 	return response, nil
 }
 
-// ParseGetTaskIdResponse parses an HTTP response from a GetTaskIdWithResponse call
-func ParseGetTaskIdResponse(rsp *http.Response) (*GetTaskIdResponse, error) {
+// ParseUpdateSnapshotResponse parses an HTTP response from a UpdateSnapshotWithResponse call
+func ParseUpdateSnapshotResponse(rsp *http.Response) (*UpdateSnapshotResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetTaskIdResponse{
+	response := &UpdateSnapshotResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Snapshot
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetTaskResponse parses an HTTP response from a GetTaskWithResponse call
+func ParseGetTaskResponse(rsp *http.Response) (*GetTaskResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetTaskResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4388,15 +4388,15 @@ func ParseGetTaskIdResponse(rsp *http.Response) (*GetTaskIdResponse, error) {
 	return response, nil
 }
 
-// ParseGetTeamResponse parses an HTTP response from a GetTeamWithResponse call
-func ParseGetTeamResponse(rsp *http.Response) (*GetTeamResponse, error) {
+// ParseGetTeamsResponse parses an HTTP response from a GetTeamsWithResponse call
+func ParseGetTeamsResponse(rsp *http.Response) (*GetTeamsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetTeamResponse{
+	response := &GetTeamsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4494,15 +4494,15 @@ func ParseDeleteTeamIdResponse(rsp *http.Response) (*DeleteTeamIdResponse, error
 	return response, nil
 }
 
-// ParseGetTeamIdResponse parses an HTTP response from a GetTeamIdWithResponse call
-func ParseGetTeamIdResponse(rsp *http.Response) (*GetTeamIdResponse, error) {
+// ParseGetTeamResponse parses an HTTP response from a GetTeamWithResponse call
+func ParseGetTeamResponse(rsp *http.Response) (*GetTeamResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetTeamIdResponse{
+	response := &GetTeamResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4574,15 +4574,15 @@ func ParsePutTeamIdResponse(rsp *http.Response) (*PutTeamIdResponse, error) {
 	return response, nil
 }
 
-// ParseGetUserResponse parses an HTTP response from a GetUserWithResponse call
-func ParseGetUserResponse(rsp *http.Response) (*GetUserResponse, error) {
+// ParseGetUsersResponse parses an HTTP response from a GetUsersWithResponse call
+func ParseGetUsersResponse(rsp *http.Response) (*GetUsersResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserResponse{
+	response := &GetUsersResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4647,15 +4647,15 @@ func ParsePostUserResponse(rsp *http.Response) (*PostUserResponse, error) {
 	return response, nil
 }
 
-// ParseDeleteUserIdResponse parses an HTTP response from a DeleteUserIdWithResponse call
-func ParseDeleteUserIdResponse(rsp *http.Response) (*DeleteUserIdResponse, error) {
+// ParseDeleteUserResponse parses an HTTP response from a DeleteUserWithResponse call
+func ParseDeleteUserResponse(rsp *http.Response) (*DeleteUserResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteUserIdResponse{
+	response := &DeleteUserResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4680,15 +4680,15 @@ func ParseDeleteUserIdResponse(rsp *http.Response) (*DeleteUserIdResponse, error
 	return response, nil
 }
 
-// ParseGetUserIdResponse parses an HTTP response from a GetUserIdWithResponse call
-func ParseGetUserIdResponse(rsp *http.Response) (*GetUserIdResponse, error) {
+// ParseGetUserResponse parses an HTTP response from a GetUserWithResponse call
+func ParseGetUserResponse(rsp *http.Response) (*GetUserResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetUserIdResponse{
+	response := &GetUserResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4720,15 +4720,15 @@ func ParseGetUserIdResponse(rsp *http.Response) (*GetUserIdResponse, error) {
 	return response, nil
 }
 
-// ParsePutUserIdResponse parses an HTTP response from a PutUserIdWithResponse call
-func ParsePutUserIdResponse(rsp *http.Response) (*PutUserIdResponse, error) {
+// ParseUpdateUserResponse parses an HTTP response from a UpdateUserWithResponse call
+func ParseUpdateUserResponse(rsp *http.Response) (*UpdateUserResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PutUserIdResponse{
+	response := &UpdateUserResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

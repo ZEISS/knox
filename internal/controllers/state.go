@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/zeiss/fiber-goth/adapters"
+	seed "github.com/zeiss/gorm-seed"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
 	openapi "github.com/zeiss/knox/pkg/apis"
@@ -49,11 +50,11 @@ type StateController interface {
 
 // StateControllerImpl is the controller for the state.
 type StateControllerImpl struct {
-	store ports.Datastore
+	store seed.Database[ports.ReadTx, ports.ReadWriteTx]
 }
 
 // NewStateController returns a new LocksControllerImpl.
-func NewStateController(store ports.Datastore) *StateControllerImpl {
+func NewStateController(store seed.Database[ports.ReadTx, ports.ReadWriteTx]) *StateControllerImpl {
 	return &StateControllerImpl{store}
 }
 
