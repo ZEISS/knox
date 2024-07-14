@@ -34,6 +34,10 @@ test: fmt vet ## Run tests.
 snapshot: ## Create a snapshot release
 	$(GO_RELEASER) release --clean --snapshot
 
+.PHONY: release
+release: ## Create a release
+	$(GO_RELEASER) release --clean
+
 .PHONY: lint
 lint: ## Run lint.
 	$(GO_RUN_TOOLS) github.com/golangci/golangci-lint/cmd/golangci-lint run --timeout 5m -c .golangci.yml
