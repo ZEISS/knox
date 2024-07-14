@@ -30,6 +30,10 @@ test: fmt vet ## Run tests.
 	mkdir -p .test/reports
 	$(GO_TEST) --junitfile .test/reports/unit-test.xml -- -race ./... -count=1 -short -cover -coverprofile .test/reports/unit-test-coverage.out
 
+.PHONY: snapshot
+snapshot: ## Create a snapshot release
+	$(GO_RELEASER) release --clean --snapshot
+
 .PHONY: lint
 lint: ## Run lint.
 	$(GO_RUN_TOOLS) github.com/golangci/golangci-lint/cmd/golangci-lint run --timeout 5m -c .golangci.yml

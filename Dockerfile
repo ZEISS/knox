@@ -2,6 +2,6 @@ FROM cgr.dev/chainguard/static:latest
 
 WORKDIR /
 
-COPY knox /main
+COPY main /main
 
 ENTRYPOINT ["/main"]
