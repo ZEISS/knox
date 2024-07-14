@@ -1,56 +1,91 @@
 project_name: knox
 
+env:
+  - GO111MODULE=on
+  - CGO_ENABLED=0
+
 before:
   hooks:
     - go mod tidy
+    - go mod download
 
 builds:
-   -
+  - id: main
+    binary: main
+    main: ./main.go
     goos:
+      - windows
       - darwin
       - linux
-      - windows
     goarch:
       - 386
       - amd64
       - arm
       - arm64
-    goarm:
-      - 7
-    ignore:
-        - goos: darwin
-          goarch: 386
-        - goos: windows
-          goarch: arm
-    env:
-      - CGO_ENABLED=0
     ldflags:
-      - -s -w
+        - -s -w
 
 archives:
-  - builds:
-      - csync
-    name_template: "csync_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+  - id: main
+    builds:
+      - main
+    name_template: "knox_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+dockers:
+  - image_templates: [
+      "ghcr.io/zeiss/{{ .ProjectName }}/knox:{{ .Version }}-amd64"
+    ]
+    dockerfile: Dockerfile
+    use: buildx
+    goos: linux
+    goarch: amd64
+    build_flag_templates:
+      - --platform=linux/amd64
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/zeiss/{{ .ProjectName }}/knox
+      - --label=org.opencontainers.image.source=https://github.com/zeiss/{{ .ProjectName }}
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=Apache-2.0
+  - image_templates: [
+      "ghcr.io/zeiss/{{ .ProjectName }}/knox:{{ .Version }}-arm64"
+    ]
+    dockerfile: Dockerfile
+    use: buildx
+    goos: linux
+    goarch: arm64
+    build_flag_templates:
+      - --platform=linux/arm64
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/zeiss/{{ .ProjectName }}/knox
+      - --label=org.opencontainers.image.source=https://github.com/zeiss/{{ .ProjectName }}
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=Apache-2.0
+
+docker_manifests:
+  - name_template: "ghcr.io/zeiss/{{ .ProjectName }}/knox:{{ .Version }}"
+    image_templates:
+      - 'ghcr.io/zeiss/{{ .ProjectName }}/knox:{{ .Version }}-amd64'
+      - 'ghcr.io/zeiss/{{ .ProjectName }}/knox:{{ .Version }}-arm64'
+
+
+gomod:
+  proxy: true
 
 release:
-  header: |
-    ## Changelog ({{ .Date }})
-    
-    Welcome to this new release! We hope you enjoy the changes we've made.#
-dockers:
-  - image_templates:
-    - 'zeiss/knox:{{ .Tag }}-amd64'
-    use: buildx
-    build_flag_templates:
-    - "--pull"
-    - "--platform=linux/amd64"
-  - image_templates:
-    - 'zeiss/knox:{{ .Tag }}-arm64'
-    use: buildx
-    build_flag_templates:
-    - "--pull"
-    - "--platform=linux/arm64"
-    goarch: arm64
+  draft: true
+
+checksum:
+  name_template: "{{ .ProjectName }}_checksums.txt"
+
+snapshot:
+  name_template: SNAPSHOT-{{.ShortCommit}}
+
 changelog:
   groups:
     - title: Features
