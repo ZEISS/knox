@@ -1,6 +1,6 @@
 module github.com/zeiss/knox
 
-go 1.22
+go 1.22.5
 
 require (
 	github.com/getkin/kin-openapi v0.126.0
