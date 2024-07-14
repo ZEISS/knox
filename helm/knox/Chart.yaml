@@ -1,0 +1,11 @@
+apiVersion: v2
+appVersion: 0.1.0
+description: A helm chart for Knox
+name: knox
+keywords:
+- terraform
+- state
+version: 0.1.0
+sources:
+- https://github.com/zeiss/knox
+home: http://github.com/zeiss/knox
