@@ -32,36 +32,6 @@ type ServerInterface interface {
 	// Unlock the state of Terraform environment
 	// (POST /client/{teamId}/{projectId}/{environmentId}/unlock)
 	UnlockEnvironment(c *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error
-	// Get a list of projects
-	// (GET /project)
-	GetProjects(c *fiber.Ctx, params GetProjectsParams) error
-	// Create a new project
-	// (POST /project)
-	PostProject(c *fiber.Ctx) error
-	// Delete a project
-	// (DELETE /project/{id})
-	DeleteProject(c *fiber.Ctx, id string) error
-	// Get a project
-	// (GET /project/{id})
-	GetProject(c *fiber.Ctx, id string) error
-	// Update a project
-	// (PUT /project/{id})
-	UpdateProject(c *fiber.Ctx, id string) error
-	// Get a list of environments
-	// (GET /project/{projectId}/environment)
-	GetEnvironments(c *fiber.Ctx, projectId string, params GetEnvironmentsParams) error
-	// Create a new environment
-	// (POST /project/{projectId}/environment)
-	PostProjectProjectIdEnvironment(c *fiber.Ctx, projectId string) error
-	// Delete an environment
-	// (DELETE /project/{projectId}/environment/{environmentId})
-	DeleteEnvironment(c *fiber.Ctx, projectId string, environmentId string) error
-	// Get an environment
-	// (GET /project/{projectId}/environment/{environmentId})
-	GetEnvironment(c *fiber.Ctx, projectId string, environmentId string) error
-	// Update an environment
-	// (PUT /project/{projectId}/environment/{environmentId})
-	UpdateEnvironment(c *fiber.Ctx, projectId string, environmentId string) error
 	// Get a list of snapshots
 	// (GET /snapshot)
 	GetSnapshots(c *fiber.Ctx, params GetSnapshotsParams) error
@@ -81,20 +51,50 @@ type ServerInterface interface {
 	// (GET /task/{id})
 	GetTask(c *fiber.Ctx, id string) error
 	// Get a list of teams
-	// (GET /team)
+	// (GET /teams)
 	GetTeams(c *fiber.Ctx, params GetTeamsParams) error
 	// Create a new team
-	// (POST /team)
-	PostTeam(c *fiber.Ctx) error
+	// (POST /teams)
+	CreateTeam(c *fiber.Ctx) error
 	// Delete a team
-	// (DELETE /team/{id})
-	DeleteTeamId(c *fiber.Ctx, id string) error
+	// (DELETE /teams/{teamId})
+	DeleteTeam(c *fiber.Ctx, teamId TeamId) error
 	// Get a team
-	// (GET /team/{id})
-	GetTeam(c *fiber.Ctx, id string) error
+	// (GET /teams/{teamId})
+	GetTeam(c *fiber.Ctx, teamId TeamId) error
 	// Update a team
-	// (PUT /team/{id})
-	PutTeamId(c *fiber.Ctx, id string) error
+	// (PUT /teams/{teamId})
+	UpdateTeam(c *fiber.Ctx, teamId TeamId) error
+	// Get a list of projects
+	// (GET /teams/{teamId}/projects)
+	GetProjects(c *fiber.Ctx, teamId TeamId, params GetProjectsParams) error
+	// Create a new project
+	// (POST /teams/{teamId}/projects)
+	CreateProject(c *fiber.Ctx, teamId TeamId) error
+	// Delete a project
+	// (DELETE /teams/{teamId}/projects/{projectId})
+	DeleteProject(c *fiber.Ctx, teamId TeamId, projectId ProjectId) error
+	// Get a project
+	// (GET /teams/{teamId}/projects/{projectId})
+	GetProject(c *fiber.Ctx, teamId TeamId, projectId ProjectId) error
+	// Update a project
+	// (PUT /teams/{teamId}/projects/{projectId})
+	UpdateProject(c *fiber.Ctx, teamId TeamId, projectId ProjectId) error
+	// Get a list of environments
+	// (GET /teams/{teamId}/projects/{projectId}/environments)
+	GetEnvironments(c *fiber.Ctx, teamId TeamId, projectId ProjectId, params GetEnvironmentsParams) error
+	// Create a new environment
+	// (POST /teams/{teamId}/projects/{projectId}/environments)
+	CreateEnvironment(c *fiber.Ctx, teamId TeamId, projectId ProjectId) error
+	// Delete an environment
+	// (DELETE /teams/{teamId}/projects/{projectId}/environments/{environmentId})
+	DeleteEnvironment(c *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error
+	// Get an environment
+	// (GET /teams/{teamId}/projects/{projectId}/environments/{environmentId})
+	GetEnvironment(c *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error
+	// Update an environment
+	// (PUT /teams/{teamId}/projects/{projectId}/environments/{environmentId})
+	UpdateEnvironment(c *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error
 	// Get a list of users
 	// (GET /user)
 	GetUsers(c *fiber.Ctx, params GetUsersParams) error
@@ -283,238 +283,6 @@ func (siw *ServerInterfaceWrapper) UnlockEnvironment(c *fiber.Ctx) error {
 	return siw.Handler.UnlockEnvironment(c, teamId, projectId, environmentId)
 }
 
-// GetProjects operation middleware
-func (siw *ServerInterfaceWrapper) GetProjects(c *fiber.Ctx) error {
-
-	var err error
-
-	c.Context().SetUserValue(Api_keyScopes, []string{})
-
-	// Parameter object where we will unmarshal all parameters from the context
-	var params GetProjectsParams
-
-	var query url.Values
-	query, err = url.ParseQuery(string(c.Request().URI().QueryString()))
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for query string: %w", err).Error())
-	}
-
-	// ------------- Optional query parameter "limit" -------------
-
-	err = runtime.BindQueryParameter("form", true, false, "limit", query, &params.Limit)
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter limit: %w", err).Error())
-	}
-
-	// ------------- Optional query parameter "offset" -------------
-
-	err = runtime.BindQueryParameter("form", true, false, "offset", query, &params.Offset)
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter offset: %w", err).Error())
-	}
-
-	return siw.Handler.GetProjects(c, params)
-}
-
-// PostProject operation middleware
-func (siw *ServerInterfaceWrapper) PostProject(c *fiber.Ctx) error {
-
-	c.Context().SetUserValue(Api_keyScopes, []string{})
-
-	return siw.Handler.PostProject(c)
-}
-
-// DeleteProject operation middleware
-func (siw *ServerInterfaceWrapper) DeleteProject(c *fiber.Ctx) error {
-
-	var err error
-
-	// ------------- Path parameter "id" -------------
-	var id string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "id", c.Params("id"), &id, runtime.BindStyledParameterOptions{Explode: false, Required: true})
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter id: %w", err).Error())
-	}
-
-	c.Context().SetUserValue(Api_keyScopes, []string{})
-
-	return siw.Handler.DeleteProject(c, id)
-}
-
-// GetProject operation middleware
-func (siw *ServerInterfaceWrapper) GetProject(c *fiber.Ctx) error {
-
-	var err error
-
-	// ------------- Path parameter "id" -------------
-	var id string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "id", c.Params("id"), &id, runtime.BindStyledParameterOptions{Explode: false, Required: true})
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter id: %w", err).Error())
-	}
-
-	c.Context().SetUserValue(Api_keyScopes, []string{})
-
-	return siw.Handler.GetProject(c, id)
-}
-
-// UpdateProject operation middleware
-func (siw *ServerInterfaceWrapper) UpdateProject(c *fiber.Ctx) error {
-
-	var err error
-
-	// ------------- Path parameter "id" -------------
-	var id string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "id", c.Params("id"), &id, runtime.BindStyledParameterOptions{Explode: false, Required: true})
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter id: %w", err).Error())
-	}
-
-	c.Context().SetUserValue(Api_keyScopes, []string{})
-
-	return siw.Handler.UpdateProject(c, id)
-}
-
-// GetEnvironments operation middleware
-func (siw *ServerInterfaceWrapper) GetEnvironments(c *fiber.Ctx) error {
-
-	var err error
-
-	// ------------- Path parameter "projectId" -------------
-	var projectId string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
-	}
-
-	c.Context().SetUserValue(Api_keyScopes, []string{})
-
-	// Parameter object where we will unmarshal all parameters from the context
-	var params GetEnvironmentsParams
-
-	var query url.Values
-	query, err = url.ParseQuery(string(c.Request().URI().QueryString()))
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for query string: %w", err).Error())
-	}
-
-	// ------------- Optional query parameter "limit" -------------
-
-	err = runtime.BindQueryParameter("form", true, false, "limit", query, &params.Limit)
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter limit: %w", err).Error())
-	}
-
-	// ------------- Optional query parameter "offset" -------------
-
-	err = runtime.BindQueryParameter("form", true, false, "offset", query, &params.Offset)
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter offset: %w", err).Error())
-	}
-
-	return siw.Handler.GetEnvironments(c, projectId, params)
-}
-
-// PostProjectProjectIdEnvironment operation middleware
-func (siw *ServerInterfaceWrapper) PostProjectProjectIdEnvironment(c *fiber.Ctx) error {
-
-	var err error
-
-	// ------------- Path parameter "projectId" -------------
-	var projectId string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
-	}
-
-	c.Context().SetUserValue(Api_keyScopes, []string{})
-
-	return siw.Handler.PostProjectProjectIdEnvironment(c, projectId)
-}
-
-// DeleteEnvironment operation middleware
-func (siw *ServerInterfaceWrapper) DeleteEnvironment(c *fiber.Ctx) error {
-
-	var err error
-
-	// ------------- Path parameter "projectId" -------------
-	var projectId string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
-	}
-
-	// ------------- Path parameter "environmentId" -------------
-	var environmentId string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "environmentId", c.Params("environmentId"), &environmentId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
-	}
-
-	c.Context().SetUserValue(Api_keyScopes, []string{})
-
-	return siw.Handler.DeleteEnvironment(c, projectId, environmentId)
-}
-
-// GetEnvironment operation middleware
-func (siw *ServerInterfaceWrapper) GetEnvironment(c *fiber.Ctx) error {
-
-	var err error
-
-	// ------------- Path parameter "projectId" -------------
-	var projectId string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
-	}
-
-	// ------------- Path parameter "environmentId" -------------
-	var environmentId string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "environmentId", c.Params("environmentId"), &environmentId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
-	}
-
-	c.Context().SetUserValue(Api_keyScopes, []string{})
-
-	return siw.Handler.GetEnvironment(c, projectId, environmentId)
-}
-
-// UpdateEnvironment operation middleware
-func (siw *ServerInterfaceWrapper) UpdateEnvironment(c *fiber.Ctx) error {
-
-	var err error
-
-	// ------------- Path parameter "projectId" -------------
-	var projectId string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
-	}
-
-	// ------------- Path parameter "environmentId" -------------
-	var environmentId string
-
-	err = runtime.BindStyledParameterWithOptions("simple", "environmentId", c.Params("environmentId"), &environmentId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
-	}
-
-	c.Context().SetUserValue(Api_keyScopes, []string{})
-
-	return siw.Handler.UpdateEnvironment(c, projectId, environmentId)
-}
-
 // GetSnapshots operation middleware
 func (siw *ServerInterfaceWrapper) GetSnapshots(c *fiber.Ctx) error {
 
@@ -661,30 +429,30 @@ func (siw *ServerInterfaceWrapper) GetTeams(c *fiber.Ctx) error {
 	return siw.Handler.GetTeams(c, params)
 }
 
-// PostTeam operation middleware
-func (siw *ServerInterfaceWrapper) PostTeam(c *fiber.Ctx) error {
+// CreateTeam operation middleware
+func (siw *ServerInterfaceWrapper) CreateTeam(c *fiber.Ctx) error {
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.PostTeam(c)
+	return siw.Handler.CreateTeam(c)
 }
 
-// DeleteTeamId operation middleware
-func (siw *ServerInterfaceWrapper) DeleteTeamId(c *fiber.Ctx) error {
+// DeleteTeam operation middleware
+func (siw *ServerInterfaceWrapper) DeleteTeam(c *fiber.Ctx) error {
 
 	var err error
 
-	// ------------- Path parameter "id" -------------
-	var id string
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
 
-	err = runtime.BindStyledParameterWithOptions("simple", "id", c.Params("id"), &id, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
 	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter id: %w", err).Error())
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
 	}
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.DeleteTeamId(c, id)
+	return siw.Handler.DeleteTeam(c, teamId)
 }
 
 // GetTeam operation middleware
@@ -692,35 +460,349 @@ func (siw *ServerInterfaceWrapper) GetTeam(c *fiber.Ctx) error {
 
 	var err error
 
-	// ------------- Path parameter "id" -------------
-	var id string
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
 
-	err = runtime.BindStyledParameterWithOptions("simple", "id", c.Params("id"), &id, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
 	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter id: %w", err).Error())
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
 	}
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.GetTeam(c, id)
+	return siw.Handler.GetTeam(c, teamId)
 }
 
-// PutTeamId operation middleware
-func (siw *ServerInterfaceWrapper) PutTeamId(c *fiber.Ctx) error {
+// UpdateTeam operation middleware
+func (siw *ServerInterfaceWrapper) UpdateTeam(c *fiber.Ctx) error {
 
 	var err error
 
-	// ------------- Path parameter "id" -------------
-	var id string
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
 
-	err = runtime.BindStyledParameterWithOptions("simple", "id", c.Params("id"), &id, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
 	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter id: %w", err).Error())
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
 	}
 
 	c.Context().SetUserValue(Api_keyScopes, []string{})
 
-	return siw.Handler.PutTeamId(c, id)
+	return siw.Handler.UpdateTeam(c, teamId)
+}
+
+// GetProjects operation middleware
+func (siw *ServerInterfaceWrapper) GetProjects(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(Api_keyScopes, []string{})
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetProjectsParams
+
+	var query url.Values
+	query, err = url.ParseQuery(string(c.Request().URI().QueryString()))
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for query string: %w", err).Error())
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "limit", query, &params.Limit)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter limit: %w", err).Error())
+	}
+
+	// ------------- Optional query parameter "offset" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "offset", query, &params.Offset)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter offset: %w", err).Error())
+	}
+
+	return siw.Handler.GetProjects(c, teamId, params)
+}
+
+// CreateProject operation middleware
+func (siw *ServerInterfaceWrapper) CreateProject(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(Api_keyScopes, []string{})
+
+	return siw.Handler.CreateProject(c, teamId)
+}
+
+// DeleteProject operation middleware
+func (siw *ServerInterfaceWrapper) DeleteProject(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "projectId" -------------
+	var projectId ProjectId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(Api_keyScopes, []string{})
+
+	return siw.Handler.DeleteProject(c, teamId, projectId)
+}
+
+// GetProject operation middleware
+func (siw *ServerInterfaceWrapper) GetProject(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "projectId" -------------
+	var projectId ProjectId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(Api_keyScopes, []string{})
+
+	return siw.Handler.GetProject(c, teamId, projectId)
+}
+
+// UpdateProject operation middleware
+func (siw *ServerInterfaceWrapper) UpdateProject(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "projectId" -------------
+	var projectId ProjectId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(Api_keyScopes, []string{})
+
+	return siw.Handler.UpdateProject(c, teamId, projectId)
+}
+
+// GetEnvironments operation middleware
+func (siw *ServerInterfaceWrapper) GetEnvironments(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "projectId" -------------
+	var projectId ProjectId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(Api_keyScopes, []string{})
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetEnvironmentsParams
+
+	var query url.Values
+	query, err = url.ParseQuery(string(c.Request().URI().QueryString()))
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for query string: %w", err).Error())
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "limit", query, &params.Limit)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter limit: %w", err).Error())
+	}
+
+	// ------------- Optional query parameter "offset" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "offset", query, &params.Offset)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter offset: %w", err).Error())
+	}
+
+	return siw.Handler.GetEnvironments(c, teamId, projectId, params)
+}
+
+// CreateEnvironment operation middleware
+func (siw *ServerInterfaceWrapper) CreateEnvironment(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "projectId" -------------
+	var projectId ProjectId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(Api_keyScopes, []string{})
+
+	return siw.Handler.CreateEnvironment(c, teamId, projectId)
+}
+
+// DeleteEnvironment operation middleware
+func (siw *ServerInterfaceWrapper) DeleteEnvironment(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "projectId" -------------
+	var projectId ProjectId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "environmentId" -------------
+	var environmentId EnvironmentId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "environmentId", c.Params("environmentId"), &environmentId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(Api_keyScopes, []string{})
+
+	return siw.Handler.DeleteEnvironment(c, teamId, projectId, environmentId)
+}
+
+// GetEnvironment operation middleware
+func (siw *ServerInterfaceWrapper) GetEnvironment(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "projectId" -------------
+	var projectId ProjectId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "environmentId" -------------
+	var environmentId EnvironmentId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "environmentId", c.Params("environmentId"), &environmentId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(Api_keyScopes, []string{})
+
+	return siw.Handler.GetEnvironment(c, teamId, projectId, environmentId)
+}
+
+// UpdateEnvironment operation middleware
+func (siw *ServerInterfaceWrapper) UpdateEnvironment(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamId" -------------
+	var teamId TeamId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamId", c.Params("teamId"), &teamId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "projectId" -------------
+	var projectId ProjectId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "projectId", c.Params("projectId"), &projectId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
+	}
+
+	// ------------- Path parameter "environmentId" -------------
+	var environmentId EnvironmentId
+
+	err = runtime.BindStyledParameterWithOptions("simple", "environmentId", c.Params("environmentId"), &environmentId, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(Api_keyScopes, []string{})
+
+	return siw.Handler.UpdateEnvironment(c, teamId, projectId, environmentId)
 }
 
 // GetUsers operation middleware
@@ -851,26 +933,6 @@ func RegisterHandlersWithOptions(router fiber.Router, si ServerInterface, option
 
 	router.Post(options.BaseURL+"/client/:teamId/:projectId/:environmentId/unlock", wrapper.UnlockEnvironment)
 
-	router.Get(options.BaseURL+"/project", wrapper.GetProjects)
-
-	router.Post(options.BaseURL+"/project", wrapper.PostProject)
-
-	router.Delete(options.BaseURL+"/project/:id", wrapper.DeleteProject)
-
-	router.Get(options.BaseURL+"/project/:id", wrapper.GetProject)
-
-	router.Put(options.BaseURL+"/project/:id", wrapper.UpdateProject)
-
-	router.Get(options.BaseURL+"/project/:projectId/environment", wrapper.GetEnvironments)
-
-	router.Post(options.BaseURL+"/project/:projectId/environment", wrapper.PostProjectProjectIdEnvironment)
-
-	router.Delete(options.BaseURL+"/project/:projectId/environment/:environmentId", wrapper.DeleteEnvironment)
-
-	router.Get(options.BaseURL+"/project/:projectId/environment/:environmentId", wrapper.GetEnvironment)
-
-	router.Put(options.BaseURL+"/project/:projectId/environment/:environmentId", wrapper.UpdateEnvironment)
-
 	router.Get(options.BaseURL+"/snapshot", wrapper.GetSnapshots)
 
 	router.Post(options.BaseURL+"/snapshot", wrapper.CreateSnapshot)
@@ -883,15 +945,35 @@ func RegisterHandlersWithOptions(router fiber.Router, si ServerInterface, option
 
 	router.Get(options.BaseURL+"/task/:id", wrapper.GetTask)
 
-	router.Get(options.BaseURL+"/team", wrapper.GetTeams)
+	router.Get(options.BaseURL+"/teams", wrapper.GetTeams)
 
-	router.Post(options.BaseURL+"/team", wrapper.PostTeam)
+	router.Post(options.BaseURL+"/teams", wrapper.CreateTeam)
 
-	router.Delete(options.BaseURL+"/team/:id", wrapper.DeleteTeamId)
+	router.Delete(options.BaseURL+"/teams/:teamId", wrapper.DeleteTeam)
 
-	router.Get(options.BaseURL+"/team/:id", wrapper.GetTeam)
+	router.Get(options.BaseURL+"/teams/:teamId", wrapper.GetTeam)
 
-	router.Put(options.BaseURL+"/team/:id", wrapper.PutTeamId)
+	router.Put(options.BaseURL+"/teams/:teamId", wrapper.UpdateTeam)
+
+	router.Get(options.BaseURL+"/teams/:teamId/projects", wrapper.GetProjects)
+
+	router.Post(options.BaseURL+"/teams/:teamId/projects", wrapper.CreateProject)
+
+	router.Delete(options.BaseURL+"/teams/:teamId/projects/:projectId", wrapper.DeleteProject)
+
+	router.Get(options.BaseURL+"/teams/:teamId/projects/:projectId", wrapper.GetProject)
+
+	router.Put(options.BaseURL+"/teams/:teamId/projects/:projectId", wrapper.UpdateProject)
+
+	router.Get(options.BaseURL+"/teams/:teamId/projects/:projectId/environments", wrapper.GetEnvironments)
+
+	router.Post(options.BaseURL+"/teams/:teamId/projects/:projectId/environments", wrapper.CreateEnvironment)
+
+	router.Delete(options.BaseURL+"/teams/:teamId/projects/:projectId/environments/:environmentId", wrapper.DeleteEnvironment)
+
+	router.Get(options.BaseURL+"/teams/:teamId/projects/:projectId/environments/:environmentId", wrapper.GetEnvironment)
+
+	router.Put(options.BaseURL+"/teams/:teamId/projects/:projectId/environments/:environmentId", wrapper.UpdateEnvironment)
 
 	router.Get(options.BaseURL+"/user", wrapper.GetUsers)
 
@@ -1108,339 +1190,6 @@ func (response UnlockEnvironment404JSONResponse) VisitUnlockEnvironmentResponse(
 type UnlockEnvironment500JSONResponse ErrorResponse
 
 func (response UnlockEnvironment500JSONResponse) VisitUnlockEnvironmentResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(500)
-
-	return ctx.JSON(&response)
-}
-
-type GetProjectsRequestObject struct {
-	Params GetProjectsParams
-}
-
-type GetProjectsResponseObject interface {
-	VisitGetProjectsResponse(ctx *fiber.Ctx) error
-}
-
-type GetProjects200JSONResponse struct {
-	Metadata *struct {
-		Limit      *int `json:"limit,omitempty"`
-		Offset     *int `json:"offset,omitempty"`
-		TotalCount *int `json:"totalCount,omitempty"`
-	} `json:"metadata,omitempty"`
-	Projects *[]Project `json:"projects,omitempty"`
-}
-
-func (response GetProjects200JSONResponse) VisitGetProjectsResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(200)
-
-	return ctx.JSON(&response)
-}
-
-type GetProjects500JSONResponse ErrorResponse
-
-func (response GetProjects500JSONResponse) VisitGetProjectsResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(500)
-
-	return ctx.JSON(&response)
-}
-
-type PostProjectRequestObject struct {
-	Body *PostProjectJSONRequestBody
-}
-
-type PostProjectResponseObject interface {
-	VisitPostProjectResponse(ctx *fiber.Ctx) error
-}
-
-type PostProject201JSONResponse Project
-
-func (response PostProject201JSONResponse) VisitPostProjectResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(201)
-
-	return ctx.JSON(&response)
-}
-
-type PostProject500JSONResponse ErrorResponse
-
-func (response PostProject500JSONResponse) VisitPostProjectResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(500)
-
-	return ctx.JSON(&response)
-}
-
-type DeleteProjectRequestObject struct {
-	Id string `json:"id"`
-}
-
-type DeleteProjectResponseObject interface {
-	VisitDeleteProjectResponse(ctx *fiber.Ctx) error
-}
-
-type DeleteProject204Response struct {
-}
-
-func (response DeleteProject204Response) VisitDeleteProjectResponse(ctx *fiber.Ctx) error {
-	ctx.Status(204)
-	return nil
-}
-
-type DeleteProject404JSONResponse ErrorResponse
-
-func (response DeleteProject404JSONResponse) VisitDeleteProjectResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(404)
-
-	return ctx.JSON(&response)
-}
-
-type DeleteProject500JSONResponse ErrorResponse
-
-func (response DeleteProject500JSONResponse) VisitDeleteProjectResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(500)
-
-	return ctx.JSON(&response)
-}
-
-type GetProjectRequestObject struct {
-	Id string `json:"id"`
-}
-
-type GetProjectResponseObject interface {
-	VisitGetProjectResponse(ctx *fiber.Ctx) error
-}
-
-type GetProject200JSONResponse Project
-
-func (response GetProject200JSONResponse) VisitGetProjectResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(200)
-
-	return ctx.JSON(&response)
-}
-
-type GetProject404JSONResponse ErrorResponse
-
-func (response GetProject404JSONResponse) VisitGetProjectResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(404)
-
-	return ctx.JSON(&response)
-}
-
-type GetProject500JSONResponse ErrorResponse
-
-func (response GetProject500JSONResponse) VisitGetProjectResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(500)
-
-	return ctx.JSON(&response)
-}
-
-type UpdateProjectRequestObject struct {
-	Id   string `json:"id"`
-	Body *UpdateProjectJSONRequestBody
-}
-
-type UpdateProjectResponseObject interface {
-	VisitUpdateProjectResponse(ctx *fiber.Ctx) error
-}
-
-type UpdateProject200JSONResponse Project
-
-func (response UpdateProject200JSONResponse) VisitUpdateProjectResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(200)
-
-	return ctx.JSON(&response)
-}
-
-type UpdateProject404JSONResponse ErrorResponse
-
-func (response UpdateProject404JSONResponse) VisitUpdateProjectResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(404)
-
-	return ctx.JSON(&response)
-}
-
-type UpdateProject500JSONResponse ErrorResponse
-
-func (response UpdateProject500JSONResponse) VisitUpdateProjectResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(500)
-
-	return ctx.JSON(&response)
-}
-
-type GetEnvironmentsRequestObject struct {
-	ProjectId string `json:"projectId"`
-	Params    GetEnvironmentsParams
-}
-
-type GetEnvironmentsResponseObject interface {
-	VisitGetEnvironmentsResponse(ctx *fiber.Ctx) error
-}
-
-type GetEnvironments200JSONResponse struct {
-	Environments *[]Environment `json:"environments,omitempty"`
-	Metadata     *struct {
-		Limit      *int `json:"limit,omitempty"`
-		Offset     *int `json:"offset,omitempty"`
-		TotalCount *int `json:"totalCount,omitempty"`
-	} `json:"metadata,omitempty"`
-}
-
-func (response GetEnvironments200JSONResponse) VisitGetEnvironmentsResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(200)
-
-	return ctx.JSON(&response)
-}
-
-type GetEnvironments500JSONResponse ErrorResponse
-
-func (response GetEnvironments500JSONResponse) VisitGetEnvironmentsResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(500)
-
-	return ctx.JSON(&response)
-}
-
-type PostProjectProjectIdEnvironmentRequestObject struct {
-	ProjectId string `json:"projectId"`
-	Body      *PostProjectProjectIdEnvironmentJSONRequestBody
-}
-
-type PostProjectProjectIdEnvironmentResponseObject interface {
-	VisitPostProjectProjectIdEnvironmentResponse(ctx *fiber.Ctx) error
-}
-
-type PostProjectProjectIdEnvironment201JSONResponse Environment
-
-func (response PostProjectProjectIdEnvironment201JSONResponse) VisitPostProjectProjectIdEnvironmentResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(201)
-
-	return ctx.JSON(&response)
-}
-
-type PostProjectProjectIdEnvironment500JSONResponse ErrorResponse
-
-func (response PostProjectProjectIdEnvironment500JSONResponse) VisitPostProjectProjectIdEnvironmentResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(500)
-
-	return ctx.JSON(&response)
-}
-
-type DeleteEnvironmentRequestObject struct {
-	ProjectId     string `json:"projectId"`
-	EnvironmentId string `json:"environmentId"`
-}
-
-type DeleteEnvironmentResponseObject interface {
-	VisitDeleteEnvironmentResponse(ctx *fiber.Ctx) error
-}
-
-type DeleteEnvironment204Response struct {
-}
-
-func (response DeleteEnvironment204Response) VisitDeleteEnvironmentResponse(ctx *fiber.Ctx) error {
-	ctx.Status(204)
-	return nil
-}
-
-type DeleteEnvironment404JSONResponse ErrorResponse
-
-func (response DeleteEnvironment404JSONResponse) VisitDeleteEnvironmentResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(404)
-
-	return ctx.JSON(&response)
-}
-
-type DeleteEnvironment500JSONResponse ErrorResponse
-
-func (response DeleteEnvironment500JSONResponse) VisitDeleteEnvironmentResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(500)
-
-	return ctx.JSON(&response)
-}
-
-type GetEnvironmentRequestObject struct {
-	ProjectId     string `json:"projectId"`
-	EnvironmentId string `json:"environmentId"`
-}
-
-type GetEnvironmentResponseObject interface {
-	VisitGetEnvironmentResponse(ctx *fiber.Ctx) error
-}
-
-type GetEnvironment200JSONResponse Environment
-
-func (response GetEnvironment200JSONResponse) VisitGetEnvironmentResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(200)
-
-	return ctx.JSON(&response)
-}
-
-type GetEnvironment404JSONResponse ErrorResponse
-
-func (response GetEnvironment404JSONResponse) VisitGetEnvironmentResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(404)
-
-	return ctx.JSON(&response)
-}
-
-type GetEnvironment500JSONResponse ErrorResponse
-
-func (response GetEnvironment500JSONResponse) VisitGetEnvironmentResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(500)
-
-	return ctx.JSON(&response)
-}
-
-type UpdateEnvironmentRequestObject struct {
-	ProjectId     string `json:"projectId"`
-	EnvironmentId string `json:"environmentId"`
-	Body          *UpdateEnvironmentJSONRequestBody
-}
-
-type UpdateEnvironmentResponseObject interface {
-	VisitUpdateEnvironmentResponse(ctx *fiber.Ctx) error
-}
-
-type UpdateEnvironment200JSONResponse Environment
-
-func (response UpdateEnvironment200JSONResponse) VisitUpdateEnvironmentResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(200)
-
-	return ctx.JSON(&response)
-}
-
-type UpdateEnvironment404JSONResponse ErrorResponse
-
-func (response UpdateEnvironment404JSONResponse) VisitUpdateEnvironmentResponse(ctx *fiber.Ctx) error {
-	ctx.Response().Header.Set("Content-Type", "application/json")
-	ctx.Status(404)
-
-	return ctx.JSON(&response)
-}
-
-type UpdateEnvironment500JSONResponse ErrorResponse
-
-func (response UpdateEnvironment500JSONResponse) VisitUpdateEnvironmentResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
@@ -1679,60 +1428,60 @@ func (response GetTeams500JSONResponse) VisitGetTeamsResponse(ctx *fiber.Ctx) er
 	return ctx.JSON(&response)
 }
 
-type PostTeamRequestObject struct {
-	Body *PostTeamJSONRequestBody
+type CreateTeamRequestObject struct {
+	Body *CreateTeamJSONRequestBody
 }
 
-type PostTeamResponseObject interface {
-	VisitPostTeamResponse(ctx *fiber.Ctx) error
+type CreateTeamResponseObject interface {
+	VisitCreateTeamResponse(ctx *fiber.Ctx) error
 }
 
-type PostTeam201JSONResponse Team
+type CreateTeam201JSONResponse Team
 
-func (response PostTeam201JSONResponse) VisitPostTeamResponse(ctx *fiber.Ctx) error {
+func (response CreateTeam201JSONResponse) VisitCreateTeamResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(201)
 
 	return ctx.JSON(&response)
 }
 
-type PostTeam500JSONResponse ErrorResponse
+type CreateTeam500JSONResponse ErrorResponse
 
-func (response PostTeam500JSONResponse) VisitPostTeamResponse(ctx *fiber.Ctx) error {
+func (response CreateTeam500JSONResponse) VisitCreateTeamResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
 	return ctx.JSON(&response)
 }
 
-type DeleteTeamIdRequestObject struct {
-	Id string `json:"id"`
+type DeleteTeamRequestObject struct {
+	TeamId TeamId `json:"teamId"`
 }
 
-type DeleteTeamIdResponseObject interface {
-	VisitDeleteTeamIdResponse(ctx *fiber.Ctx) error
+type DeleteTeamResponseObject interface {
+	VisitDeleteTeamResponse(ctx *fiber.Ctx) error
 }
 
-type DeleteTeamId204Response struct {
+type DeleteTeam204Response struct {
 }
 
-func (response DeleteTeamId204Response) VisitDeleteTeamIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteTeam204Response) VisitDeleteTeamResponse(ctx *fiber.Ctx) error {
 	ctx.Status(204)
 	return nil
 }
 
-type DeleteTeamId404JSONResponse ErrorResponse
+type DeleteTeam404JSONResponse ErrorResponse
 
-func (response DeleteTeamId404JSONResponse) VisitDeleteTeamIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteTeam404JSONResponse) VisitDeleteTeamResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type DeleteTeamId500JSONResponse ErrorResponse
+type DeleteTeam500JSONResponse ErrorResponse
 
-func (response DeleteTeamId500JSONResponse) VisitDeleteTeamIdResponse(ctx *fiber.Ctx) error {
+func (response DeleteTeam500JSONResponse) VisitDeleteTeamResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
@@ -1740,7 +1489,7 @@ func (response DeleteTeamId500JSONResponse) VisitDeleteTeamIdResponse(ctx *fiber
 }
 
 type GetTeamRequestObject struct {
-	Id string `json:"id"`
+	TeamId TeamId `json:"teamId"`
 }
 
 type GetTeamResponseObject interface {
@@ -1774,36 +1523,379 @@ func (response GetTeam500JSONResponse) VisitGetTeamResponse(ctx *fiber.Ctx) erro
 	return ctx.JSON(&response)
 }
 
-type PutTeamIdRequestObject struct {
-	Id   string `json:"id"`
-	Body *PutTeamIdJSONRequestBody
+type UpdateTeamRequestObject struct {
+	TeamId TeamId `json:"teamId"`
+	Body   *UpdateTeamJSONRequestBody
 }
 
-type PutTeamIdResponseObject interface {
-	VisitPutTeamIdResponse(ctx *fiber.Ctx) error
+type UpdateTeamResponseObject interface {
+	VisitUpdateTeamResponse(ctx *fiber.Ctx) error
 }
 
-type PutTeamId200JSONResponse Team
+type UpdateTeam200JSONResponse Team
 
-func (response PutTeamId200JSONResponse) VisitPutTeamIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateTeam200JSONResponse) VisitUpdateTeamResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(200)
 
 	return ctx.JSON(&response)
 }
 
-type PutTeamId404JSONResponse ErrorResponse
+type UpdateTeam404JSONResponse ErrorResponse
 
-func (response PutTeamId404JSONResponse) VisitPutTeamIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateTeam404JSONResponse) VisitUpdateTeamResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(404)
 
 	return ctx.JSON(&response)
 }
 
-type PutTeamId500JSONResponse ErrorResponse
+type UpdateTeam500JSONResponse ErrorResponse
 
-func (response PutTeamId500JSONResponse) VisitPutTeamIdResponse(ctx *fiber.Ctx) error {
+func (response UpdateTeam500JSONResponse) VisitUpdateTeamResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
+type GetProjectsRequestObject struct {
+	TeamId TeamId `json:"teamId"`
+	Params GetProjectsParams
+}
+
+type GetProjectsResponseObject interface {
+	VisitGetProjectsResponse(ctx *fiber.Ctx) error
+}
+
+type GetProjects200JSONResponse struct {
+	Metadata *struct {
+		Limit      *int `json:"limit,omitempty"`
+		Offset     *int `json:"offset,omitempty"`
+		TotalCount *int `json:"totalCount,omitempty"`
+	} `json:"metadata,omitempty"`
+	Projects *[]Project `json:"projects,omitempty"`
+}
+
+func (response GetProjects200JSONResponse) VisitGetProjectsResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(200)
+
+	return ctx.JSON(&response)
+}
+
+type GetProjects500JSONResponse ErrorResponse
+
+func (response GetProjects500JSONResponse) VisitGetProjectsResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
+type CreateProjectRequestObject struct {
+	TeamId TeamId `json:"teamId"`
+	Body   *CreateProjectJSONRequestBody
+}
+
+type CreateProjectResponseObject interface {
+	VisitCreateProjectResponse(ctx *fiber.Ctx) error
+}
+
+type CreateProject201JSONResponse Project
+
+func (response CreateProject201JSONResponse) VisitCreateProjectResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(201)
+
+	return ctx.JSON(&response)
+}
+
+type CreateProject500JSONResponse ErrorResponse
+
+func (response CreateProject500JSONResponse) VisitCreateProjectResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
+type DeleteProjectRequestObject struct {
+	TeamId    TeamId    `json:"teamId"`
+	ProjectId ProjectId `json:"projectId"`
+}
+
+type DeleteProjectResponseObject interface {
+	VisitDeleteProjectResponse(ctx *fiber.Ctx) error
+}
+
+type DeleteProject204Response struct {
+}
+
+func (response DeleteProject204Response) VisitDeleteProjectResponse(ctx *fiber.Ctx) error {
+	ctx.Status(204)
+	return nil
+}
+
+type DeleteProject404JSONResponse ErrorResponse
+
+func (response DeleteProject404JSONResponse) VisitDeleteProjectResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(404)
+
+	return ctx.JSON(&response)
+}
+
+type DeleteProject500JSONResponse ErrorResponse
+
+func (response DeleteProject500JSONResponse) VisitDeleteProjectResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
+type GetProjectRequestObject struct {
+	TeamId    TeamId    `json:"teamId"`
+	ProjectId ProjectId `json:"projectId"`
+}
+
+type GetProjectResponseObject interface {
+	VisitGetProjectResponse(ctx *fiber.Ctx) error
+}
+
+type GetProject200JSONResponse Project
+
+func (response GetProject200JSONResponse) VisitGetProjectResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(200)
+
+	return ctx.JSON(&response)
+}
+
+type GetProject404JSONResponse ErrorResponse
+
+func (response GetProject404JSONResponse) VisitGetProjectResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(404)
+
+	return ctx.JSON(&response)
+}
+
+type GetProject500JSONResponse ErrorResponse
+
+func (response GetProject500JSONResponse) VisitGetProjectResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
+type UpdateProjectRequestObject struct {
+	TeamId    TeamId    `json:"teamId"`
+	ProjectId ProjectId `json:"projectId"`
+	Body      *UpdateProjectJSONRequestBody
+}
+
+type UpdateProjectResponseObject interface {
+	VisitUpdateProjectResponse(ctx *fiber.Ctx) error
+}
+
+type UpdateProject200JSONResponse Project
+
+func (response UpdateProject200JSONResponse) VisitUpdateProjectResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(200)
+
+	return ctx.JSON(&response)
+}
+
+type UpdateProject404JSONResponse ErrorResponse
+
+func (response UpdateProject404JSONResponse) VisitUpdateProjectResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(404)
+
+	return ctx.JSON(&response)
+}
+
+type UpdateProject500JSONResponse ErrorResponse
+
+func (response UpdateProject500JSONResponse) VisitUpdateProjectResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
+type GetEnvironmentsRequestObject struct {
+	TeamId    TeamId    `json:"teamId"`
+	ProjectId ProjectId `json:"projectId"`
+	Params    GetEnvironmentsParams
+}
+
+type GetEnvironmentsResponseObject interface {
+	VisitGetEnvironmentsResponse(ctx *fiber.Ctx) error
+}
+
+type GetEnvironments200JSONResponse struct {
+	Environments *[]Environment `json:"environments,omitempty"`
+	Metadata     *struct {
+		Limit      *int `json:"limit,omitempty"`
+		Offset     *int `json:"offset,omitempty"`
+		TotalCount *int `json:"totalCount,omitempty"`
+	} `json:"metadata,omitempty"`
+}
+
+func (response GetEnvironments200JSONResponse) VisitGetEnvironmentsResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(200)
+
+	return ctx.JSON(&response)
+}
+
+type GetEnvironments500JSONResponse ErrorResponse
+
+func (response GetEnvironments500JSONResponse) VisitGetEnvironmentsResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
+type CreateEnvironmentRequestObject struct {
+	TeamId    TeamId    `json:"teamId"`
+	ProjectId ProjectId `json:"projectId"`
+	Body      *CreateEnvironmentJSONRequestBody
+}
+
+type CreateEnvironmentResponseObject interface {
+	VisitCreateEnvironmentResponse(ctx *fiber.Ctx) error
+}
+
+type CreateEnvironment201JSONResponse Environment
+
+func (response CreateEnvironment201JSONResponse) VisitCreateEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(201)
+
+	return ctx.JSON(&response)
+}
+
+type CreateEnvironment500JSONResponse ErrorResponse
+
+func (response CreateEnvironment500JSONResponse) VisitCreateEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
+type DeleteEnvironmentRequestObject struct {
+	TeamId        TeamId        `json:"teamId"`
+	ProjectId     ProjectId     `json:"projectId"`
+	EnvironmentId EnvironmentId `json:"environmentId"`
+}
+
+type DeleteEnvironmentResponseObject interface {
+	VisitDeleteEnvironmentResponse(ctx *fiber.Ctx) error
+}
+
+type DeleteEnvironment204Response struct {
+}
+
+func (response DeleteEnvironment204Response) VisitDeleteEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Status(204)
+	return nil
+}
+
+type DeleteEnvironment404JSONResponse ErrorResponse
+
+func (response DeleteEnvironment404JSONResponse) VisitDeleteEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(404)
+
+	return ctx.JSON(&response)
+}
+
+type DeleteEnvironment500JSONResponse ErrorResponse
+
+func (response DeleteEnvironment500JSONResponse) VisitDeleteEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
+type GetEnvironmentRequestObject struct {
+	TeamId        TeamId        `json:"teamId"`
+	ProjectId     ProjectId     `json:"projectId"`
+	EnvironmentId EnvironmentId `json:"environmentId"`
+}
+
+type GetEnvironmentResponseObject interface {
+	VisitGetEnvironmentResponse(ctx *fiber.Ctx) error
+}
+
+type GetEnvironment200JSONResponse Environment
+
+func (response GetEnvironment200JSONResponse) VisitGetEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(200)
+
+	return ctx.JSON(&response)
+}
+
+type GetEnvironment404JSONResponse ErrorResponse
+
+func (response GetEnvironment404JSONResponse) VisitGetEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(404)
+
+	return ctx.JSON(&response)
+}
+
+type GetEnvironment500JSONResponse ErrorResponse
+
+func (response GetEnvironment500JSONResponse) VisitGetEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
+type UpdateEnvironmentRequestObject struct {
+	TeamId        TeamId        `json:"teamId"`
+	ProjectId     ProjectId     `json:"projectId"`
+	EnvironmentId EnvironmentId `json:"environmentId"`
+	Body          *UpdateEnvironmentJSONRequestBody
+}
+
+type UpdateEnvironmentResponseObject interface {
+	VisitUpdateEnvironmentResponse(ctx *fiber.Ctx) error
+}
+
+type UpdateEnvironment200JSONResponse Environment
+
+func (response UpdateEnvironment200JSONResponse) VisitUpdateEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(200)
+
+	return ctx.JSON(&response)
+}
+
+type UpdateEnvironment404JSONResponse ErrorResponse
+
+func (response UpdateEnvironment404JSONResponse) VisitUpdateEnvironmentResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(404)
+
+	return ctx.JSON(&response)
+}
+
+type UpdateEnvironment500JSONResponse ErrorResponse
+
+func (response UpdateEnvironment500JSONResponse) VisitUpdateEnvironmentResponse(ctx *fiber.Ctx) error {
 	ctx.Response().Header.Set("Content-Type", "application/json")
 	ctx.Status(500)
 
@@ -1994,36 +2086,6 @@ type StrictServerInterface interface {
 	// Unlock the state of Terraform environment
 	// (POST /client/{teamId}/{projectId}/{environmentId}/unlock)
 	UnlockEnvironment(ctx context.Context, request UnlockEnvironmentRequestObject) (UnlockEnvironmentResponseObject, error)
-	// Get a list of projects
-	// (GET /project)
-	GetProjects(ctx context.Context, request GetProjectsRequestObject) (GetProjectsResponseObject, error)
-	// Create a new project
-	// (POST /project)
-	PostProject(ctx context.Context, request PostProjectRequestObject) (PostProjectResponseObject, error)
-	// Delete a project
-	// (DELETE /project/{id})
-	DeleteProject(ctx context.Context, request DeleteProjectRequestObject) (DeleteProjectResponseObject, error)
-	// Get a project
-	// (GET /project/{id})
-	GetProject(ctx context.Context, request GetProjectRequestObject) (GetProjectResponseObject, error)
-	// Update a project
-	// (PUT /project/{id})
-	UpdateProject(ctx context.Context, request UpdateProjectRequestObject) (UpdateProjectResponseObject, error)
-	// Get a list of environments
-	// (GET /project/{projectId}/environment)
-	GetEnvironments(ctx context.Context, request GetEnvironmentsRequestObject) (GetEnvironmentsResponseObject, error)
-	// Create a new environment
-	// (POST /project/{projectId}/environment)
-	PostProjectProjectIdEnvironment(ctx context.Context, request PostProjectProjectIdEnvironmentRequestObject) (PostProjectProjectIdEnvironmentResponseObject, error)
-	// Delete an environment
-	// (DELETE /project/{projectId}/environment/{environmentId})
-	DeleteEnvironment(ctx context.Context, request DeleteEnvironmentRequestObject) (DeleteEnvironmentResponseObject, error)
-	// Get an environment
-	// (GET /project/{projectId}/environment/{environmentId})
-	GetEnvironment(ctx context.Context, request GetEnvironmentRequestObject) (GetEnvironmentResponseObject, error)
-	// Update an environment
-	// (PUT /project/{projectId}/environment/{environmentId})
-	UpdateEnvironment(ctx context.Context, request UpdateEnvironmentRequestObject) (UpdateEnvironmentResponseObject, error)
 	// Get a list of snapshots
 	// (GET /snapshot)
 	GetSnapshots(ctx context.Context, request GetSnapshotsRequestObject) (GetSnapshotsResponseObject, error)
@@ -2043,20 +2105,50 @@ type StrictServerInterface interface {
 	// (GET /task/{id})
 	GetTask(ctx context.Context, request GetTaskRequestObject) (GetTaskResponseObject, error)
 	// Get a list of teams
-	// (GET /team)
+	// (GET /teams)
 	GetTeams(ctx context.Context, request GetTeamsRequestObject) (GetTeamsResponseObject, error)
 	// Create a new team
-	// (POST /team)
-	PostTeam(ctx context.Context, request PostTeamRequestObject) (PostTeamResponseObject, error)
+	// (POST /teams)
+	CreateTeam(ctx context.Context, request CreateTeamRequestObject) (CreateTeamResponseObject, error)
 	// Delete a team
-	// (DELETE /team/{id})
-	DeleteTeamId(ctx context.Context, request DeleteTeamIdRequestObject) (DeleteTeamIdResponseObject, error)
+	// (DELETE /teams/{teamId})
+	DeleteTeam(ctx context.Context, request DeleteTeamRequestObject) (DeleteTeamResponseObject, error)
 	// Get a team
-	// (GET /team/{id})
+	// (GET /teams/{teamId})
 	GetTeam(ctx context.Context, request GetTeamRequestObject) (GetTeamResponseObject, error)
 	// Update a team
-	// (PUT /team/{id})
-	PutTeamId(ctx context.Context, request PutTeamIdRequestObject) (PutTeamIdResponseObject, error)
+	// (PUT /teams/{teamId})
+	UpdateTeam(ctx context.Context, request UpdateTeamRequestObject) (UpdateTeamResponseObject, error)
+	// Get a list of projects
+	// (GET /teams/{teamId}/projects)
+	GetProjects(ctx context.Context, request GetProjectsRequestObject) (GetProjectsResponseObject, error)
+	// Create a new project
+	// (POST /teams/{teamId}/projects)
+	CreateProject(ctx context.Context, request CreateProjectRequestObject) (CreateProjectResponseObject, error)
+	// Delete a project
+	// (DELETE /teams/{teamId}/projects/{projectId})
+	DeleteProject(ctx context.Context, request DeleteProjectRequestObject) (DeleteProjectResponseObject, error)
+	// Get a project
+	// (GET /teams/{teamId}/projects/{projectId})
+	GetProject(ctx context.Context, request GetProjectRequestObject) (GetProjectResponseObject, error)
+	// Update a project
+	// (PUT /teams/{teamId}/projects/{projectId})
+	UpdateProject(ctx context.Context, request UpdateProjectRequestObject) (UpdateProjectResponseObject, error)
+	// Get a list of environments
+	// (GET /teams/{teamId}/projects/{projectId}/environments)
+	GetEnvironments(ctx context.Context, request GetEnvironmentsRequestObject) (GetEnvironmentsResponseObject, error)
+	// Create a new environment
+	// (POST /teams/{teamId}/projects/{projectId}/environments)
+	CreateEnvironment(ctx context.Context, request CreateEnvironmentRequestObject) (CreateEnvironmentResponseObject, error)
+	// Delete an environment
+	// (DELETE /teams/{teamId}/projects/{projectId}/environments/{environmentId})
+	DeleteEnvironment(ctx context.Context, request DeleteEnvironmentRequestObject) (DeleteEnvironmentResponseObject, error)
+	// Get an environment
+	// (GET /teams/{teamId}/projects/{projectId}/environments/{environmentId})
+	GetEnvironment(ctx context.Context, request GetEnvironmentRequestObject) (GetEnvironmentResponseObject, error)
+	// Update an environment
+	// (PUT /teams/{teamId}/projects/{projectId}/environments/{environmentId})
+	UpdateEnvironment(ctx context.Context, request UpdateEnvironmentRequestObject) (UpdateEnvironmentResponseObject, error)
 	// Get a list of users
 	// (GET /user)
 	GetUsers(ctx context.Context, request GetUsersRequestObject) (GetUsersResponseObject, error)
@@ -2272,302 +2364,6 @@ func (sh *strictHandler) UnlockEnvironment(ctx *fiber.Ctx, teamId TeamId, projec
 	return nil
 }
 
-// GetProjects operation middleware
-func (sh *strictHandler) GetProjects(ctx *fiber.Ctx, params GetProjectsParams) error {
-	var request GetProjectsRequestObject
-
-	request.Params = params
-
-	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetProjects(ctx.UserContext(), request.(GetProjectsRequestObject))
-	}
-	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetProjects")
-	}
-
-	response, err := handler(ctx, request)
-
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetProjectsResponseObject); ok {
-		if err := validResponse.VisitGetProjectsResponse(ctx); err != nil {
-			return fiber.NewError(fiber.StatusBadRequest, err.Error())
-		}
-	} else if response != nil {
-		return fmt.Errorf("unexpected response type: %T", response)
-	}
-	return nil
-}
-
-// PostProject operation middleware
-func (sh *strictHandler) PostProject(ctx *fiber.Ctx) error {
-	var request PostProjectRequestObject
-
-	var body PostProjectJSONRequestBody
-	if err := ctx.BodyParser(&body); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-	request.Body = &body
-
-	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.PostProject(ctx.UserContext(), request.(PostProjectRequestObject))
-	}
-	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "PostProject")
-	}
-
-	response, err := handler(ctx, request)
-
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(PostProjectResponseObject); ok {
-		if err := validResponse.VisitPostProjectResponse(ctx); err != nil {
-			return fiber.NewError(fiber.StatusBadRequest, err.Error())
-		}
-	} else if response != nil {
-		return fmt.Errorf("unexpected response type: %T", response)
-	}
-	return nil
-}
-
-// DeleteProject operation middleware
-func (sh *strictHandler) DeleteProject(ctx *fiber.Ctx, id string) error {
-	var request DeleteProjectRequestObject
-
-	request.Id = id
-
-	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.DeleteProject(ctx.UserContext(), request.(DeleteProjectRequestObject))
-	}
-	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "DeleteProject")
-	}
-
-	response, err := handler(ctx, request)
-
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(DeleteProjectResponseObject); ok {
-		if err := validResponse.VisitDeleteProjectResponse(ctx); err != nil {
-			return fiber.NewError(fiber.StatusBadRequest, err.Error())
-		}
-	} else if response != nil {
-		return fmt.Errorf("unexpected response type: %T", response)
-	}
-	return nil
-}
-
-// GetProject operation middleware
-func (sh *strictHandler) GetProject(ctx *fiber.Ctx, id string) error {
-	var request GetProjectRequestObject
-
-	request.Id = id
-
-	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetProject(ctx.UserContext(), request.(GetProjectRequestObject))
-	}
-	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetProject")
-	}
-
-	response, err := handler(ctx, request)
-
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetProjectResponseObject); ok {
-		if err := validResponse.VisitGetProjectResponse(ctx); err != nil {
-			return fiber.NewError(fiber.StatusBadRequest, err.Error())
-		}
-	} else if response != nil {
-		return fmt.Errorf("unexpected response type: %T", response)
-	}
-	return nil
-}
-
-// UpdateProject operation middleware
-func (sh *strictHandler) UpdateProject(ctx *fiber.Ctx, id string) error {
-	var request UpdateProjectRequestObject
-
-	request.Id = id
-
-	var body UpdateProjectJSONRequestBody
-	if err := ctx.BodyParser(&body); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-	request.Body = &body
-
-	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.UpdateProject(ctx.UserContext(), request.(UpdateProjectRequestObject))
-	}
-	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "UpdateProject")
-	}
-
-	response, err := handler(ctx, request)
-
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(UpdateProjectResponseObject); ok {
-		if err := validResponse.VisitUpdateProjectResponse(ctx); err != nil {
-			return fiber.NewError(fiber.StatusBadRequest, err.Error())
-		}
-	} else if response != nil {
-		return fmt.Errorf("unexpected response type: %T", response)
-	}
-	return nil
-}
-
-// GetEnvironments operation middleware
-func (sh *strictHandler) GetEnvironments(ctx *fiber.Ctx, projectId string, params GetEnvironmentsParams) error {
-	var request GetEnvironmentsRequestObject
-
-	request.ProjectId = projectId
-	request.Params = params
-
-	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetEnvironments(ctx.UserContext(), request.(GetEnvironmentsRequestObject))
-	}
-	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetEnvironments")
-	}
-
-	response, err := handler(ctx, request)
-
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetEnvironmentsResponseObject); ok {
-		if err := validResponse.VisitGetEnvironmentsResponse(ctx); err != nil {
-			return fiber.NewError(fiber.StatusBadRequest, err.Error())
-		}
-	} else if response != nil {
-		return fmt.Errorf("unexpected response type: %T", response)
-	}
-	return nil
-}
-
-// PostProjectProjectIdEnvironment operation middleware
-func (sh *strictHandler) PostProjectProjectIdEnvironment(ctx *fiber.Ctx, projectId string) error {
-	var request PostProjectProjectIdEnvironmentRequestObject
-
-	request.ProjectId = projectId
-
-	var body PostProjectProjectIdEnvironmentJSONRequestBody
-	if err := ctx.BodyParser(&body); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-	request.Body = &body
-
-	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.PostProjectProjectIdEnvironment(ctx.UserContext(), request.(PostProjectProjectIdEnvironmentRequestObject))
-	}
-	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "PostProjectProjectIdEnvironment")
-	}
-
-	response, err := handler(ctx, request)
-
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(PostProjectProjectIdEnvironmentResponseObject); ok {
-		if err := validResponse.VisitPostProjectProjectIdEnvironmentResponse(ctx); err != nil {
-			return fiber.NewError(fiber.StatusBadRequest, err.Error())
-		}
-	} else if response != nil {
-		return fmt.Errorf("unexpected response type: %T", response)
-	}
-	return nil
-}
-
-// DeleteEnvironment operation middleware
-func (sh *strictHandler) DeleteEnvironment(ctx *fiber.Ctx, projectId string, environmentId string) error {
-	var request DeleteEnvironmentRequestObject
-
-	request.ProjectId = projectId
-	request.EnvironmentId = environmentId
-
-	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.DeleteEnvironment(ctx.UserContext(), request.(DeleteEnvironmentRequestObject))
-	}
-	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "DeleteEnvironment")
-	}
-
-	response, err := handler(ctx, request)
-
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(DeleteEnvironmentResponseObject); ok {
-		if err := validResponse.VisitDeleteEnvironmentResponse(ctx); err != nil {
-			return fiber.NewError(fiber.StatusBadRequest, err.Error())
-		}
-	} else if response != nil {
-		return fmt.Errorf("unexpected response type: %T", response)
-	}
-	return nil
-}
-
-// GetEnvironment operation middleware
-func (sh *strictHandler) GetEnvironment(ctx *fiber.Ctx, projectId string, environmentId string) error {
-	var request GetEnvironmentRequestObject
-
-	request.ProjectId = projectId
-	request.EnvironmentId = environmentId
-
-	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.GetEnvironment(ctx.UserContext(), request.(GetEnvironmentRequestObject))
-	}
-	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetEnvironment")
-	}
-
-	response, err := handler(ctx, request)
-
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(GetEnvironmentResponseObject); ok {
-		if err := validResponse.VisitGetEnvironmentResponse(ctx); err != nil {
-			return fiber.NewError(fiber.StatusBadRequest, err.Error())
-		}
-	} else if response != nil {
-		return fmt.Errorf("unexpected response type: %T", response)
-	}
-	return nil
-}
-
-// UpdateEnvironment operation middleware
-func (sh *strictHandler) UpdateEnvironment(ctx *fiber.Ctx, projectId string, environmentId string) error {
-	var request UpdateEnvironmentRequestObject
-
-	request.ProjectId = projectId
-	request.EnvironmentId = environmentId
-
-	var body UpdateEnvironmentJSONRequestBody
-	if err := ctx.BodyParser(&body); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-	request.Body = &body
-
-	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.UpdateEnvironment(ctx.UserContext(), request.(UpdateEnvironmentRequestObject))
-	}
-	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "UpdateEnvironment")
-	}
-
-	response, err := handler(ctx, request)
-
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(UpdateEnvironmentResponseObject); ok {
-		if err := validResponse.VisitUpdateEnvironmentResponse(ctx); err != nil {
-			return fiber.NewError(fiber.StatusBadRequest, err.Error())
-		}
-	} else if response != nil {
-		return fmt.Errorf("unexpected response type: %T", response)
-	}
-	return nil
-}
-
 // GetSnapshots operation middleware
 func (sh *strictHandler) GetSnapshots(ctx *fiber.Ctx, params GetSnapshotsParams) error {
 	var request GetSnapshotsRequestObject
@@ -2767,29 +2563,29 @@ func (sh *strictHandler) GetTeams(ctx *fiber.Ctx, params GetTeamsParams) error {
 	return nil
 }
 
-// PostTeam operation middleware
-func (sh *strictHandler) PostTeam(ctx *fiber.Ctx) error {
-	var request PostTeamRequestObject
+// CreateTeam operation middleware
+func (sh *strictHandler) CreateTeam(ctx *fiber.Ctx) error {
+	var request CreateTeamRequestObject
 
-	var body PostTeamJSONRequestBody
+	var body CreateTeamJSONRequestBody
 	if err := ctx.BodyParser(&body); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 	request.Body = &body
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.PostTeam(ctx.UserContext(), request.(PostTeamRequestObject))
+		return sh.ssi.CreateTeam(ctx.UserContext(), request.(CreateTeamRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "PostTeam")
+		handler = middleware(handler, "CreateTeam")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(PostTeamResponseObject); ok {
-		if err := validResponse.VisitPostTeamResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(CreateTeamResponseObject); ok {
+		if err := validResponse.VisitCreateTeamResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2798,25 +2594,25 @@ func (sh *strictHandler) PostTeam(ctx *fiber.Ctx) error {
 	return nil
 }
 
-// DeleteTeamId operation middleware
-func (sh *strictHandler) DeleteTeamId(ctx *fiber.Ctx, id string) error {
-	var request DeleteTeamIdRequestObject
+// DeleteTeam operation middleware
+func (sh *strictHandler) DeleteTeam(ctx *fiber.Ctx, teamId TeamId) error {
+	var request DeleteTeamRequestObject
 
-	request.Id = id
+	request.TeamId = teamId
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.DeleteTeamId(ctx.UserContext(), request.(DeleteTeamIdRequestObject))
+		return sh.ssi.DeleteTeam(ctx.UserContext(), request.(DeleteTeamRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "DeleteTeamId")
+		handler = middleware(handler, "DeleteTeam")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(DeleteTeamIdResponseObject); ok {
-		if err := validResponse.VisitDeleteTeamIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(DeleteTeamResponseObject); ok {
+		if err := validResponse.VisitDeleteTeamResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {
@@ -2826,10 +2622,10 @@ func (sh *strictHandler) DeleteTeamId(ctx *fiber.Ctx, id string) error {
 }
 
 // GetTeam operation middleware
-func (sh *strictHandler) GetTeam(ctx *fiber.Ctx, id string) error {
+func (sh *strictHandler) GetTeam(ctx *fiber.Ctx, teamId TeamId) error {
 	var request GetTeamRequestObject
 
-	request.Id = id
+	request.TeamId = teamId
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
 		return sh.ssi.GetTeam(ctx.UserContext(), request.(GetTeamRequestObject))
@@ -2852,31 +2648,338 @@ func (sh *strictHandler) GetTeam(ctx *fiber.Ctx, id string) error {
 	return nil
 }
 
-// PutTeamId operation middleware
-func (sh *strictHandler) PutTeamId(ctx *fiber.Ctx, id string) error {
-	var request PutTeamIdRequestObject
+// UpdateTeam operation middleware
+func (sh *strictHandler) UpdateTeam(ctx *fiber.Ctx, teamId TeamId) error {
+	var request UpdateTeamRequestObject
 
-	request.Id = id
+	request.TeamId = teamId
 
-	var body PutTeamIdJSONRequestBody
+	var body UpdateTeamJSONRequestBody
 	if err := ctx.BodyParser(&body); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 	request.Body = &body
 
 	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
-		return sh.ssi.PutTeamId(ctx.UserContext(), request.(PutTeamIdRequestObject))
+		return sh.ssi.UpdateTeam(ctx.UserContext(), request.(UpdateTeamRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "PutTeamId")
+		handler = middleware(handler, "UpdateTeam")
 	}
 
 	response, err := handler(ctx, request)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	} else if validResponse, ok := response.(PutTeamIdResponseObject); ok {
-		if err := validResponse.VisitPutTeamIdResponse(ctx); err != nil {
+	} else if validResponse, ok := response.(UpdateTeamResponseObject); ok {
+		if err := validResponse.VisitUpdateTeamResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetProjects operation middleware
+func (sh *strictHandler) GetProjects(ctx *fiber.Ctx, teamId TeamId, params GetProjectsParams) error {
+	var request GetProjectsRequestObject
+
+	request.TeamId = teamId
+	request.Params = params
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.GetProjects(ctx.UserContext(), request.(GetProjectsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetProjects")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(GetProjectsResponseObject); ok {
+		if err := validResponse.VisitGetProjectsResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// CreateProject operation middleware
+func (sh *strictHandler) CreateProject(ctx *fiber.Ctx, teamId TeamId) error {
+	var request CreateProjectRequestObject
+
+	request.TeamId = teamId
+
+	var body CreateProjectJSONRequestBody
+	if err := ctx.BodyParser(&body); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+	request.Body = &body
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateProject(ctx.UserContext(), request.(CreateProjectRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateProject")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(CreateProjectResponseObject); ok {
+		if err := validResponse.VisitCreateProjectResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// DeleteProject operation middleware
+func (sh *strictHandler) DeleteProject(ctx *fiber.Ctx, teamId TeamId, projectId ProjectId) error {
+	var request DeleteProjectRequestObject
+
+	request.TeamId = teamId
+	request.ProjectId = projectId
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteProject(ctx.UserContext(), request.(DeleteProjectRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteProject")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(DeleteProjectResponseObject); ok {
+		if err := validResponse.VisitDeleteProjectResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetProject operation middleware
+func (sh *strictHandler) GetProject(ctx *fiber.Ctx, teamId TeamId, projectId ProjectId) error {
+	var request GetProjectRequestObject
+
+	request.TeamId = teamId
+	request.ProjectId = projectId
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.GetProject(ctx.UserContext(), request.(GetProjectRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetProject")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(GetProjectResponseObject); ok {
+		if err := validResponse.VisitGetProjectResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// UpdateProject operation middleware
+func (sh *strictHandler) UpdateProject(ctx *fiber.Ctx, teamId TeamId, projectId ProjectId) error {
+	var request UpdateProjectRequestObject
+
+	request.TeamId = teamId
+	request.ProjectId = projectId
+
+	var body UpdateProjectJSONRequestBody
+	if err := ctx.BodyParser(&body); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+	request.Body = &body
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.UpdateProject(ctx.UserContext(), request.(UpdateProjectRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "UpdateProject")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(UpdateProjectResponseObject); ok {
+		if err := validResponse.VisitUpdateProjectResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetEnvironments operation middleware
+func (sh *strictHandler) GetEnvironments(ctx *fiber.Ctx, teamId TeamId, projectId ProjectId, params GetEnvironmentsParams) error {
+	var request GetEnvironmentsRequestObject
+
+	request.TeamId = teamId
+	request.ProjectId = projectId
+	request.Params = params
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.GetEnvironments(ctx.UserContext(), request.(GetEnvironmentsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetEnvironments")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(GetEnvironmentsResponseObject); ok {
+		if err := validResponse.VisitGetEnvironmentsResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// CreateEnvironment operation middleware
+func (sh *strictHandler) CreateEnvironment(ctx *fiber.Ctx, teamId TeamId, projectId ProjectId) error {
+	var request CreateEnvironmentRequestObject
+
+	request.TeamId = teamId
+	request.ProjectId = projectId
+
+	var body CreateEnvironmentJSONRequestBody
+	if err := ctx.BodyParser(&body); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+	request.Body = &body
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateEnvironment(ctx.UserContext(), request.(CreateEnvironmentRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateEnvironment")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(CreateEnvironmentResponseObject); ok {
+		if err := validResponse.VisitCreateEnvironmentResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// DeleteEnvironment operation middleware
+func (sh *strictHandler) DeleteEnvironment(ctx *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error {
+	var request DeleteEnvironmentRequestObject
+
+	request.TeamId = teamId
+	request.ProjectId = projectId
+	request.EnvironmentId = environmentId
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteEnvironment(ctx.UserContext(), request.(DeleteEnvironmentRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteEnvironment")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(DeleteEnvironmentResponseObject); ok {
+		if err := validResponse.VisitDeleteEnvironmentResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetEnvironment operation middleware
+func (sh *strictHandler) GetEnvironment(ctx *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error {
+	var request GetEnvironmentRequestObject
+
+	request.TeamId = teamId
+	request.ProjectId = projectId
+	request.EnvironmentId = environmentId
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.GetEnvironment(ctx.UserContext(), request.(GetEnvironmentRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetEnvironment")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(GetEnvironmentResponseObject); ok {
+		if err := validResponse.VisitGetEnvironmentResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// UpdateEnvironment operation middleware
+func (sh *strictHandler) UpdateEnvironment(ctx *fiber.Ctx, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) error {
+	var request UpdateEnvironmentRequestObject
+
+	request.TeamId = teamId
+	request.ProjectId = projectId
+	request.EnvironmentId = environmentId
+
+	var body UpdateEnvironmentJSONRequestBody
+	if err := ctx.BodyParser(&body); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+	request.Body = &body
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.UpdateEnvironment(ctx.UserContext(), request.(UpdateEnvironmentRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "UpdateEnvironment")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(UpdateEnvironmentResponseObject); ok {
+		if err := validResponse.VisitUpdateEnvironmentResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {

@@ -26,8 +26,8 @@ func NewAPIHandlers(locks controllers.LocksController, state controllers.StateCo
 
 // Get system health status
 // (GET /_health)
-func (h *apiHandlers) GetHealth(ctx context.Context, requesta openapi.GetHealthRequestObject) (openapi.GetHealthResponseObject, error) {
-	return nil, nil
+func (h *apiHandlers) GetHealth(ctx context.Context, request openapi.GetHealthRequestObject) (openapi.GetHealthResponseObject, error) {
+	return openapi.GetHealth200JSONResponse{}, nil // this is just up
 }
 
 // Get system readiness
@@ -44,7 +44,7 @@ func (h *apiHandlers) GetProjects(ctx context.Context, request openapi.GetProjec
 
 // Create a new project
 // (POST /project)
-func (h *apiHandlers) PostProject(ctx context.Context, request openapi.PostProjectRequestObject) (openapi.PostProjectResponseObject, error) {
+func (h *apiHandlers) CreateProject(ctx context.Context, request openapi.CreateProjectRequestObject) (openapi.CreateProjectResponseObject, error) {
 	return nil, nil
 }
 
@@ -74,7 +74,7 @@ func (h *apiHandlers) GetEnvironments(ctx context.Context, request openapi.GetEn
 
 // Create a new environment
 // (POST /project/{projectId}/environment)
-func (h *apiHandlers) PostProjectProjectIdEnvironment(ctx context.Context, request openapi.PostProjectProjectIdEnvironmentRequestObject) (openapi.PostProjectProjectIdEnvironmentResponseObject, error) {
+func (h *apiHandlers) CreateEnvironment(ctx context.Context, request openapi.CreateEnvironmentRequestObject) (openapi.CreateEnvironmentResponseObject, error) {
 	return nil, nil
 }
 
@@ -134,13 +134,13 @@ func (h *apiHandlers) GetTeams(ctx context.Context, request openapi.GetTeamsRequ
 
 // Create a new team
 // (POST /team)
-func (h *apiHandlers) PostTeam(ctx context.Context, request openapi.PostTeamRequestObject) (openapi.PostTeamResponseObject, error) {
+func (h *apiHandlers) CreateTeam(ctx context.Context, request openapi.CreateTeamRequestObject) (openapi.CreateTeamResponseObject, error) {
 	return nil, nil
 }
 
 // Delete a team
 // (DELETE /team/{id})
-func (h *apiHandlers) DeleteTeamId(ctx context.Context, request openapi.DeleteTeamIdRequestObject) (openapi.DeleteTeamIdResponseObject, error) {
+func (h *apiHandlers) DeleteTeam(ctx context.Context, request openapi.DeleteTeamRequestObject) (openapi.DeleteTeamResponseObject, error) {
 	return nil, nil
 }
 
@@ -152,7 +152,7 @@ func (h *apiHandlers) GetTeam(ctx context.Context, request openapi.GetTeamReques
 
 // Update a team
 // (PUT /team/{id})
-func (h *apiHandlers) PutTeamId(ctx context.Context, request openapi.PutTeamIdRequestObject) (openapi.PutTeamIdResponseObject, error) {
+func (h *apiHandlers) UpdateTeam(ctx context.Context, request openapi.UpdateTeamRequestObject) (openapi.UpdateTeamResponseObject, error) {
 	return nil, nil
 }
 

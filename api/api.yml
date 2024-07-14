@@ -355,11 +355,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /team:
+  /teams:
     post:
       tags:
         - Teams
       summary: Create a new team
+      operationId: createTeam
       security:
         - api_key: []
       requestBody:
@@ -427,7 +428,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /team/{id}:
+  /teams/{teamId}:
     get:
       tags:
         - Teams
@@ -436,11 +437,7 @@ paths:
       security:
         - api_key: []
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/teamId"
       responses:
         "200":
           description: Successful response
@@ -465,14 +462,11 @@ paths:
       tags:
         - Teams
       summary: Update a team
+      operationId: updateTeam
       security:
         - api_key: []
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
+         - $ref: "#/components/parameters/teamId"
       requestBody:
         content:
           application/json:
@@ -502,14 +496,11 @@ paths:
       tags:
         - Teams
       summary: Delete a team
+      operationId: deleteTeam
       security:
         - api_key: []
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
+         - $ref: "#/components/parameters/teamId"
       responses:
         "204":
           description: Successful response
@@ -526,11 +517,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /project:
+  /teams/{teamId}/projects:
     post:
       tags:
         - Projects
       summary: Create a new project
+      operationId: createProject
+      parameters:
+        - $ref: "#/components/parameters/teamId"
       security:
         - api_key: []
       requestBody:
@@ -560,6 +554,7 @@ paths:
       security:
         - api_key: []
       parameters:
+        - $ref: "#/components/parameters/teamId"
         - in: query
           name: limit
           schema:
@@ -598,7 +593,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /project/{id}:
+  /teams/{teamId}/projects/{projectId}:
     get:
       tags:
         - Projects
@@ -607,11 +602,8 @@ paths:
       security:
         - api_key: []
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
+         - $ref: "#/components/parameters/teamId"
+         - $ref: "#/components/parameters/projectId"
       responses:
         "200":
           description: Successful response
@@ -637,14 +629,11 @@ paths:
         - Projects
       summary: Update a project
       operationId: updateProject
+      parameters:
+         - $ref: "#/components/parameters/teamId"
+         - $ref: "#/components/parameters/projectId"
       security:
         - api_key: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -675,14 +664,11 @@ paths:
         - Projects
       summary: Delete a project
       operationId: deleteProject
+      parameters:
+         - $ref: "#/components/parameters/teamId"
+         - $ref: "#/components/parameters/projectId"
       security:
         - api_key: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
       responses:
         "204":
           description: Successful response
@@ -699,19 +685,17 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /project/{projectId}/environment:
+  /teams/{teamId}/projects/{projectId}/environments:
     post:
       tags:
         - Environments
       summary: Create a new environment
+      operationId: createEnvironment
       security:
         - api_key: []
       parameters:
-        - in: path
-          name: projectId
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
       requestBody:
         content:
           application/json:
@@ -739,11 +723,8 @@ paths:
       security:
         - api_key: []
       parameters:
-        - in: path
-          name: projectId
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
         - in: query
           name: limit
           schema:
@@ -782,25 +763,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /project/{projectId}/environment/{environmentId}:
+  /teams/{teamId}/projects/{projectId}/environments/{environmentId}:
     get:
       tags:
         - Environments
       summary: Get an environment
       operationId: getEnvironment
+      parameters:
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/environmentId"
       security:
         - api_key: []
-      parameters:
-        - in: path
-          name: projectId
-          required: true
-          schema:
-            type: string
-        - in: path
-          name: environmentId
-          required: true
-          schema:
-            type: string
       responses:
         "200":
           description: Successful response
@@ -826,19 +800,12 @@ paths:
         - Environments
       summary: Update an environment
       operationId: updateEnvironment
+      parameters:
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/environmentId"
       security:
         - api_key: []
-      parameters:
-        - in: path
-          name: projectId
-          required: true
-          schema:
-            type: string
-        - in: path
-          name: environmentId
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -869,19 +836,12 @@ paths:
         - Environments
       summary: Delete an environment
       operationId: deleteEnvironment
+      parameters:
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/environmentId"
       security:
         - api_key: []
-      parameters:
-        - in: path
-          name: projectId
-          required: true
-          schema:
-            type: string
-        - in: path
-          name: environmentId
-          required: true
-          schema:
-            type: string
       responses:
         "204":
           description: Successful response

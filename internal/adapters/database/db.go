@@ -67,20 +67,6 @@ func (rw *writeTxImpl) CreateLock(ctx context.Context, lock *models.Lock) error 
 	return rw.conn.Create(lock).Error
 }
 
-// // RunMigrations runs the database migrations.
-// func (d *database) Migrate(ctx context.Context) error {
-// 	return d.conn.WithContext(ctx).AutoMigrate(
-// 		&adapters.GothSession{},
-// 		&adapters.GothAccount{},
-// 		&adapters.GothUser{},
-// 		&adapters.GothTeam{},
-// 		&models.Environment{},
-// 		&models.Project{},
-// 		&models.Lock{},
-// 		&models.State{},
-// 	)
-// }
-
 // DeleteLock deletes a lock.
 func (rw *writeTxImpl) DeleteLock(ctx context.Context, lock *models.Lock) error {
 	return rw.conn.Delete(lock).Error
@@ -116,4 +102,14 @@ func (rw *writeTxImpl) UpdateState(ctx context.Context, state *models.State) err
 // CreateSnapshot creates a new snapshot.
 func (rw *writeTxImpl) CreateSnapshot(ctx context.Context, snapshot *models.Snapshot) error {
 	return rw.conn.Create(snapshot).Error
+}
+
+// CreateTeam creates a new team.
+func (rw *writeTxImpl) CreateTeam(ctx context.Context, team *adapters.GothTeam) error {
+	return rw.conn.Create(team).Error
+}
+
+// DeleteTeam deletes a team.
+func (rw *writeTxImpl) DeleteTeam(ctx context.Context, team *adapters.GothTeam) error {
+	return rw.conn.Delete(team).Error
 }
