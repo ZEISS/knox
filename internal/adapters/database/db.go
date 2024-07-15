@@ -72,6 +72,11 @@ func (rw *writeTxImpl) DeleteLock(ctx context.Context, lock *models.Lock) error 
 	return rw.conn.Delete(lock).Error
 }
 
+// CreateProject creates a new project.
+func (rw *writeTxImpl) CreateProject(ctx context.Context, project *models.Project) error {
+	return rw.conn.Create(project).Error
+}
+
 // UpdateState...
 func (rw *writeTxImpl) UpdateState(ctx context.Context, state *models.State) error {
 	latest := models.State{}
