@@ -104,6 +104,11 @@ func (rw *writeTxImpl) CreateSnapshot(ctx context.Context, snapshot *models.Snap
 	return rw.conn.Create(snapshot).Error
 }
 
+// GetTeam ...
+func (rw *writeTxImpl) GetTeam(ctx context.Context, team *adapters.GothTeam) error {
+	return rw.conn.Where(team).First(team).Error
+}
+
 // CreateTeam creates a new team.
 func (rw *writeTxImpl) CreateTeam(ctx context.Context, team *adapters.GothTeam) error {
 	return rw.conn.Create(team).Error

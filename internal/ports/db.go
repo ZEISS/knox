@@ -49,6 +49,10 @@ type ReadWriteTx interface {
 	UpdateState(context.Context, *models.State) error
 	// CreateSnapshot creates a new snapshot.
 	CreateSnapshot(context.Context, *models.Snapshot) error
+	// CreateTeam creates a new team.
+	CreateTeam(context.Context, *adapters.GothTeam) error
+	// DeleteTeam deletes a team.
+	DeleteTeam(context.Context, *adapters.GothTeam) error
 
 	ReadTx
 }

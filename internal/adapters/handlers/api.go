@@ -17,11 +17,12 @@ type apiHandlers struct {
 	locks     controllers.LocksController
 	state     controllers.StateController
 	snapshots controllers.SnapshotController
+	team      controllers.TeamController
 }
 
 // NewAPIHandlers returns a new instance of APIHandlers.
-func NewAPIHandlers(locks controllers.LocksController, state controllers.StateController, snapshots controllers.SnapshotController) *apiHandlers {
-	return &apiHandlers{locks, state, snapshots}
+func NewAPIHandlers(locks controllers.LocksController, state controllers.StateController, snapshots controllers.SnapshotController, team controllers.TeamController) *apiHandlers {
+	return &apiHandlers{locks, state, snapshots, team}
 }
 
 // Get system health status
@@ -135,19 +136,40 @@ func (h *apiHandlers) GetTeams(ctx context.Context, request openapi.GetTeamsRequ
 // Create a new team
 // (POST /team)
 func (h *apiHandlers) CreateTeam(ctx context.Context, request openapi.CreateTeamRequestObject) (openapi.CreateTeamResponseObject, error) {
-	return nil, nil
+	cmd := dto.FromCreateTeamRequestObject(request)
+
+	err := h.team.CreateTeam(ctx, cmd)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return dto.ToCreateTeamResponseObject(), nil
 }
 
 // Delete a team
 // (DELETE /team/{id})
 func (h *apiHandlers) DeleteTeam(ctx context.Context, request openapi.DeleteTeamRequestObject) (openapi.DeleteTeamResponseObject, error) {
-	return nil, nil
+	cmd := dto.FromDeleteTeamRequestObject(request)
+
+	err := h.team.DeleteTeam(ctx, cmd)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return dto.ToDeleteTeamResponseObject(), nil
 }
 
 // Get a team
 // (GET /team/{id})
 func (h *apiHandlers) GetTeam(ctx context.Context, request openapi.GetTeamRequestObject) (openapi.GetTeamResponseObject, error) {
-	return nil, nil
+	query := dto.FromGetTeamRequestObject(request)
+
+	team, err := h.team.GetTeam(ctx, query)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusNotFound, err.Error())
+	}
+
+	return dto.ToGetTeamResponseObject(team), nil
 }
 
 // Update a team

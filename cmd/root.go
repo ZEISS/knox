@@ -108,8 +108,9 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 		lc := controllers.NewLocksController(store)
 		sc := controllers.NewStateController(store)
 		pc := controllers.NewSnapshotController(store)
+		tc := controllers.NewTeamController(store)
 
-		handlers := handlers.NewAPIHandlers(lc, sc, pc)
+		handlers := handlers.NewAPIHandlers(lc, sc, pc, tc)
 		handler := openapi.NewStrictHandler(handlers, nil)
 		openapi.RegisterHandlers(app, handler)
 
