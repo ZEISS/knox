@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -52,6 +51,5 @@ func (e *Environment) ComparePassword(password string) error {
 
 // BeforeCreate gorm hook
 func (e *Environment) BeforeCreate(db *gorm.DB) (err error) {
-	fmt.Println("BeforeCreate")
 	return e.HashPassword()
 }

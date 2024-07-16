@@ -59,6 +59,13 @@ func (r *readTxImpl) ListProjects(ctx context.Context, slug string, results *tab
 		Find(&results.Rows).Error
 }
 
+// ListEnvironments ...
+func (r *readTxImpl) ListEnvironments(ctx context.Context, teamId, projectId string, results *tables.Results[models.Environment]) error {
+	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).
+		Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projectId).Where("team_id = (?)", r.conn.Model(&adapters.GothTeam{}).Where("slug = ?", teamId).Select("id")).Select("id")).
+		Find(&results.Rows).Error
+}
+
 // AuthenticateClient ...
 func (r *readTxImpl) AuthenticateClient(ctx context.Context, teamId, projectId, environmentId, username, password string) error {
 	environment := models.Environment{

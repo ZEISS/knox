@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/zeiss/fiber-goth/adapters"
+	"github.com/zeiss/fiber-htmx/components/tables"
 	seed "github.com/zeiss/gorm-seed"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
@@ -24,6 +25,14 @@ type CreateEnvironmentCommand struct {
 	Password string `json:"password" form:"password" validate:"required,min=1,max=255"`
 }
 
+// ListEnvironmentsQuery ...
+type ListEnvironmentsQuery struct {
+	Team    string `json:"team" form:"team" validate:"required"`
+	Project string `json:"project" form:"project" validate:"required"`
+	Limit   int    `json:"limit" form:"limit" validate:"omitempty,min=1,max=100"`
+	Offset  int    `json:"offset" form:"offset" validate:"omitempty,min=0"`
+}
+
 // EnvironmentControllerImpl ...
 type EnvironmentControllerImpl struct {
 	store seed.Database[ports.ReadTx, ports.ReadWriteTx]
@@ -33,6 +42,8 @@ type EnvironmentControllerImpl struct {
 type EnvironmentController interface {
 	// CreateEnvironment ...
 	CreateEnvironment(ctx context.Context, cmd CreateEnvironmentCommand) error
+	// ListEnvironments ...
+	ListEnvironments(ctx context.Context, query ListEnvironmentsQuery) (tables.Results[models.Environment], error)
 }
 
 // NewEnvironmentController ...
@@ -82,4 +93,28 @@ func (c *EnvironmentControllerImpl) CreateEnvironment(ctx context.Context, cmd C
 	return c.store.ReadWriteTx(ctx, func(ctx context.Context, tx ports.ReadWriteTx) error {
 		return tx.CreateEnvironment(ctx, &environment)
 	})
+}
+
+// ListEnvironments ...
+func (c *EnvironmentControllerImpl) ListEnvironments(ctx context.Context, query ListEnvironmentsQuery) (tables.Results[models.Environment], error) {
+	validate = validator.New()
+
+	results := tables.Results[models.Environment]{
+		Limit:  query.Limit,
+		Offset: query.Offset,
+	}
+
+	err := validate.Struct(query)
+	if err != nil {
+		return results, err
+	}
+
+	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
+		return tx.ListEnvironments(ctx, query.Team, query.Project, &results)
+	})
+	if err != nil {
+		return results, err
+	}
+
+	return results, nil
 }
