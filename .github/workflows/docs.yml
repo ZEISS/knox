@@ -8,20 +8,12 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
   build:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
@@ -30,7 +22,6 @@ jobs:
       with:
         submodules: true
         fetch-depth: 0
-    - uses: actions/configure-pages@v5
     - uses: actions/setup-node@v4
     - run: |
         make docs
