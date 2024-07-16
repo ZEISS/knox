@@ -4,8 +4,10 @@ import (
 	"context"
 	"io"
 
-	"github.com/zeiss/fiber-goth/adapters"
 	"github.com/zeiss/knox/internal/models"
+
+	"github.com/zeiss/fiber-goth/adapters"
+	"github.com/zeiss/fiber-htmx/components/tables"
 )
 
 // Migration is a method that runs the migration.
@@ -37,6 +39,10 @@ type ReadTx interface {
 	GetState(context.Context, *models.State) error
 	// GetLock ...
 	GetLock(context.Context, *models.Lock) error
+	// ListProjects ...
+	ListProjects(context.Context, string, *tables.Results[models.Project]) error
+	// AuthenticateClient ...
+	AuthenticateClient(context.Context, string, string, string, string, string) error
 }
 
 // ReadWriteTx provides methods for transactional read and write operations.
@@ -55,6 +61,8 @@ type ReadWriteTx interface {
 	DeleteTeam(context.Context, *adapters.GothTeam) error
 	// CreateProject creates a new project.
 	CreateProject(context.Context, *models.Project) error
+	// CreateEnvironment creates a new environment.
+	CreateEnvironment(context.Context, *models.Environment) error
 
 	ReadTx
 }

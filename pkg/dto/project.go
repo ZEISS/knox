@@ -1,7 +1,9 @@
 package dto
 
 import (
+	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/controllers"
+	"github.com/zeiss/knox/internal/models"
 	openapi "github.com/zeiss/knox/pkg/apis"
 	"github.com/zeiss/knox/pkg/utils"
 )
@@ -18,6 +20,34 @@ func FromCreateProjectRequestObject(req openapi.CreateProjectRequestObject) cont
 // ToCreateProjectResponseObject ...
 func ToCreateProjectResponseObject() openapi.CreateProject201JSONResponse {
 	res := openapi.CreateProject201JSONResponse{}
+
+	return res
+}
+
+// FromGetProjectsRequestObject ...
+func FromGetProjectsRequestObject(req openapi.GetProjectsRequestObject) controllers.ListProjectsQuery {
+	return controllers.ListProjectsQuery{
+		Limit:  utils.PtrInt(req.Params.Limit),
+		Offset: utils.PtrInt(req.Params.Offset),
+		Team:   req.TeamId,
+	}
+}
+
+// ToGetProjectsResponseObject ...
+func ToGetProjectsResponseObject(results tables.Results[models.Project]) openapi.GetProjects200JSONResponse {
+	res := openapi.GetProjects200JSONResponse{}
+
+	projects := make([]openapi.Project, results.GetLen())
+
+	for i, project := range results.GetRows() {
+		projects[i] = openapi.Project{
+			Id:          utils.StrPtr(project.ID.String()),
+			Name:        utils.StrPtr(project.Name),
+			Description: project.Description,
+		}
+	}
+
+	res.Projects = &projects
 
 	return res
 }

@@ -21,15 +21,17 @@ type Snapshot struct {
 	// Team is the team of the state.
 	Team adapters.GothTeam `json:"team" form:"team"`
 	// TeamID is the team id of the state.
-	TeamID uuid.UUID `json:"team_id" gorm:"uniqueIndex:idx_team_project_environment"`
+	TeamID uuid.UUID `json:"team_id" gorm:"uniqueIndex:idx_team_project_environment_version"`
 	// Environment is the environment of the state.
 	Environment Environment `json:"environment" form:"environment"`
 	// EnvironmentID is the environment id of the state.
-	EnvironmentID uuid.UUID `json:"environment_id" gorm:"uniqueIndex:idx_team_project_environment"`
+	EnvironmentID uuid.UUID `json:"environment_id" gorm:"uniqueIndex:idx_team_project_environment_version"`
 	// Project is the project of the state.
 	Project Project `json:"project" form:"project"`
 	// ProjectID is the project id of the state.
-	ProjectID uuid.UUID `json:"project_id" gorm:"uniqueIndex:idx_team_project_environment"`
+	ProjectID uuid.UUID `json:"project_id" gorm:"uniqueIndex:idx_team_project_environment_version"`
+	// Version is the version of the state.
+	Version int `json:"version" gorm:"uniqueIndex:idx_team_project_environment_version"`
 	// Data is the data of the state.
 	Data datatypes.JSON `json:"data" form:"data"`
 	// CreatedAt is the time the snapshot was created.

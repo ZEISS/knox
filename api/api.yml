@@ -1240,8 +1240,6 @@ components:
           type: string
         name:
           type: string
-        slug:
-          type: string
         description:
           type: string
         team:
@@ -1265,8 +1263,6 @@ components:
     ProjectCreate:
       type: object
       properties:
-        slug:
-          type: string
         name:
           type: string
         description:
@@ -1277,8 +1273,6 @@ components:
     ProjectUpdate:
       type: object
       properties:
-        slug:
-          type: string
         name:
           type: string
         description:
@@ -1292,8 +1286,6 @@ components:
         id:
           type: string
         name:
-          type: string
-        slug:
           type: string
         username:
           type: string
@@ -1320,8 +1312,6 @@ components:
       properties:
         name:
           type: string
-        slug:
-          type: string
         username:
           type: string
         secret:
@@ -1331,8 +1321,6 @@ components:
       type: object
       properties:
         name:
-          type: string
-        slug:
           type: string
         username:
           type: string

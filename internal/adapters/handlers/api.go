@@ -14,15 +14,17 @@ import (
 var _ openapi.StrictServerInterface = (*apiHandlers)(nil)
 
 type apiHandlers struct {
-	locks     controllers.LocksController
-	state     controllers.StateController
-	snapshots controllers.SnapshotController
-	team      controllers.TeamController
+	locks       controllers.LocksController
+	state       controllers.StateController
+	snapshots   controllers.SnapshotController
+	team        controllers.TeamController
+	project     controllers.ProjectController
+	environment controllers.EnvironmentController
 }
 
 // NewAPIHandlers returns a new instance of APIHandlers.
-func NewAPIHandlers(locks controllers.LocksController, state controllers.StateController, snapshots controllers.SnapshotController, team controllers.TeamController) *apiHandlers {
-	return &apiHandlers{locks, state, snapshots, team}
+func NewAPIHandlers(locks controllers.LocksController, state controllers.StateController, snapshots controllers.SnapshotController, team controllers.TeamController, project controllers.ProjectController, environment controllers.EnvironmentController) *apiHandlers {
+	return &apiHandlers{locks, state, snapshots, team, project, environment}
 }
 
 // Get system health status
@@ -40,13 +42,27 @@ func (h *apiHandlers) GetReady(ctx context.Context, request openapi.GetReadyRequ
 // Get a list of projects
 // (GET /project)
 func (h *apiHandlers) GetProjects(ctx context.Context, request openapi.GetProjectsRequestObject) (openapi.GetProjectsResponseObject, error) {
-	return nil, nil
+	query := dto.FromGetProjectsRequestObject(request)
+
+	results, err := h.project.ListProjects(ctx, query)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return dto.ToGetProjectsResponseObject(results), nil
 }
 
 // Create a new project
 // (POST /project)
 func (h *apiHandlers) CreateProject(ctx context.Context, request openapi.CreateProjectRequestObject) (openapi.CreateProjectResponseObject, error) {
-	return nil, nil
+	cmd := dto.FromCreateProjectRequestObject(request)
+
+	err := h.project.CreateProject(ctx, cmd)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return dto.ToCreateProjectResponseObject(), nil
 }
 
 // Delete a project
@@ -76,7 +92,14 @@ func (h *apiHandlers) GetEnvironments(ctx context.Context, request openapi.GetEn
 // Create a new environment
 // (POST /project/{projectId}/environment)
 func (h *apiHandlers) CreateEnvironment(ctx context.Context, request openapi.CreateEnvironmentRequestObject) (openapi.CreateEnvironmentResponseObject, error) {
-	return nil, nil
+	cmd := dto.FromCreateEnvironmentRequestObject(request)
+
+	err := h.environment.CreateEnvironment(ctx, cmd)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return dto.ToCreateEnvironmentResponseObject(), nil
 }
 
 // Delete an environment
