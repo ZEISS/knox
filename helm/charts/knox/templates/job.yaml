@@ -36,11 +36,15 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           args: ["migrate"]
           env:
+             {{- if .Values.database.prefix }}
+            - name: KNOX_DATABASE_TABLE_PREFIX
+              value: "{{ .Values.database.prefix }}"
+            {{- end }}
             {{- if .Values.database.uri }}
-            - name: knox_ACCOUNTS_DATABASE_URI
+            - name: KNOX_DATABASE_URI
               value: "{{ .Values.database.uri }}"
             {{- else if .Values.database.uriSecret }}
-            - name: knox_ACCOUNTS_DATABASE_URI
+            - name: KNOX_DATABASE_URI
               valueFrom:
                 secretKeyRef:
                   name: "{{ .Values.database.uriSecret }}"
@@ -48,7 +52,7 @@ spec:
             {{- end }}
 
             {{- if .Values.migrate.timeout }}
-            - name: knox_TIMEOUT
+            - name: KNOX_TIMEOUT
               value: "{{ .Values.migrate.timeout }}"
             {{- end }}
 
