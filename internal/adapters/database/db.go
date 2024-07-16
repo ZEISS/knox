@@ -3,7 +3,9 @@ package database
 import (
 	"context"
 	"errors"
+	"fmt"
 
+	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
 
@@ -50,6 +52,39 @@ func (r *readTxImpl) GetState(ctx context.Context, state *models.State) error {
 	return r.conn.Where(state).Last(state).Error
 }
 
+// ListProjects ...
+func (r *readTxImpl) ListProjects(ctx context.Context, slug string, results *tables.Results[models.Project]) error {
+	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).
+		Where("team_id = (?)", r.conn.Model(&adapters.GothTeam{}).Where("slug = ?", slug).Select("id")).
+		Find(&results.Rows).Error
+}
+
+// ListEnvironments ...
+func (r *readTxImpl) ListEnvironments(ctx context.Context, teamId, projectId string, results *tables.Results[models.Environment]) error {
+	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).
+		Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projectId).Where("team_id = (?)", r.conn.Model(&adapters.GothTeam{}).Where("slug = ?", teamId).Select("id")).Select("id")).
+		Find(&results.Rows).Error
+}
+
+// AuthenticateClient ...
+func (r *readTxImpl) AuthenticateClient(ctx context.Context, teamId, projectId, environmentId, username, password string) error {
+	environment := models.Environment{
+		Name:     environmentId,
+		Username: username,
+	}
+
+	err := r.conn.Debug().
+		Model(&models.Environment{}).
+		Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projectId).Where("team_id = (?)", r.conn.Model(&adapters.GothTeam{}).Where("slug = ?", teamId).Select("id")).Select("id")).
+		Where(&environment).
+		First(&environment).Error
+	if err != nil {
+		return err
+	}
+
+	return environment.ComparePassword(password)
+}
+
 type writeTxImpl struct {
 	conn *gorm.DB
 	readTxImpl
@@ -94,6 +129,8 @@ func (rw *writeTxImpl) UpdateState(ctx context.Context, state *models.State) err
 		state.Version = latest.Version + 1
 	}
 
+	fmt.Println(state.Version)
+
 	if latest.Version > 0 {
 		err := rw.conn.Delete(&latest).Error
 		if err != nil {
@@ -122,4 +159,9 @@ func (rw *writeTxImpl) CreateTeam(ctx context.Context, team *adapters.GothTeam) 
 // DeleteTeam deletes a team.
 func (rw *writeTxImpl) DeleteTeam(ctx context.Context, team *adapters.GothTeam) error {
 	return rw.conn.Delete(team).Error
+}
+
+// CreateEnvironment creates a new environment.
+func (rw *writeTxImpl) CreateEnvironment(ctx context.Context, environment *models.Environment) error {
+	return rw.conn.Create(environment).Error
 }

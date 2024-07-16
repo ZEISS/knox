@@ -8,6 +8,7 @@ import (
 	"github.com/zeiss/knox/internal/adapters/handlers"
 	"github.com/zeiss/knox/internal/controllers"
 	openapi "github.com/zeiss/knox/pkg/apis"
+	"github.com/zeiss/knox/pkg/auth"
 	"github.com/zeiss/knox/pkg/cfg"
 	"github.com/zeiss/knox/pkg/utils"
 
@@ -18,7 +19,6 @@ import (
 	"github.com/kelseyhightower/envconfig"
 	middleware "github.com/oapi-codegen/fiber-middleware"
 	"github.com/spf13/cobra"
-	authz "github.com/zeiss/fiber-authz"
 	seed "github.com/zeiss/gorm-seed"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -100,17 +100,19 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 		app.Use(logger.New())
 
 		validatorOptions := &middleware.Options{}
-		validatorOptions.Options.AuthenticationFunc = authz.NewOpenAPIAuthenticator(authz.WithAuthzChecker(authz.NewFake(true)))
+		validatorOptions.Options.AuthenticationFunc = auth.NewAuthenticator(auth.WithBasicAuthenticator(auth.NewBasicAuthenticator(store)))
 		// validatorOptions.ErrorHandler = authz.NewOpenAPIErrorHandler()
 
 		app.Use(middleware.OapiRequestValidatorWithOptions(swagger, validatorOptions))
 
 		lc := controllers.NewLocksController(store)
 		sc := controllers.NewStateController(store)
-		pc := controllers.NewSnapshotController(store)
+		ssc := controllers.NewSnapshotController(store)
 		tc := controllers.NewTeamController(store)
+		pc := controllers.NewProjectController(store)
+		ec := controllers.NewEnvironmentController(store)
 
-		handlers := handlers.NewAPIHandlers(lc, sc, pc, tc)
+		handlers := handlers.NewAPIHandlers(lc, sc, ssc, tc, pc, ec)
 		handler := openapi.NewStrictHandler(handlers, nil)
 		openapi.RegisterHandlers(app, handler)
 

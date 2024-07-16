@@ -62,10 +62,10 @@ spec:
 
           env:
             {{- if .Values.database.uri }}
-            - name: knox_ACCOUNTS_DATABASE_URI
+            - name: KNOX_DATABASE_URI
               value: "{{ .Values.database.uri }}"
             {{- else if .Values.database.uriSecret }}
-            - name: knox_ACCOUNTS_DATABASE_URI
+            - name: KNOX_DATABASE_URI
               valueFrom:
                 secretKeyRef:
                   name: "{{ .Values.database.uriSecret }}"
@@ -73,12 +73,12 @@ spec:
             {{- end }}
 
             {{- if .Values.database.prefix }}
-            - name: knox_ACCOUNTS_DATABASE_PREFIX
+            - name: KNOX_DATABASE_TABLE_PREFIX
               value: "{{ .Values.database.prefix }}"
             {{- end }}
 
             {{- if .Values.http.addr }}
-            - name: knox_ACCOUNTS_ADDR
+            - name: KNOX_ADDR
               value: "{{ .Values.http.addr }}"
             {{- end }}
 

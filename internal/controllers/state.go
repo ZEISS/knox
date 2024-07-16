@@ -4,13 +4,13 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/google/uuid"
-	"github.com/zeiss/fiber-goth/adapters"
-	seed "github.com/zeiss/gorm-seed"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
 	openapi "github.com/zeiss/knox/pkg/apis"
 
+	"github.com/google/uuid"
+	"github.com/zeiss/fiber-goth/adapters"
+	seed "github.com/zeiss/gorm-seed"
 	"gorm.io/datatypes"
 )
 

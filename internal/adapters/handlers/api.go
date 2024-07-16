@@ -14,15 +14,17 @@ import (
 var _ openapi.StrictServerInterface = (*apiHandlers)(nil)
 
 type apiHandlers struct {
-	locks     controllers.LocksController
-	state     controllers.StateController
-	snapshots controllers.SnapshotController
-	team      controllers.TeamController
+	locks       controllers.LocksController
+	state       controllers.StateController
+	snapshots   controllers.SnapshotController
+	team        controllers.TeamController
+	project     controllers.ProjectController
+	environment controllers.EnvironmentController
 }
 
 // NewAPIHandlers returns a new instance of APIHandlers.
-func NewAPIHandlers(locks controllers.LocksController, state controllers.StateController, snapshots controllers.SnapshotController, team controllers.TeamController) *apiHandlers {
-	return &apiHandlers{locks, state, snapshots, team}
+func NewAPIHandlers(locks controllers.LocksController, state controllers.StateController, snapshots controllers.SnapshotController, team controllers.TeamController, project controllers.ProjectController, environment controllers.EnvironmentController) *apiHandlers {
+	return &apiHandlers{locks, state, snapshots, team, project, environment}
 }
 
 // Get system health status
@@ -34,103 +36,131 @@ func (h *apiHandlers) GetHealth(ctx context.Context, request openapi.GetHealthRe
 // Get system readiness
 // (GET /_ready)
 func (h *apiHandlers) GetReady(ctx context.Context, request openapi.GetReadyRequestObject) (openapi.GetReadyResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Get a list of projects
 // (GET /project)
 func (h *apiHandlers) GetProjects(ctx context.Context, request openapi.GetProjectsRequestObject) (openapi.GetProjectsResponseObject, error) {
-	return nil, nil
+	query := dto.FromGetProjectsRequestObject(request)
+
+	results, err := h.project.ListProjects(ctx, query)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return dto.ToGetProjectsResponseObject(results), nil
 }
 
 // Create a new project
 // (POST /project)
 func (h *apiHandlers) CreateProject(ctx context.Context, request openapi.CreateProjectRequestObject) (openapi.CreateProjectResponseObject, error) {
-	return nil, nil
+	cmd := dto.FromCreateProjectRequestObject(request)
+
+	err := h.project.CreateProject(ctx, cmd)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return dto.ToCreateProjectResponseObject(), nil
 }
 
 // Delete a project
 // (DELETE /project/{id})
 func (h *apiHandlers) DeleteProject(ctx context.Context, request openapi.DeleteProjectRequestObject) (openapi.DeleteProjectResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Get a project
 // (GET /project/{id})
 func (h *apiHandlers) GetProject(ctx context.Context, request openapi.GetProjectRequestObject) (openapi.GetProjectResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Update a project
 // (PUT /project/{id})
 func (h *apiHandlers) UpdateProject(ctx context.Context, request openapi.UpdateProjectRequestObject) (openapi.UpdateProjectResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Get a list of environments
 // (GET /project/{projectId}/environment)
 func (h *apiHandlers) GetEnvironments(ctx context.Context, request openapi.GetEnvironmentsRequestObject) (openapi.GetEnvironmentsResponseObject, error) {
-	return nil, nil
+	query := dto.FromGetEnvironmentsRequestObject(request)
+
+	results, err := h.environment.ListEnvironments(ctx, query)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return dto.ToGetEnvironmentsResponseObject(results), nil
 }
 
 // Create a new environment
 // (POST /project/{projectId}/environment)
 func (h *apiHandlers) CreateEnvironment(ctx context.Context, request openapi.CreateEnvironmentRequestObject) (openapi.CreateEnvironmentResponseObject, error) {
-	return nil, nil
+	cmd := dto.FromCreateEnvironmentRequestObject(request)
+
+	err := h.environment.CreateEnvironment(ctx, cmd)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return dto.ToCreateEnvironmentResponseObject(), nil
 }
 
 // Delete an environment
 // (DELETE /project/{projectId}/environment/{environmentId})
 func (h *apiHandlers) DeleteEnvironment(ctx context.Context, request openapi.DeleteEnvironmentRequestObject) (openapi.DeleteEnvironmentResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Get an environment
 // (GET /project/{projectId}/environment/{environmentId})
 func (h *apiHandlers) GetEnvironment(ctx context.Context, request openapi.GetEnvironmentRequestObject) (openapi.GetEnvironmentResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Update an environment
 // (PUT /project/{projectId}/environment/{environmentId})
 func (h *apiHandlers) UpdateEnvironment(ctx context.Context, request openapi.UpdateEnvironmentRequestObject) (openapi.UpdateEnvironmentResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Get a list of snapshots
 // (GET /snapshot)
 func (h *apiHandlers) GetSnapshots(ctx context.Context, request openapi.GetSnapshotsRequestObject) (openapi.GetSnapshotsResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Delete a snapshot
 // (DELETE /snapshot/{id})
 func (h *apiHandlers) DeleteSnapshot(ctx context.Context, request openapi.DeleteSnapshotRequestObject) (openapi.DeleteSnapshotResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Get a snapshot
 // (GET /snapshot/{id})
 func (h *apiHandlers) GetSnapshot(ctx context.Context, request openapi.GetSnapshotRequestObject) (openapi.GetSnapshotResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Update a snapshot
 // (PUT /snapshot/{id})
 func (h *apiHandlers) UpdateSnapshot(ctx context.Context, request openapi.UpdateSnapshotRequestObject) (openapi.UpdateSnapshotResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Get a task
 // (GET /task/{id})
 func (h *apiHandlers) GetTask(ctx context.Context, request openapi.GetTaskRequestObject) (openapi.GetTaskResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Get a list of teams
 // (GET /team)
 func (h *apiHandlers) GetTeams(ctx context.Context, request openapi.GetTeamsRequestObject) (openapi.GetTeamsResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Create a new team
@@ -175,37 +205,37 @@ func (h *apiHandlers) GetTeam(ctx context.Context, request openapi.GetTeamReques
 // Update a team
 // (PUT /team/{id})
 func (h *apiHandlers) UpdateTeam(ctx context.Context, request openapi.UpdateTeamRequestObject) (openapi.UpdateTeamResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Get a list of users
 // (GET /user)
 func (h *apiHandlers) GetUsers(ctx context.Context, request openapi.GetUsersRequestObject) (openapi.GetUsersResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Create a new user
 // (POST /user)
 func (h *apiHandlers) PostUser(ctx context.Context, request openapi.PostUserRequestObject) (openapi.PostUserResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Delete a user
 // (DELETE /user/{id})
 func (h *apiHandlers) DeleteUser(ctx context.Context, request openapi.DeleteUserRequestObject) (openapi.DeleteUserResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Get a user
 // (GET /user/{id})
 func (h *apiHandlers) GetUser(ctx context.Context, request openapi.GetUserRequestObject) (openapi.GetUserResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Update a user
 // (PUT /user/{id})
 func (h *apiHandlers) UpdateUser(ctx context.Context, request openapi.UpdateUserRequestObject) (openapi.UpdateUserResponseObject, error) {
-	return nil, nil
+	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Create a new snapshot

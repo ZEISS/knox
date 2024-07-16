@@ -4,7 +4,16 @@ openapi: 3.0.1
 info:
   title: Knox
   version: 1.0.0
-  description:
+  description: |
+    This is the Knox API specification. Knox is a service that manages Terraform environments and snapshots.
+
+    There is an available Helm chart for Knox.
+
+    ```shell
+    helm repo add knox https://zeiss.github.io/knox/helm/charts
+    helm repo update
+    helm search repo knox
+    ```
 
 servers:
   - url: https://localhost:8080
@@ -1240,8 +1249,6 @@ components:
           type: string
         name:
           type: string
-        slug:
-          type: string
         description:
           type: string
         team:
@@ -1265,8 +1272,6 @@ components:
     ProjectCreate:
       type: object
       properties:
-        slug:
-          type: string
         name:
           type: string
         description:
@@ -1277,8 +1282,6 @@ components:
     ProjectUpdate:
       type: object
       properties:
-        slug:
-          type: string
         name:
           type: string
         description:
@@ -1292,8 +1295,6 @@ components:
         id:
           type: string
         name:
-          type: string
-        slug:
           type: string
         username:
           type: string
@@ -1320,8 +1321,6 @@ components:
       properties:
         name:
           type: string
-        slug:
-          type: string
         username:
           type: string
         secret:
@@ -1331,8 +1330,6 @@ components:
       type: object
       properties:
         name:
-          type: string
-        slug:
           type: string
         username:
           type: string

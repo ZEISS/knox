@@ -3,6 +3,7 @@ package controllers
 import (
 	"context"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/zeiss/fiber-goth/adapters"
 	seed "github.com/zeiss/gorm-seed"
 	"github.com/zeiss/knox/internal/ports"
@@ -54,6 +55,13 @@ func NewTeamController(store seed.Database[ports.ReadTx, ports.ReadWriteTx]) *Te
 
 // CreateTeam creates a new team.
 func (c *TeamControllerImpl) CreateTeam(ctx context.Context, cmd CreateTeamCommand) error {
+	validate = validator.New()
+
+	err := validate.Struct(cmd)
+	if err != nil {
+		return err
+	}
+
 	team := adapters.GothTeam{
 		Name:        cmd.Name,
 		Description: cmd.Description,
