@@ -4,8 +4,8 @@ name: Build docs
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "v*"
   workflow_dispatch:
 
 concurrency:
@@ -26,6 +26,8 @@ jobs:
     - run: |
         make docs
     - uses: peaceiris/actions-gh-pages@v4
+      if: github.ref == 'refs/heads/main'
       with:
+        keep_files: true
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./public
