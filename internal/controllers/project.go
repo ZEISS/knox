@@ -29,6 +29,11 @@ type ListProjectsQuery struct {
 	Sort   string `json:"sort" form:"sort"`
 }
 
+// DeleteProjectCommand ...
+type DeleteProjectCommand struct {
+	Name string `json:"name" form:"name" validate:"required"`
+}
+
 // ProjectControllerImpl ...
 type ProjectControllerImpl struct {
 	store seed.Database[ports.ReadTx, ports.ReadWriteTx]
@@ -40,6 +45,8 @@ type ProjectController interface {
 	CreateProject(ctx context.Context, cmd CreateProjectCommand) error
 	// ListProjects ...
 	ListProjects(ctx context.Context, cmd ListProjectsQuery) (tables.Results[models.Project], error)
+	// DeleteProject ...
+	DeleteProject(ctx context.Context, cmd DeleteProjectCommand) error
 }
 
 // NewProjectController ...
@@ -94,4 +101,20 @@ func (c *ProjectControllerImpl) ListProjects(ctx context.Context, cmd ListProjec
 	}
 
 	return teams, nil
+}
+
+// DeleteProject ...
+func (c *ProjectControllerImpl) DeleteProject(ctx context.Context, cmd DeleteProjectCommand) error {
+	err := validate.Struct(cmd)
+	if err != nil {
+		return err
+	}
+
+	project := models.Project{
+		Name: cmd.Name,
+	}
+
+	return c.store.ReadWriteTx(ctx, func(ctx context.Context, tx ports.ReadWriteTx) error {
+		return tx.DeleteProject(ctx, &project)
+	})
 }

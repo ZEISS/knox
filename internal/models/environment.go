@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// Environment ...
+// Environment is a specific environment for a project.
 type Environment struct {
 	// ID is the primary key of the team.
 	ID uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`

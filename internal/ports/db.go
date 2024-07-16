@@ -63,6 +63,8 @@ type ReadWriteTx interface {
 	DeleteTeam(context.Context, *adapters.GothTeam) error
 	// CreateProject creates a new project.
 	CreateProject(context.Context, *models.Project) error
+	// DeleteProject deletes a project.
+	DeleteProject(context.Context, *models.Project) error
 	// CreateEnvironment creates a new environment.
 	CreateEnvironment(context.Context, *models.Environment) error
 

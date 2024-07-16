@@ -51,3 +51,17 @@ func ToGetProjectsResponseObject(results tables.Results[models.Project]) openapi
 
 	return res
 }
+
+// FromDeleteProjectRequestObject ...
+func FromDeleteProjectRequestObject(req openapi.DeleteProjectRequestObject) controllers.DeleteProjectCommand {
+	return controllers.DeleteProjectCommand{
+		Name: req.ProjectId,
+	}
+}
+
+// ToDeleteProjectResponseObject ...
+func ToDeleteProjectResponseObject() openapi.DeleteProject204Response {
+	res := openapi.DeleteProject204Response{}
+
+	return res
+}

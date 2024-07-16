@@ -7,7 +7,7 @@ import (
 	"github.com/zeiss/fiber-goth/adapters"
 )
 
-// Lock ...
+// Lock is a lock for a project.
 type Lock struct {
 	// ID is the primary key of the lock.
 	ID uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid()" params:"id"`

@@ -3,7 +3,6 @@ package database
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/models"
@@ -112,6 +111,11 @@ func (rw *writeTxImpl) CreateProject(ctx context.Context, project *models.Projec
 	return rw.conn.Create(project).Error
 }
 
+// DeleteProject deletes a project.
+func (rw *writeTxImpl) DeleteProject(ctx context.Context, project *models.Project) error {
+	return rw.conn.Delete(project).Error
+}
+
 // UpdateState...
 func (rw *writeTxImpl) UpdateState(ctx context.Context, state *models.State) error {
 	latest := models.State{}
@@ -128,8 +132,6 @@ func (rw *writeTxImpl) UpdateState(ctx context.Context, state *models.State) err
 	if latest.Version > 0 {
 		state.Version = latest.Version + 1
 	}
-
-	fmt.Println(state.Version)
 
 	if latest.Version > 0 {
 		err := rw.conn.Delete(&latest).Error
