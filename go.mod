@@ -18,7 +18,7 @@ require (
 	github.com/zeiss/fiber-goth v1.2.8
 	github.com/zeiss/fiber-htmx v1.3.19
 	github.com/zeiss/gorm-seed v0.1.2
-	golang.org/x/crypto v0.24.0
+	golang.org/x/crypto v0.25.0
 	golang.org/x/mod v0.19.0
 	gorm.io/datatypes v1.2.1
 	gorm.io/driver/postgres v1.5.9
@@ -236,7 +236,7 @@ require (
 	golang.org/x/exp/typeparams v0.0.0-20240314144324-c7f7c6466f7f // indirect
 	golang.org/x/net v0.26.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/sys v0.21.0 // indirect
+	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	golang.org/x/tools v0.22.0 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
