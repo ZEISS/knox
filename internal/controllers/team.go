@@ -3,10 +3,11 @@ package controllers
 import (
 	"context"
 
+	"github.com/zeiss/knox/internal/ports"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/zeiss/fiber-goth/adapters"
 	seed "github.com/zeiss/gorm-seed"
-	"github.com/zeiss/knox/internal/ports"
 )
 
 var _ TeamController = (*TeamControllerImpl)(nil)

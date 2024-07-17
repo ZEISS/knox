@@ -1,0 +1,26 @@
+model
+  schema 1.1
+
+type user
+
+type team
+  relations
+    define admin: [user, team#member]
+    define member: [user] or owner
+    define owner: [user]
+    define reader: [user, team#member]
+    define writer: [user, team#member]
+
+type project
+  relations
+    define admin: [user, team#member] or admin from owner
+    define owner: [team]
+    define reader: [user, team#member] or reader from owner
+    define writer: [user, team#member] or writer from owner
+
+type environment
+  relations
+    define admin: [user, team#member] or admin from owner
+    define owner: [project]
+    define reader: [user, team#member] or reader from owner
+    define writer: [user, team#member] or writer from owner
