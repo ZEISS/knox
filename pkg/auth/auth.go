@@ -5,12 +5,13 @@ import (
 	"encoding/base64"
 	"strings"
 
+	"github.com/zeiss/knox/internal/ports"
+
 	"github.com/getkin/kin-openapi/openapi3filter"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/utils"
 	middleware "github.com/oapi-codegen/fiber-middleware"
 	seed "github.com/zeiss/gorm-seed"
-	"github.com/zeiss/knox/internal/ports"
 )
 
 // OpenAPIAuthenticatorOpts are the OpenAPI authenticator options.

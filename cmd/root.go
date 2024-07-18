@@ -6,9 +6,9 @@ import (
 
 	"github.com/zeiss/knox/internal/adapters/database"
 	"github.com/zeiss/knox/internal/adapters/handlers"
+	"github.com/zeiss/knox/internal/authn/oidc"
 	"github.com/zeiss/knox/internal/controllers"
 	openapi "github.com/zeiss/knox/pkg/apis"
-	"github.com/zeiss/knox/pkg/auth"
 	"github.com/zeiss/knox/pkg/cfg"
 	"github.com/zeiss/knox/pkg/oas"
 	"github.com/zeiss/knox/pkg/utils"
@@ -115,8 +115,14 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 		app.Use(requestid.New())
 		app.Use(logger.New())
 
+		validator, err := oidc.NewRemoteOidcValidator("", []string{}, "")
+		if err != nil {
+			return err
+		}
+
 		validatorOptions := &middleware.Options{}
-		validatorOptions.Options.AuthenticationFunc = auth.NewAuthenticator(auth.WithBasicAuthenticator(auth.NewBasicAuthenticator(store)))
+		// validatorOptions.Options.AuthenticationFunc = auth.NewAuthenticator(auth.WithBasicAuthenticator(auth.NewBasicAuthenticator(store)))
+		validatorOptions.Options.AuthenticationFunc = oidc.Authenticate(validator)
 
 		// validatorOptions.ErrorHandler = authz.NewOpenAPIErrorHandler()
 
@@ -129,16 +135,15 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 		pc := controllers.NewProjectController(store)
 		ec := controllers.NewEnvironmentController(store)
 
-		authz := oas.NewAuthz(
-			oas.Config{
-				Checker: oas.NewChecker(fga),
-				Resolvers: map[string]oas.AuthzResolverFunc{
-					"GetTeam": func(c *fiber.Ctx) (oas.User, oas.Relation, oas.Object, error) {
-						return oas.NoopUser, oas.NoopRelation, oas.NoopObject, nil
-					},
+		authConfig := oas.Config{
+			Checker: oas.NewChecker(fga),
+			Resolvers: oas.ResolverMap{
+				"GetTeam": func(c *fiber.Ctx) (oas.User, oas.Relation, oas.Object, error) {
+					return oas.NoopUser, oas.NoopRelation, oas.NoopObject, nil
 				},
 			},
-		)
+		}
+		authz := oas.NewAuthz(authConfig)
 
 		handlers := handlers.NewAPIHandlers(lc, sc, ssc, tc, pc, ec)
 		handler := openapi.NewStrictHandler(handlers, []openapi.StrictMiddlewareFunc{authz})
