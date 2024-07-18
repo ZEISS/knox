@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "options": {
+        "env": {}
+    },
+    "tasks": [
+        {
+            "label": "Start Web Server",
+            "type": "shell",
+            "command": "air",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "args": [
+                "-c",
+                "${workspaceFolder}/cmd/web/.air.toml"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Start API Server",
+            "type": "shell",
+            "command": "air",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "args": [
+                "-c",
+                "${workspaceFolder}/cmd/api/.air.toml"
+            ]
+        }
+    ]
+}

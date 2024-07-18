@@ -10,6 +10,7 @@ import (
 	openapi "github.com/zeiss/knox/pkg/apis"
 	"github.com/zeiss/knox/pkg/auth"
 	"github.com/zeiss/knox/pkg/cfg"
+	"github.com/zeiss/knox/pkg/oas"
 	"github.com/zeiss/knox/pkg/utils"
 
 	"github.com/gofiber/fiber/v2"
@@ -113,8 +114,18 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 		pc := controllers.NewProjectController(store)
 		ec := controllers.NewEnvironmentController(store)
 
+		authz := oas.NewAuthz(
+			oas.Config{
+				Resolvers: map[string]oas.AuthzResolverFunc{
+					"GetTeam": func(ctx *fiber.Ctx) (oas.User, oas.Relation, oas.Object, error) {
+						return oas.User(""), oas.Relation(""), oas.Object(""), nil
+					},
+				},
+			},
+		)
+
 		handlers := handlers.NewAPIHandlers(lc, sc, ssc, tc, pc, ec)
-		handler := openapi.NewStrictHandler(handlers, nil)
+		handler := openapi.NewStrictHandler(handlers, []openapi.StrictMiddlewareFunc{authz})
 		openapi.RegisterHandlers(app, handler)
 
 		err = app.Listen(s.cfg.Flags.Addr)
