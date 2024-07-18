@@ -43,6 +43,9 @@ func init() {
 	Root.PersistentFlags().StringVar(&config.Flags.Addr, "addr", config.Flags.Addr, "addr")
 	Root.PersistentFlags().StringVar(&config.Flags.DatabaseURI, "db-uri", config.Flags.DatabaseURI, "Database URI")
 	Root.PersistentFlags().StringVar(&config.Flags.DatabaseTablePrefix, "db-table-prefix", config.Flags.DatabaseTablePrefix, "Database table prefix")
+	Root.PersistentFlags().StringVar(&config.Flags.FGAApiUrl, "fga-api-url", config.Flags.FGAApiUrl, "FGA API URL")
+	Root.PersistentFlags().StringVar(&config.Flags.FGAStoreID, "fga-store-id", config.Flags.FGAStoreID, "FGA Store ID")
+	Root.PersistentFlags().StringVar(&config.Flags.FGAAuthorizationModelID, "fga-authorization-model-id", config.Flags.FGAAuthorizationModelID, "FGA Authorization Model ID")
 
 	Root.SilenceUsage = true
 }
