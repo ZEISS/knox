@@ -12,6 +12,8 @@ type Flags struct {
 	FGAApiUrl               string `envconfig:"KNOX_FGA_API_URL" default:"http://host.docker.internal:8080"`
 	FGAStoreID              string `envconfig:"KNOX_FGA_STORE_ID" default:""`
 	FGAAuthorizationModelID string `envconfig:"KNOX_FGA_AUTHORIZATION_MODEL_ID" default:""`
+	OIDCIssuer              string `envconfig:"KNOX_OIDC_ISSUER" default:""`
+	OIDCAudience            string `envconfig:"KNOX_OIDC_AUDIENCE" default:""`
 }
 
 // NewFlags returns a new instance of Flags.

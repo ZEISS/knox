@@ -160,7 +160,7 @@ func (siw *ServerInterfaceWrapper) LockEnvironment(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Basic_authScopes, []string{})
+	c.Context().SetUserValue(BasicAuthScopes, []string{})
 
 	return siw.Handler.LockEnvironment(c, teamId, projectId, environmentId)
 }
@@ -194,7 +194,7 @@ func (siw *ServerInterfaceWrapper) GetEnvironmentState(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Basic_authScopes, []string{})
+	c.Context().SetUserValue(BasicAuthScopes, []string{})
 
 	return siw.Handler.GetEnvironmentState(c, teamId, projectId, environmentId)
 }
@@ -228,7 +228,7 @@ func (siw *ServerInterfaceWrapper) UpdateEnvironmentState(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Basic_authScopes, []string{})
+	c.Context().SetUserValue(BasicAuthScopes, []string{})
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params UpdateEnvironmentStateParams
@@ -278,7 +278,7 @@ func (siw *ServerInterfaceWrapper) UnlockEnvironment(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Basic_authScopes, []string{})
+	c.Context().SetUserValue(BasicAuthScopes, []string{})
 
 	return siw.Handler.UnlockEnvironment(c, teamId, projectId, environmentId)
 }
@@ -288,7 +288,7 @@ func (siw *ServerInterfaceWrapper) GetSnapshots(c *fiber.Ctx) error {
 
 	var err error
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params GetSnapshotsParams
@@ -319,7 +319,7 @@ func (siw *ServerInterfaceWrapper) GetSnapshots(c *fiber.Ctx) error {
 // CreateSnapshot operation middleware
 func (siw *ServerInterfaceWrapper) CreateSnapshot(c *fiber.Ctx) error {
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.CreateSnapshot(c)
 }
@@ -337,7 +337,7 @@ func (siw *ServerInterfaceWrapper) DeleteSnapshot(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter id: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.DeleteSnapshot(c, id)
 }
@@ -355,7 +355,7 @@ func (siw *ServerInterfaceWrapper) GetSnapshot(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter id: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.GetSnapshot(c, id)
 }
@@ -373,7 +373,7 @@ func (siw *ServerInterfaceWrapper) UpdateSnapshot(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter id: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.UpdateSnapshot(c, id)
 }
@@ -391,7 +391,7 @@ func (siw *ServerInterfaceWrapper) GetTask(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter id: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.GetTask(c, id)
 }
@@ -401,7 +401,7 @@ func (siw *ServerInterfaceWrapper) GetTeams(c *fiber.Ctx) error {
 
 	var err error
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params GetTeamsParams
@@ -432,7 +432,7 @@ func (siw *ServerInterfaceWrapper) GetTeams(c *fiber.Ctx) error {
 // CreateTeam operation middleware
 func (siw *ServerInterfaceWrapper) CreateTeam(c *fiber.Ctx) error {
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.CreateTeam(c)
 }
@@ -450,7 +450,7 @@ func (siw *ServerInterfaceWrapper) DeleteTeam(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.DeleteTeam(c, teamId)
 }
@@ -468,7 +468,7 @@ func (siw *ServerInterfaceWrapper) GetTeam(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.GetTeam(c, teamId)
 }
@@ -486,7 +486,7 @@ func (siw *ServerInterfaceWrapper) UpdateTeam(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.UpdateTeam(c, teamId)
 }
@@ -504,7 +504,7 @@ func (siw *ServerInterfaceWrapper) GetProjects(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params GetProjectsParams
@@ -545,7 +545,7 @@ func (siw *ServerInterfaceWrapper) CreateProject(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.CreateProject(c, teamId)
 }
@@ -571,7 +571,7 @@ func (siw *ServerInterfaceWrapper) DeleteProject(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.DeleteProject(c, teamId, projectId)
 }
@@ -597,7 +597,7 @@ func (siw *ServerInterfaceWrapper) GetProject(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.GetProject(c, teamId, projectId)
 }
@@ -623,7 +623,7 @@ func (siw *ServerInterfaceWrapper) UpdateProject(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.UpdateProject(c, teamId, projectId)
 }
@@ -649,7 +649,7 @@ func (siw *ServerInterfaceWrapper) GetEnvironments(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params GetEnvironmentsParams
@@ -698,7 +698,7 @@ func (siw *ServerInterfaceWrapper) CreateEnvironment(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.CreateEnvironment(c, teamId, projectId)
 }
@@ -732,7 +732,7 @@ func (siw *ServerInterfaceWrapper) DeleteEnvironment(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.DeleteEnvironment(c, teamId, projectId, environmentId)
 }
@@ -766,7 +766,7 @@ func (siw *ServerInterfaceWrapper) GetEnvironment(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.GetEnvironment(c, teamId, projectId, environmentId)
 }
@@ -800,7 +800,7 @@ func (siw *ServerInterfaceWrapper) UpdateEnvironment(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentId: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.UpdateEnvironment(c, teamId, projectId, environmentId)
 }
@@ -810,7 +810,7 @@ func (siw *ServerInterfaceWrapper) GetUsers(c *fiber.Ctx) error {
 
 	var err error
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params GetUsersParams
@@ -841,7 +841,7 @@ func (siw *ServerInterfaceWrapper) GetUsers(c *fiber.Ctx) error {
 // PostUser operation middleware
 func (siw *ServerInterfaceWrapper) PostUser(c *fiber.Ctx) error {
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.PostUser(c)
 }
@@ -859,7 +859,7 @@ func (siw *ServerInterfaceWrapper) DeleteUser(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter id: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.DeleteUser(c, id)
 }
@@ -877,7 +877,7 @@ func (siw *ServerInterfaceWrapper) GetUser(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter id: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.GetUser(c, id)
 }
@@ -895,7 +895,7 @@ func (siw *ServerInterfaceWrapper) UpdateUser(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter id: %w", err).Error())
 	}
 
-	c.Context().SetUserValue(Api_keyScopes, []string{})
+	c.Context().SetUserValue(OpenIDScopes, []string{})
 
 	return siw.Handler.UpdateUser(c, id)
 }

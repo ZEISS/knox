@@ -96,6 +96,7 @@ func (oidc *RemoteOidcValidator) GetKeys() (*keyfunc.JWKS, error) {
 }
 
 // GetConfiguration fetches the OIDC configuration from the issuer.
+// nolint:noctx
 func (oidc *RemoteOidcValidator) GetConfiguration() (*authn.OidcConfig, error) {
 	wellKnown := strings.TrimSuffix(oidc.MainIssuer, "/") + "/.well-known/openid-configuration"
 	req, err := http.NewRequest("GET", wellKnown, nil)
@@ -134,6 +135,7 @@ func (oidc *RemoteOidcValidator) GetConfiguration() (*authn.OidcConfig, error) {
 	return oidcConfig, nil
 }
 
+// Authenticate returns a nil error and the AuthClaims info (if available) if the subject is authenticated or a
 func Authenticate(v Validator) openapi3filter.AuthenticationFunc {
 	return func(ctx context.Context, input *openapi3filter.AuthenticationInput) error {
 		c := middleware.GetFiberContext(ctx)
@@ -144,12 +146,14 @@ func Authenticate(v Validator) openapi3filter.AuthenticationFunc {
 		}
 
 		usrCtx := context.WithValue(c.UserContext(), jwtToken, principal)
+		// nolint:contextcheck
 		c.SetUserContext(usrCtx)
 
 		return nil
 	}
 }
 
+// Validate validates the provided token.
 func (oidc *RemoteOidcValidator) Validate(req *http.Request) (*authn.AuthClaims, error) {
 	jwtParser := jwt.NewParser(
 		jwt.WithValidMethods([]string{"RS256"}),
@@ -167,6 +171,7 @@ func (oidc *RemoteOidcValidator) Validate(req *http.Request) (*authn.AuthClaims,
 	token, err := jwtParser.Parse(jws, func(token *jwt.Token) (any, error) {
 		return oidc.JWKs.Keyfunc(token)
 	})
+
 	if err != nil || !token.Valid {
 		return nil, ErrInvalidToken
 	}
@@ -184,7 +189,6 @@ func (oidc *RemoteOidcValidator) Validate(req *http.Request) (*authn.AuthClaims,
 	ok = slices.ContainsFunc(validIssuers, func(issuer string) bool {
 		v := jwt.NewValidator(jwt.WithIssuer(issuer))
 		err := v.Validate(claims)
-
 		return err == nil
 	})
 
@@ -241,4 +245,11 @@ func GetJWSFromRequest(req *http.Request) (string, error) {
 		return "", ErrInvalidAuthHeader
 	}
 	return strings.TrimPrefix(authHdr, prefix), nil
+}
+
+// GetJWTFromContext extracts the JWT token from the context.
+func GetJWTFromContext(ctx context.Context) (*authn.AuthClaims, bool) {
+	principal, ok := ctx.Value(jwtToken).(*authn.AuthClaims)
+
+	return principal, ok
 }

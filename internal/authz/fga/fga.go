@@ -1,4 +1,4 @@
-package oas
+package fga
 
 import (
 	"context"

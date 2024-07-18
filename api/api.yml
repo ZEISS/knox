@@ -70,7 +70,7 @@ paths:
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/environmentId"
       security:
-        - basic_auth: [] # Use basic auth to lock the environment
+        - BasicAuth: [] # Use basic auth to lock the environment
       requestBody:
         content:
           application/json:
@@ -107,7 +107,7 @@ paths:
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/environmentId"
       security:
-        - basic_auth: [] # Use basic auth to unlock the environment
+        - BasicAuth: [] # Use basic auth to unlock the environment
       requestBody:
         content:
           application/json:
@@ -142,7 +142,7 @@ paths:
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/environmentId"
       security:
-        - basic_auth: [] # Use basic auth to get the environment state
+        - BasicAuth: [] # Use basic auth to get the environment state
       responses:
         "200":
           description: Successful response
@@ -173,7 +173,7 @@ paths:
         - $ref: "#/components/parameters/environmentId"
         - $ref: "#/components/parameters/lockId"
       security:
-        - basic_auth: [] # Use basic auth to update the environment state
+        - BasicAuth: [] # Use basic auth to update the environment state
       requestBody:
         content:
           application/json:
@@ -206,7 +206,7 @@ paths:
       summary: Get a list of users
       operationId: getUsers
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
         - $ref: "#/components/parameters/limit"
         - $ref: "#/components/parameters/offset"
@@ -243,7 +243,7 @@ paths:
         - Users
       summary: Create a new user
       security:
-        - api_key: []
+        - OpenID: []
       requestBody:
         content:
           application/json:
@@ -270,7 +270,7 @@ paths:
       summary: Get a user
       operationId: getUser
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
         - in: path
           name: id
@@ -303,7 +303,7 @@ paths:
       summary: Update a user
       operationId: updateUser
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
         - in: path
           name: id
@@ -341,7 +341,7 @@ paths:
       summary: Delete a user
       operationId: deleteUser
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
         - in: path
           name: id
@@ -371,7 +371,7 @@ paths:
       summary: Create a new team
       operationId: createTeam
       security:
-        - api_key: []
+        - OpenID: []
       requestBody:
         content:
           application/json:
@@ -397,7 +397,7 @@ paths:
       summary: Get a list of teams
       operationId: getTeams
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
         - in: query
           name: limit
@@ -444,7 +444,7 @@ paths:
       summary: Get a team
       operationId: getTeam
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
         - $ref: "#/components/parameters/teamId"
       responses:
@@ -473,7 +473,7 @@ paths:
       summary: Update a team
       operationId: updateTeam
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
          - $ref: "#/components/parameters/teamId"
       requestBody:
@@ -507,7 +507,7 @@ paths:
       summary: Delete a team
       operationId: deleteTeam
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
          - $ref: "#/components/parameters/teamId"
       responses:
@@ -535,7 +535,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/teamId"
       security:
-        - api_key: []
+        - OpenID: []
       requestBody:
         content:
           application/json:
@@ -561,7 +561,7 @@ paths:
       summary: Get a list of projects
       operationId: getProjects
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
         - $ref: "#/components/parameters/teamId"
         - in: query
@@ -609,7 +609,7 @@ paths:
       summary: Get a project
       operationId: getProject
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
          - $ref: "#/components/parameters/teamId"
          - $ref: "#/components/parameters/projectId"
@@ -642,7 +642,7 @@ paths:
          - $ref: "#/components/parameters/teamId"
          - $ref: "#/components/parameters/projectId"
       security:
-        - api_key: []
+        - OpenID: []
       requestBody:
         content:
           application/json:
@@ -677,7 +677,7 @@ paths:
          - $ref: "#/components/parameters/teamId"
          - $ref: "#/components/parameters/projectId"
       security:
-        - api_key: []
+        - OpenID: []
       responses:
         "204":
           description: Successful response
@@ -701,7 +701,7 @@ paths:
       summary: Create a new environment
       operationId: createEnvironment
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
         - $ref: "#/components/parameters/teamId"
         - $ref: "#/components/parameters/projectId"
@@ -730,7 +730,7 @@ paths:
       summary: Get a list of environments
       operationId: getEnvironments
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
         - $ref: "#/components/parameters/teamId"
         - $ref: "#/components/parameters/projectId"
@@ -783,7 +783,7 @@ paths:
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/environmentId"
       security:
-        - api_key: []
+        - OpenID: []
       responses:
         "200":
           description: Successful response
@@ -814,7 +814,7 @@ paths:
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/environmentId"
       security:
-        - api_key: []
+        - OpenID: []
       requestBody:
         content:
           application/json:
@@ -850,7 +850,7 @@ paths:
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/environmentId"
       security:
-        - api_key: []
+        - OpenID: []
       responses:
         "204":
           description: Successful response
@@ -874,7 +874,7 @@ paths:
       summary: Create a new snapshot
       operationId: createSnapshot
       security:
-        - api_key: []
+        - OpenID: []
       requestBody:
         content:
           application/json:
@@ -900,7 +900,7 @@ paths:
       summary: Get a list of snapshots
       operationId: getSnapshots
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
         - in: query
           name: limit
@@ -947,7 +947,7 @@ paths:
       summary: Get a snapshot
       operationId: getSnapshot
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
         - in: path
           name: id
@@ -980,7 +980,7 @@ paths:
       summary: Update a snapshot
       operationId: updateSnapshot
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
         - in: path
           name: id
@@ -1018,7 +1018,7 @@ paths:
       summary: Delete a snapshot
       operationId: deleteSnapshot
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
         - in: path
           name: id
@@ -1048,7 +1048,7 @@ paths:
       summary: Get a task
       operationId: getTask
       security:
-        - api_key: []
+        - OpenID: []
       parameters:
         - in: path
           name: id
@@ -1416,10 +1416,9 @@ components:
       format: binary
 
   securitySchemes:
-    api_key:
-      type: apiKey
-      in: header
-      name: x-api-key
-    basic_auth:
+    OpenID:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
+    BasicAuth:
       type: http
       scheme: basic

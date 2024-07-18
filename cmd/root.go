@@ -6,11 +6,14 @@ import (
 
 	"github.com/zeiss/knox/internal/adapters/database"
 	"github.com/zeiss/knox/internal/adapters/handlers"
+	"github.com/zeiss/knox/internal/authn"
 	"github.com/zeiss/knox/internal/authn/oidc"
+	"github.com/zeiss/knox/internal/authz"
+	"github.com/zeiss/knox/internal/authz/fga"
 	"github.com/zeiss/knox/internal/controllers"
 	openapi "github.com/zeiss/knox/pkg/apis"
+	"github.com/zeiss/knox/pkg/auth"
 	"github.com/zeiss/knox/pkg/cfg"
-	"github.com/zeiss/knox/pkg/oas"
 	"github.com/zeiss/knox/pkg/utils"
 
 	"github.com/gofiber/fiber/v2"
@@ -46,6 +49,8 @@ func init() {
 	Root.PersistentFlags().StringVar(&config.Flags.FGAApiUrl, "fga-api-url", config.Flags.FGAApiUrl, "FGA API URL")
 	Root.PersistentFlags().StringVar(&config.Flags.FGAStoreID, "fga-store-id", config.Flags.FGAStoreID, "FGA Store ID")
 	Root.PersistentFlags().StringVar(&config.Flags.FGAAuthorizationModelID, "fga-authorization-model-id", config.Flags.FGAAuthorizationModelID, "FGA Authorization Model ID")
+	Root.PersistentFlags().StringVar(&config.Flags.OIDCIssuer, "oidc-issuer", config.Flags.OIDCIssuer, "OIDC Issuer")
+	Root.PersistentFlags().StringVar(&config.Flags.OIDCAudience, "oidc-audience", config.Flags.OIDCAudience, "OIDC Audience")
 
 	Root.SilenceUsage = true
 }
@@ -90,7 +95,7 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 			return err
 		}
 
-		fga, err := openfga.NewSdkClient(
+		fgaClient, err := openfga.NewSdkClient(
 			&openfga.ClientConfiguration{
 				ApiUrl:               s.cfg.Flags.FGAApiUrl,
 				StoreId:              s.cfg.Flags.FGAStoreID,
@@ -115,14 +120,14 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 		app.Use(requestid.New())
 		app.Use(logger.New())
 
-		validator, err := oidc.NewRemoteOidcValidator("", []string{}, "")
+		validator, err := oidc.NewRemoteOidcValidator(s.cfg.Flags.OIDCIssuer, []string{}, s.cfg.Flags.OIDCAudience)
 		if err != nil {
 			return err
 		}
 
 		validatorOptions := &middleware.Options{}
 		// validatorOptions.Options.AuthenticationFunc = auth.NewAuthenticator(auth.WithBasicAuthenticator(auth.NewBasicAuthenticator(store)))
-		validatorOptions.Options.AuthenticationFunc = oidc.Authenticate(validator)
+		validatorOptions.Options.AuthenticationFunc = authn.Authenticate(authn.WithOIDCSchema(oidc.Authenticate(validator)), authn.WithBasicAuthSchema(auth.NewBasicAuthenticator(store)))
 
 		// validatorOptions.ErrorHandler = authz.NewOpenAPIErrorHandler()
 
@@ -135,15 +140,11 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 		pc := controllers.NewProjectController(store)
 		ec := controllers.NewEnvironmentController(store)
 
-		authConfig := oas.Config{
-			Checker: oas.NewChecker(fga),
-			Resolvers: oas.ResolverMap{
-				"GetTeam": func(c *fiber.Ctx) (oas.User, oas.Relation, oas.Object, error) {
-					return oas.NoopUser, oas.NoopRelation, oas.NoopObject, nil
-				},
-			},
+		authzFGA := fga.Config{
+			Checker:   fga.NewChecker(fgaClient),
+			Resolvers: authz.Resolvers(),
 		}
-		authz := oas.NewAuthz(authConfig)
+		authz := fga.NewAuthz(authzFGA)
 
 		handlers := handlers.NewAPIHandlers(lc, sc, ssc, tc, pc, ec)
 		handler := openapi.NewStrictHandler(handlers, []openapi.StrictMiddlewareFunc{authz})
