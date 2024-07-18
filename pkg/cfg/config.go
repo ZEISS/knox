@@ -14,19 +14,19 @@ type Flags struct {
 	FGAAuthorizationModelID string `envconfig:"KNOX_FGA_AUTHORIZATION_MODEL_ID" default:""`
 }
 
-// NewFlags ...
+// NewFlags returns a new instance of Flags.
 func NewFlags() *Flags {
 	return &Flags{}
 }
 
-// New ...
+// New returns a new instance of Config.
 func New() *Config {
 	return &Config{
 		Flags: NewFlags(),
 	}
 }
 
-// Config ...
+// Config contains the configuration.
 type Config struct {
 	Flags *Flags
 }

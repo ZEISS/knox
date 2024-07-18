@@ -79,7 +79,7 @@ func NewNoop() *noopImpl {
 }
 
 // Allowed returns true if user has the relation with the object.
-func (n *noopImpl) Allowed(ctx context.Context, user User, relation Relation, object Object) (bool, error) {
+func (n *noopImpl) Allowed(_ context.Context, _ User, _ Relation, _ Object) (bool, error) {
 	return false, nil
 }
 
@@ -88,6 +88,9 @@ func NoopResolvers() map[string]AuthzResolverFunc {
 	return map[string]AuthzResolverFunc{}
 }
 
+// ResolverMap is a map of resolvers.
+type ResolverMap map[string]AuthzResolverFunc
+
 // Config ...
 type Config struct {
 	// Next defines a function to skip the current middleware.
@@ -95,7 +98,7 @@ type Config struct {
 	// Checker defines a function to check the authorization.
 	Checker Checker
 	// Resolvers defines the resolvers for a specific operation.
-	Resolvers map[string]AuthzResolverFunc
+	Resolvers ResolverMap
 	// DefaultError defines the default error.
 	DefaultError error
 }
@@ -129,7 +132,7 @@ func NewAuthz(config ...Config) openapi.StrictMiddlewareFunc {
 			}
 
 			resolver, ok := cfg.Resolvers[operationID]
-			if !ok {
+			if !ok { // bail out if there is no resolver matching
 				return nil, cfg.DefaultError
 			}
 
