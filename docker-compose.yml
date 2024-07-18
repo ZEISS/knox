@@ -54,7 +54,7 @@ services:
       # Needed for the grpc server (if used)
       - "8081:8081"
       # Needed for the playground (Do not enable in prod!)
-      - "3001:3000"
+      - "3000:3000"
 
 volumes:
   crdb:

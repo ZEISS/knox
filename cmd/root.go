@@ -19,6 +19,7 @@ import (
 	"github.com/katallaxie/pkg/server"
 	"github.com/kelseyhightower/envconfig"
 	middleware "github.com/oapi-codegen/fiber-middleware"
+	openfga "github.com/openfga/go-sdk/client"
 	"github.com/spf13/cobra"
 	seed "github.com/zeiss/gorm-seed"
 	"gorm.io/driver/postgres"
@@ -86,6 +87,17 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 			return err
 		}
 
+		fga, err := openfga.NewSdkClient(
+			&openfga.ClientConfiguration{
+				ApiUrl:               s.cfg.Flags.FGAApiUrl,
+				StoreId:              s.cfg.Flags.FGAStoreID,
+				AuthorizationModelId: s.cfg.Flags.FGAAuthorizationModelID,
+			},
+		)
+		if err != nil {
+			return err
+		}
+
 		swagger, err := openapi.GetSwagger()
 		if err != nil {
 			return err
@@ -116,9 +128,10 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 
 		authz := oas.NewAuthz(
 			oas.Config{
+				Checker: oas.NewChecker(fga),
 				Resolvers: map[string]oas.AuthzResolverFunc{
-					"GetTeam": func(ctx *fiber.Ctx) (oas.User, oas.Relation, oas.Object, error) {
-						return oas.User(""), oas.Relation(""), oas.Object(""), nil
+					"GetTeam": func(c *fiber.Ctx) (oas.User, oas.Relation, oas.Object, error) {
+						return oas.NoopUser, oas.NoopRelation, oas.NoopObject, nil
 					},
 				},
 			},

@@ -109,7 +109,7 @@ var DefaultConfig = Config{
 
 // NoopResolver is a resolver that always returns Noop values.
 func NoopResolver() AuthzResolverFunc {
-	return func(ctx *fiber.Ctx) (User, Relation, Object, error) {
+	return func(_ *fiber.Ctx) (User, Relation, Object, error) {
 		return NoopUser, NoopRelation, NoopObject, nil
 	}
 }
@@ -118,13 +118,14 @@ func NoopResolver() AuthzResolverFunc {
 type AuthzResolverFunc func(ctx *fiber.Ctx) (User, Relation, Object, error)
 
 // NewAuthz returns a new authz middleware.
+// nolint:contextcheck
 func NewAuthz(config ...Config) openapi.StrictMiddlewareFunc {
 	cfg := configDefault(config...)
 
 	return func(f openapi.StrictHandlerFunc, operationID string) openapi.StrictHandlerFunc {
-		return func(ctx *fiber.Ctx, args interface{}) (interface{}, error) {
-			if cfg.Next != nil && cfg.Next(ctx) {
-				return f(ctx, args)
+		return func(c *fiber.Ctx, args interface{}) (interface{}, error) {
+			if cfg.Next != nil && cfg.Next(c) {
+				return f(c, args)
 			}
 
 			resolver, ok := cfg.Resolvers[operationID]
@@ -132,12 +133,12 @@ func NewAuthz(config ...Config) openapi.StrictMiddlewareFunc {
 				return nil, cfg.DefaultError
 			}
 
-			user, relation, object, err := resolver(ctx)
+			user, relation, object, err := resolver(c)
 			if err != nil {
 				return nil, cfg.DefaultError
 			}
 
-			allowed, err := cfg.Checker.Allowed(ctx.Context(), user, relation, object)
+			allowed, err := cfg.Checker.Allowed(c.Context(), user, relation, object)
 			if err != nil {
 				return nil, cfg.DefaultError
 			}
@@ -146,7 +147,7 @@ func NewAuthz(config ...Config) openapi.StrictMiddlewareFunc {
 				return nil, cfg.DefaultError
 			}
 
-			return f(ctx, args)
+			return f(c, args)
 		}
 	}
 }
