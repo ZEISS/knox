@@ -154,6 +154,7 @@ func Authenticate(v Validator) openapi3filter.AuthenticationFunc {
 }
 
 // Validate validates the provided token.
+// nolint:gocyclo
 func (oidc *RemoteOidcValidator) Validate(req *http.Request) (*authn.AuthClaims, error) {
 	jwtParser := jwt.NewParser(
 		jwt.WithValidMethods([]string{"RS256"}),
