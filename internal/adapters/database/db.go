@@ -65,6 +65,11 @@ func (r *readTxImpl) ListEnvironments(ctx context.Context, teamId, projectId str
 		Find(&results.Rows).Error
 }
 
+// ListTeams ...
+func (r *readTxImpl) ListTeams(ctx context.Context, results *tables.Results[adapters.GothTeam]) error {
+	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).Find(&results.Rows).Error
+}
+
 // AuthenticateClient ...
 func (r *readTxImpl) AuthenticateClient(ctx context.Context, teamId, projectId, environmentId, username, password string) error {
 	environment := models.Environment{

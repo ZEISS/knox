@@ -99,6 +99,7 @@ func (oidc *RemoteOidcValidator) GetKeys() (*keyfunc.JWKS, error) {
 // nolint:noctx
 func (oidc *RemoteOidcValidator) GetConfiguration() (*authn.OidcConfig, error) {
 	wellKnown := strings.TrimSuffix(oidc.MainIssuer, "/") + "/.well-known/openid-configuration"
+
 	req, err := http.NewRequest("GET", wellKnown, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error forming request to get OIDC: %w", err)
@@ -148,6 +149,8 @@ func Authenticate(v Validator) openapi3filter.AuthenticationFunc {
 		usrCtx := context.WithValue(c.UserContext(), jwtToken, principal)
 		// nolint:contextcheck
 		c.SetUserContext(usrCtx)
+
+		fmt.Println("Authenticated")
 
 		return nil
 	}

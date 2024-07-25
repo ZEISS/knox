@@ -3,7 +3,6 @@ package dto
 import (
 	"github.com/zeiss/knox/internal/controllers"
 	openapi "github.com/zeiss/knox/pkg/apis"
-	"github.com/zeiss/knox/pkg/utils"
 )
 
 // FromGetEnvironmentStateRequestObject ...
@@ -28,7 +27,6 @@ func FromUpdateEnvironmentStateRequestObject(request openapi.UpdateEnvironmentSt
 		Team:        request.TeamId,
 		Project:     request.ProjectId,
 		Environment: request.EnvironmentId,
-		LockID:      utils.PtrUUID(request.Params.ID),
 		State:       request.Body,
 	}
 }

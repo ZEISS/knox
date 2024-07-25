@@ -152,22 +152,17 @@ func (h *apiHandlers) GetSnapshot(ctx context.Context, request openapi.GetSnapsh
 	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
-// Update a snapshot
-// (PUT /snapshot/{id})
-func (h *apiHandlers) UpdateSnapshot(ctx context.Context, request openapi.UpdateSnapshotRequestObject) (openapi.UpdateSnapshotResponseObject, error) {
-	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
-}
-
-// Get a task
-// (GET /task/{id})
-func (h *apiHandlers) GetTask(ctx context.Context, request openapi.GetTaskRequestObject) (openapi.GetTaskResponseObject, error) {
-	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
-}
-
 // Get a list of teams
 // (GET /team)
 func (h *apiHandlers) GetTeams(ctx context.Context, request openapi.GetTeamsRequestObject) (openapi.GetTeamsResponseObject, error) {
-	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
+	cmd := dto.FromGetTeamsRequestObject(request)
+
+	results, err := h.team.ListTeams(ctx, cmd)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return dto.ToGetTeamsResponseObject(results), nil
 }
 
 // Create a new team

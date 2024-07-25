@@ -3,6 +3,10 @@ model
 
 type user
 
+type system
+  relations
+    define admin: [user]
+
 type team
   relations
     define admin: [user, team#member]

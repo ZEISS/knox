@@ -171,7 +171,6 @@ paths:
         - $ref: "#/components/parameters/teamId"
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/environmentId"
-        - $ref: "#/components/parameters/lockId"
       security:
         - BasicAuth: [] # Use basic auth to update the environment state
       requestBody:
@@ -390,6 +389,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+      $ref: "#/components/policies/createTeam"
 
     get:
       tags:
@@ -399,16 +399,8 @@ paths:
       security:
         - OpenID: []
       parameters:
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: offset
-          schema:
-            type: integer
-            default: 0
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
       responses:
         "200":
           description: Successful response
@@ -436,6 +428,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+      $ref: "#/components/policies/listTeams"
 
   /teams/{teamId}:
     get:
@@ -475,7 +468,7 @@ paths:
       security:
         - OpenID: []
       parameters:
-         - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/teamId"
       requestBody:
         content:
           application/json:
@@ -509,7 +502,7 @@ paths:
       security:
         - OpenID: []
       parameters:
-         - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/teamId"
       responses:
         "204":
           description: Successful response
@@ -611,8 +604,8 @@ paths:
       security:
         - OpenID: []
       parameters:
-         - $ref: "#/components/parameters/teamId"
-         - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
       responses:
         "200":
           description: Successful response
@@ -639,8 +632,8 @@ paths:
       summary: Update a project
       operationId: updateProject
       parameters:
-         - $ref: "#/components/parameters/teamId"
-         - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
       security:
         - OpenID: []
       requestBody:
@@ -674,8 +667,8 @@ paths:
       summary: Delete a project
       operationId: deleteProject
       parameters:
-         - $ref: "#/components/parameters/teamId"
-         - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
       security:
         - OpenID: []
       responses:
@@ -734,16 +727,8 @@ paths:
       parameters:
         - $ref: "#/components/parameters/teamId"
         - $ref: "#/components/parameters/projectId"
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: offset
-          schema:
-            type: integer
-            default: 0
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
       responses:
         "200":
           description: Successful response
@@ -867,51 +852,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /snapshot:
-    post:
-      tags:
-        - Snapshots
-      summary: Create a new snapshot
-      operationId: createSnapshot
-      security:
-        - OpenID: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SnapshotCreate"
-      responses:
-        "201":
-          description: Snapshot created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Snapshot"
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
+  /teams/{teamId}/projects/{projectId}/environments/{environmentId}/snapshots:
     get:
       tags:
         - Snapshots
       summary: Get a list of snapshots
       operationId: getSnapshots
-      security:
-        - OpenID: []
       parameters:
-        - in: query
-          name: limit
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: offset
-          schema:
-            type: integer
-            default: 0
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
       responses:
         "200":
           description: Successful response
@@ -940,20 +892,49 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /snapshot/{id}:
+    post:
+      tags:
+        - Snapshots
+      summary: Create a new snapshot
+      operationId: createSnapshot
+      parameters:
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/environmentId"
+      security:
+        - OpenID: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SnapshotCreate"
+      responses:
+        "201":
+          description: Snapshot created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Snapshot"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /teams/{teamId}/projects/{projectId}/environments/{environmentId}/snapshots/{snapshotId}:
     get:
       tags:
         - Snapshots
       summary: Get a snapshot
       operationId: getSnapshot
+      parameters:
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/snapshotId"
       security:
         - OpenID: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
       responses:
         "200":
           description: Successful response
@@ -973,58 +954,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-
-    put:
-      tags:
-        - Snapshots
-      summary: Update a snapshot
-      operationId: updateSnapshot
-      security:
-        - OpenID: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SnapshotUpdate"
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Snapshot"
-        "404":
-          description: Resource not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
     delete:
       tags:
         - Snapshots
       summary: Delete a snapshot
       operationId: deleteSnapshot
+      parameters:
+        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/snapshotId"
       security:
         - OpenID: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
       responses:
         "204":
           description: Successful response
@@ -1041,41 +982,31 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /task/{id}:
-    get:
-      tags:
-        - Tasks
-      summary: Get a task
-      operationId: getTask
-      security:
-        - OpenID: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Task"
-        "404":
-          description: Resource not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
 components:
+  policies:
+    createTeam:
+      x-fiber-authz-fga:
+        user:
+          namespace: user
+          auth_type: oidc
+        relation:
+          name: admin
+        object:
+          namespace: system
+          components:
+            - in: params
+              name: teamId
+    listTeams:
+      x-fiber-authz-fga:
+        user:
+          namespace: user
+          auth_type: oidc
+        relation:
+          name: admin
+        object:
+          namespace: system
+          name: global
+
   parameters:
     teamId:
       name: teamId
@@ -1095,13 +1026,12 @@ components:
       required: true
       schema:
         type: string
-    lockId:
-      name: ID
-      in: query
-      required: false
+    snapshotId:
+      name: snapshotId
+      in: path
+      required: true
       schema:
         type: string
-        format: uuid
     offset:
       name: offset
       in: query
@@ -1387,23 +1317,6 @@ components:
           type: string
         team_id:
           type: integer
-
-    Task:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-        runAt:
-          type: string
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
 
     ErrorResponse:
       type: object

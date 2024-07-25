@@ -3,6 +3,7 @@ package controllers
 import (
 	"context"
 
+	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/ports"
 
 	"github.com/go-playground/validator/v10"
@@ -28,6 +29,12 @@ type GetTeamQuery struct {
 	Slug string `json:"slug" form:"slug"`
 }
 
+// ListTeamsQuery ...
+type ListTeamsQuery struct {
+	Limit  int `json:"limit" form:"limit"`
+	Offset int `json:"offset" form:"offset"`
+}
+
 // DeleteTeamCommand ...
 type DeleteTeamCommand struct {
 	// Slug is the slug of the team.
@@ -42,6 +49,8 @@ type TeamController interface {
 	GetTeam(ctx context.Context, query GetTeamQuery) (adapters.GothTeam, error)
 	// DeleteTeam deletes a team.
 	DeleteTeam(ctx context.Context, cmd DeleteTeamCommand) error
+	// ListTeams lists teams.
+	ListTeams(ctx context.Context, query ListTeamsQuery) (tables.Results[adapters.GothTeam], error)
 }
 
 // TeamControllerImpl is the controller for teams.
@@ -96,4 +105,15 @@ func (c *TeamControllerImpl) DeleteTeam(ctx context.Context, cmd DeleteTeamComma
 	return c.store.ReadWriteTx(ctx, func(ctx context.Context, tx ports.ReadWriteTx) error {
 		return tx.DeleteTeam(ctx, &team)
 	})
+}
+
+// ListTeams lists teams.
+func (c *TeamControllerImpl) ListTeams(ctx context.Context, query ListTeamsQuery) (tables.Results[adapters.GothTeam], error) {
+	teams := tables.Results[adapters.GothTeam]{}
+
+	err := c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
+		return tx.ListTeams(ctx, &teams)
+	})
+
+	return teams, err
 }

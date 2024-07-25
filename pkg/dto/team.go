@@ -2,6 +2,7 @@ package dto
 
 import (
 	"github.com/zeiss/fiber-goth/adapters"
+	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/controllers"
 	openapi "github.com/zeiss/knox/pkg/apis"
 	"github.com/zeiss/knox/pkg/utils"
@@ -51,6 +52,31 @@ func FromDeleteTeamRequestObject(request openapi.DeleteTeamRequestObject) contro
 // ToDeleteTeamResponseObject ...
 func ToDeleteTeamResponseObject() openapi.DeleteTeamResponseObject {
 	res := openapi.DeleteTeam204Response{}
+
+	return res
+}
+
+// FromGetTeamsRequestObject ...
+func FromGetTeamsRequestObject(request openapi.GetTeamsRequestObject) controllers.ListTeamsQuery {
+	return controllers.ListTeamsQuery{
+		Limit:  utils.PtrInt(request.Params.Limit),
+		Offset: utils.PtrInt(request.Params.Offset),
+	}
+}
+
+// ToGetTeamsResponseObject ...
+func ToGetTeamsResponseObject(results tables.Results[adapters.GothTeam]) openapi.GetTeamsResponseObject {
+	res := openapi.GetTeams200JSONResponse{}
+
+	teams := []openapi.Team{}
+	for _, team := range results.Rows {
+		teams = append(teams, openapi.Team{
+			Id:          utils.StrPtr(team.ID.String()),
+			Name:        utils.StrPtr(team.Name),
+			Description: utils.StrPtr(team.Description),
+		})
+	}
+	res.Teams = &teams
 
 	return res
 }

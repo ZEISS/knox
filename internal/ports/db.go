@@ -45,6 +45,8 @@ type ReadTx interface {
 	AuthenticateClient(context.Context, string, string, string, string, string) error
 	// ListEnvironments ...
 	ListEnvironments(context.Context, string, string, *tables.Results[models.Environment]) error
+	// ListTeams ...
+	ListTeams(context.Context, *tables.Results[adapters.GothTeam]) error
 }
 
 // ReadWriteTx provides methods for transactional read and write operations.

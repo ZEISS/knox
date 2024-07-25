@@ -2,6 +2,7 @@ package authn
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/MicahParks/keyfunc/v2"
 	"github.com/getkin/kin-openapi/openapi3filter"
@@ -91,6 +92,21 @@ func WithOIDCSchema(auth openapi3filter.AuthenticationFunc) AuthenticatorOpt {
 // WithBasicSchema sets the basic authentication schema for the authenticator.
 func WithBasicAuthSchema(auth openapi3filter.AuthenticationFunc) AuthenticatorOpt {
 	return WithSchema("basic", auth)
+}
+
+// Authenticate2 ...
+func Authenticate2(fn ...openapi3filter.AuthenticationFunc) openapi3filter.AuthenticationFunc {
+	return func(ctx context.Context, input *openapi3filter.AuthenticationInput) error {
+		for _, f := range fn {
+			if err := f(ctx, input); err != nil {
+				return err
+			}
+		}
+
+		fmt.Println("Authenticated")
+
+		return nil
+	}
 }
 
 // Authenticate returns a nil error and the AuthClaims info (if available) if the subject is authenticated or a

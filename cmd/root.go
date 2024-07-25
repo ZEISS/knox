@@ -7,12 +7,9 @@ import (
 	"github.com/zeiss/knox/internal/adapters/database"
 	"github.com/zeiss/knox/internal/adapters/handlers"
 	"github.com/zeiss/knox/internal/authn"
-	"github.com/zeiss/knox/internal/authn/oidc"
-	"github.com/zeiss/knox/internal/authz"
-	"github.com/zeiss/knox/internal/authz/fga"
+
 	"github.com/zeiss/knox/internal/controllers"
 	openapi "github.com/zeiss/knox/pkg/apis"
-	"github.com/zeiss/knox/pkg/auth"
 	"github.com/zeiss/knox/pkg/cfg"
 	"github.com/zeiss/knox/pkg/utils"
 
@@ -24,6 +21,8 @@ import (
 	middleware "github.com/oapi-codegen/fiber-middleware"
 	openfga "github.com/openfga/go-sdk/client"
 	"github.com/spf13/cobra"
+	"github.com/zeiss/fiber-authz/oas/oidc"
+	ofga "github.com/zeiss/fiber-authz/openfga"
 	seed "github.com/zeiss/gorm-seed"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -120,16 +119,19 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 		app.Use(requestid.New())
 		app.Use(logger.New())
 
-		validator, err := oidc.NewRemoteOidcValidator(s.cfg.Flags.OIDCIssuer, []string{}, s.cfg.Flags.OIDCAudience)
+		validator, err := oidc.NewRemoteOidcValidatorWithContext(ctx, oidc.WithMainIssuer(s.cfg.Flags.OIDCIssuer), oidc.WithAudience(s.cfg.Flags.OIDCAudience))
 		if err != nil {
 			return err
 		}
 
 		validatorOptions := &middleware.Options{}
 		// validatorOptions.Options.AuthenticationFunc = auth.NewAuthenticator(auth.WithBasicAuthenticator(auth.NewBasicAuthenticator(store)))
-		validatorOptions.Options.AuthenticationFunc = authn.Authenticate(authn.WithOIDCSchema(oidc.Authenticate(validator)), authn.WithBasicAuthSchema(auth.NewBasicAuthenticator(store)))
-
-		// validatorOptions.ErrorHandler = authz.NewOpenAPIErrorHandler()
+		validatorOptions.Options.AuthenticationFunc = authn.Authenticate2(
+			oidc.Authenticate(validator),
+			ofga.OasAuthenticate(
+				ofga.WithChecker(ofga.NewClient(fgaClient)),
+			),
+		)
 
 		app.Use(middleware.OapiRequestValidatorWithOptions(swagger, validatorOptions))
 
@@ -140,14 +142,8 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 		pc := controllers.NewProjectController(store)
 		ec := controllers.NewEnvironmentController(store)
 
-		authzFGA := fga.Config{
-			Checker:   fga.NewChecker(fgaClient),
-			Resolvers: authz.Resolvers(),
-		}
-		authz := fga.NewAuthz(authzFGA)
-
 		handlers := handlers.NewAPIHandlers(lc, sc, ssc, tc, pc, ec)
-		handler := openapi.NewStrictHandler(handlers, []openapi.StrictMiddlewareFunc{authz})
+		handler := openapi.NewStrictHandler(handlers, nil)
 		openapi.RegisterHandlers(app, handler)
 
 		err = app.Listen(s.cfg.Flags.Addr)
