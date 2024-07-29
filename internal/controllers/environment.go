@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/zeiss/fiber-goth/adapters"
+	"github.com/google/uuid"
 	"github.com/zeiss/fiber-htmx/components/tables"
 	seed "github.com/zeiss/gorm-seed"
 	"github.com/zeiss/knox/internal/models"
@@ -18,19 +18,19 @@ var _ ProjectController = (*ProjectControllerImpl)(nil)
 
 // CreateEnvironmentCommand ...
 type CreateEnvironmentCommand struct {
-	Team     string `json:"team" form:"team" validate:"required"`
-	Project  string `json:"project" form:"project" validate:"required"`
-	Name     string `json:"name" form:"name" validate:"required,min=1,max=255,alphanum,lowercase"`
-	Username string `json:"username" form:"username" validate:"required,min=1,max=255"`
-	Password string `json:"password" form:"password" validate:"required,min=1,max=255"`
+	TeamID    uuid.UUID `json:"team_id" form:"team_id" validate:"required"`
+	ProjectID uuid.UUID `json:"project_id" form:"project_id" validate:"required"`
+	Name      string    `json:"name" form:"name" validate:"required,min=1,max=255,alphanum,lowercase"`
+	Username  string    `json:"username" form:"username" validate:"required,min=1,max=255"`
+	Password  string    `json:"password" form:"password" validate:"required,min=1,max=255"`
 }
 
 // ListEnvironmentsQuery ...
 type ListEnvironmentsQuery struct {
-	Team    string `json:"team" form:"team" validate:"required"`
-	Project string `json:"project" form:"project" validate:"required"`
-	Limit   int    `json:"limit" form:"limit" validate:"omitempty,min=1,max=100"`
-	Offset  int    `json:"offset" form:"offset" validate:"omitempty,min=0"`
+	TeamID    uuid.UUID `json:"team_id" form:"team_id" validate:"required"`
+	ProjectID uuid.UUID `json:"project_id" form:"project_id" validate:"required"`
+	Limit     int       `json:"limit" form:"limit" validate:"omitempty,min=1,max=100"`
+	Offset    int       `json:"offset" form:"offset" validate:"omitempty,min=0"`
 }
 
 // EnvironmentControllerImpl ...
@@ -60,20 +60,8 @@ func (c *EnvironmentControllerImpl) CreateEnvironment(ctx context.Context, cmd C
 		return err
 	}
 
-	team := adapters.GothTeam{
-		Slug: cmd.Team,
-	}
-
-	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
-		return tx.GetTeam(ctx, &team)
-	})
-	if err != nil {
-		return err
-	}
-
 	project := models.Project{
-		TeamID: team.ID,
-		Name:   cmd.Project,
+		ID: cmd.ProjectID,
 	}
 
 	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
@@ -110,7 +98,7 @@ func (c *EnvironmentControllerImpl) ListEnvironments(ctx context.Context, query 
 	}
 
 	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
-		return tx.ListEnvironments(ctx, query.Team, query.Project, &results)
+		return tx.ListEnvironments(ctx, query.ProjectID, &results)
 	})
 	if err != nil {
 		return results, err

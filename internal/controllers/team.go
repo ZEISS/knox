@@ -3,11 +3,12 @@ package controllers
 import (
 	"context"
 
+	"github.com/google/uuid"
 	"github.com/zeiss/fiber-htmx/components/tables"
+	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/zeiss/fiber-goth/adapters"
 	seed "github.com/zeiss/gorm-seed"
 )
 
@@ -25,8 +26,8 @@ type CreateTeamCommand struct {
 
 // GetTeamQuery ...
 type GetTeamQuery struct {
-	// Slug is the slug of the team.
-	Slug string `json:"slug" form:"slug"`
+	// ID is the ID of the team.
+	ID uuid.UUID `json:"id" form:"id"`
 }
 
 // ListTeamsQuery ...
@@ -37,8 +38,8 @@ type ListTeamsQuery struct {
 
 // DeleteTeamCommand ...
 type DeleteTeamCommand struct {
-	// Slug is the slug of the team.
-	Slug string `json:"slug" form:"slug"`
+	// ID is the ID of the team.
+	ID uuid.UUID `json:"id" form:"id"`
 }
 
 // TeamController ...
@@ -46,11 +47,11 @@ type TeamController interface {
 	// CreateTeam creates a new team.
 	CreateTeam(ctx context.Context, cmd CreateTeamCommand) error
 	// GetTeam gets a team.
-	GetTeam(ctx context.Context, query GetTeamQuery) (adapters.GothTeam, error)
+	GetTeam(ctx context.Context, query GetTeamQuery) (models.Team, error)
 	// DeleteTeam deletes a team.
 	DeleteTeam(ctx context.Context, cmd DeleteTeamCommand) error
 	// ListTeams lists teams.
-	ListTeams(ctx context.Context, query ListTeamsQuery) (tables.Results[adapters.GothTeam], error)
+	ListTeams(ctx context.Context, query ListTeamsQuery) (tables.Results[models.Team], error)
 }
 
 // TeamControllerImpl is the controller for teams.
@@ -72,10 +73,9 @@ func (c *TeamControllerImpl) CreateTeam(ctx context.Context, cmd CreateTeamComma
 		return err
 	}
 
-	team := adapters.GothTeam{
+	team := models.Team{
 		Name:        cmd.Name,
 		Description: cmd.Description,
-		Slug:        cmd.Slug,
 	}
 
 	return c.store.ReadWriteTx(ctx, func(ctx context.Context, tx ports.ReadWriteTx) error {
@@ -84,9 +84,9 @@ func (c *TeamControllerImpl) CreateTeam(ctx context.Context, cmd CreateTeamComma
 }
 
 // GetTeam gets a team.
-func (c *TeamControllerImpl) GetTeam(ctx context.Context, query GetTeamQuery) (adapters.GothTeam, error) {
-	team := adapters.GothTeam{
-		Slug: query.Slug,
+func (c *TeamControllerImpl) GetTeam(ctx context.Context, query GetTeamQuery) (models.Team, error) {
+	team := models.Team{
+		ID: query.ID,
 	}
 
 	err := c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
@@ -98,18 +98,14 @@ func (c *TeamControllerImpl) GetTeam(ctx context.Context, query GetTeamQuery) (a
 
 // DeleteTeam deletes a team.
 func (c *TeamControllerImpl) DeleteTeam(ctx context.Context, cmd DeleteTeamCommand) error {
-	team := adapters.GothTeam{
-		Slug: cmd.Slug,
-	}
-
 	return c.store.ReadWriteTx(ctx, func(ctx context.Context, tx ports.ReadWriteTx) error {
-		return tx.DeleteTeam(ctx, &team)
+		return tx.DeleteTeam(ctx, &models.Team{ID: cmd.ID})
 	})
 }
 
 // ListTeams lists teams.
-func (c *TeamControllerImpl) ListTeams(ctx context.Context, query ListTeamsQuery) (tables.Results[adapters.GothTeam], error) {
-	teams := tables.Results[adapters.GothTeam]{}
+func (c *TeamControllerImpl) ListTeams(ctx context.Context, query ListTeamsQuery) (tables.Results[models.Team], error) {
+	teams := tables.Results[models.Team]{}
 
 	err := c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
 		return tx.ListTeams(ctx, &teams)

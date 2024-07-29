@@ -1,4 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.0/schema.json
+
 openapi: 3.0.1
 
 info:
@@ -59,18 +60,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/HealthResponse"
 
-  /client/{teamId}/{projectId}/{environmentId}/lock:
+  /client/{teamName}/{projectName}/{environmentName}/lock:
     post:
       tags:
         - Environments
       summary: Lock the state of Terraform environment
       operationId: lockEnvironment
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
-        - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
+        - $ref: "#/components/parameters/environmentName"
       security:
-        - BasicAuth: [] # Use basic auth to lock the environment
+        - basicAuth: [] # Use basic auth to lock the environment
       requestBody:
         content:
           application/json:
@@ -96,18 +97,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /client/{teamId}/{projectId}/{environmentId}/unlock:
+  /client/{teamName}/{projectName}/{environmentName}/unlock:
     post:
       tags:
         - Environments
       summary: Unlock the state of Terraform environment
       operationId: unlockEnvironment
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
-        - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
+        - $ref: "#/components/parameters/environmentName"
       security:
-        - BasicAuth: [] # Use basic auth to unlock the environment
+        - basicAuth: [] # Use basic auth to unlock the environment
       requestBody:
         content:
           application/json:
@@ -131,18 +132,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /client/{teamId}/{projectId}/{environmentId}/state:
+  /client/{teamName}/{projectName}/{environmentName}/state:
     get:
       tags:
         - Environments
       summary: Get the state of Terraform environment
       operationId: getEnvironmentState
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
-        - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
+        - $ref: "#/components/parameters/environmentName"
       security:
-        - BasicAuth: [] # Use basic auth to get the environment state
+        - basicAuth: [] # Use basic auth to get the environment state
       responses:
         "200":
           description: Successful response
@@ -168,11 +169,11 @@ paths:
       summary: Update the state of Terraform environment
       operationId: updateEnvironmentState
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
-        - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
+        - $ref: "#/components/parameters/environmentName"
       security:
-        - BasicAuth: [] # Use basic auth to update the environment state
+        - basicAuth: [] # Use basic auth to update the environment state
       requestBody:
         content:
           application/json:
@@ -198,171 +199,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /user:
-    get:
-      tags:
-        - Users
-      summary: Get a list of users
-      operationId: getUsers
-      security:
-        - OpenID: []
-      parameters:
-        - $ref: "#/components/parameters/limit"
-        - $ref: "#/components/parameters/offset"
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  users:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/User"
-                  metadata:
-                    type: object
-                    properties:
-                      limit:
-                        type: integer
-                      offset:
-                        type: integer
-                      totalCount:
-                        type: integer
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-    post:
-      tags:
-        - Users
-      summary: Create a new user
-      security:
-        - OpenID: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserCreate"
-      responses:
-        "201":
-          description: User created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-  /user/{id}:
-    get:
-      tags:
-        - Users
-      summary: Get a user
-      operationId: getUser
-      security:
-        - OpenID: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
-        "404":
-          description: Resource not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-    put:
-      tags:
-        - Users
-      summary: Update a user
-      operationId: updateUser
-      security:
-        - OpenID: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserUpdate"
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
-        "404":
-          description: Resource not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-    delete:
-      tags:
-        - Users
-      summary: Delete a user
-      operationId: deleteUser
-      security:
-        - OpenID: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        "204":
-          description: Successful response
-        "404":
-          description: Resource not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
   /teams:
     post:
       tags:
@@ -370,7 +206,7 @@ paths:
       summary: Create a new team
       operationId: createTeam
       security:
-        - OpenID: []
+        - openId: []
       requestBody:
         content:
           application/json:
@@ -397,7 +233,7 @@ paths:
       summary: Get a list of teams
       operationId: getTeams
       security:
-        - OpenID: []
+        - openId: []
       parameters:
         - $ref: "#/components/parameters/limit"
         - $ref: "#/components/parameters/offset"
@@ -437,7 +273,7 @@ paths:
       summary: Get a team
       operationId: getTeam
       security:
-        - OpenID: []
+        - openId: []
       parameters:
         - $ref: "#/components/parameters/teamId"
       responses:
@@ -466,7 +302,7 @@ paths:
       summary: Update a team
       operationId: updateTeam
       security:
-        - OpenID: []
+        - openId: []
       parameters:
         - $ref: "#/components/parameters/teamId"
       requestBody:
@@ -500,7 +336,7 @@ paths:
       summary: Delete a team
       operationId: deleteTeam
       security:
-        - OpenID: []
+        - openId: []
       parameters:
         - $ref: "#/components/parameters/teamId"
       responses:
@@ -528,7 +364,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/teamId"
       security:
-        - OpenID: []
+        - openId: []
       requestBody:
         content:
           application/json:
@@ -554,7 +390,7 @@ paths:
       summary: Get a list of projects
       operationId: getProjects
       security:
-        - OpenID: []
+        - openId: []
       parameters:
         - $ref: "#/components/parameters/teamId"
         - in: query
@@ -602,7 +438,7 @@ paths:
       summary: Get a project
       operationId: getProject
       security:
-        - OpenID: []
+        - openId: []
       parameters:
         - $ref: "#/components/parameters/teamId"
         - $ref: "#/components/parameters/projectId"
@@ -635,7 +471,7 @@ paths:
         - $ref: "#/components/parameters/teamId"
         - $ref: "#/components/parameters/projectId"
       security:
-        - OpenID: []
+        - openId: []
       requestBody:
         content:
           application/json:
@@ -670,7 +506,7 @@ paths:
         - $ref: "#/components/parameters/teamId"
         - $ref: "#/components/parameters/projectId"
       security:
-        - OpenID: []
+        - openId: []
       responses:
         "204":
           description: Successful response
@@ -694,7 +530,7 @@ paths:
       summary: Create a new environment
       operationId: createEnvironment
       security:
-        - OpenID: []
+        - openId: []
       parameters:
         - $ref: "#/components/parameters/teamId"
         - $ref: "#/components/parameters/projectId"
@@ -723,7 +559,7 @@ paths:
       summary: Get a list of environments
       operationId: getEnvironments
       security:
-        - OpenID: []
+        - openId: []
       parameters:
         - $ref: "#/components/parameters/teamId"
         - $ref: "#/components/parameters/projectId"
@@ -768,7 +604,7 @@ paths:
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/environmentId"
       security:
-        - OpenID: []
+        - openId: []
       responses:
         "200":
           description: Successful response
@@ -799,7 +635,7 @@ paths:
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/environmentId"
       security:
-        - OpenID: []
+        - openId: []
       requestBody:
         content:
           application/json:
@@ -835,7 +671,7 @@ paths:
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/environmentId"
       security:
-        - OpenID: []
+        - openId: []
       responses:
         "204":
           description: Successful response
@@ -902,7 +738,7 @@ paths:
         - $ref: "#/components/parameters/projectId"
         - $ref: "#/components/parameters/environmentId"
       security:
-        - OpenID: []
+        - openId: []
       requestBody:
         content:
           application/json:
@@ -934,7 +770,7 @@ paths:
         - $ref: "#/components/parameters/environmentId"
         - $ref: "#/components/parameters/snapshotId"
       security:
-        - OpenID: []
+        - openId: []
       responses:
         "200":
           description: Successful response
@@ -965,7 +801,7 @@ paths:
         - $ref: "#/components/parameters/environmentId"
         - $ref: "#/components/parameters/snapshotId"
       security:
-        - OpenID: []
+        - openId: []
       responses:
         "204":
           description: Successful response
@@ -1006,32 +842,66 @@ components:
         object:
           namespace: system
           name: global
+    deleteTeam:
+      x-fiber-authz-fga:
+        user:
+          namespace: user
+          auth_type: oidc
+        relation:
+          name: admin
+        object:
+          namespace: system
+          components:
+            - in: params
+              name: teamId
 
   parameters:
+    teamName:
+      name: teamName
+      in: path
+      required: true
+      schema:
+        type: string
+    projectName:
+      name: projectName
+      in: path
+      required: true
+      schema:
+        type: string
+    environmentName:
+      name: environmentName
+      in: path
+      required: true
+      schema:
+        type: string
     teamId:
       name: teamId
       in: path
       required: true
       schema:
         type: string
+        format: uuid
     projectId:
       name: projectId
       in: path
       required: true
       schema:
         type: string
+        format: uuid
     environmentId:
       name: environmentId
       in: path
       required: true
       schema:
         type: string
+        format: uuid
     snapshotId:
       name: snapshotId
       in: path
       required: true
       schema:
         type: string
+        format: uuid
     offset:
       name: offset
       in: query
@@ -1076,56 +946,12 @@ components:
         errorMessage:
           type: string
 
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        name:
-          type: string
-        role:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-
-    UserCreate:
-      type: object
-      properties:
-        email:
-          type: string
-        name:
-          type: string
-        role:
-          type: string
-        password:
-          type: string
-
-    UserUpdate:
-      type: object
-      properties:
-        email:
-          type: string
-        name:
-          type: string
-        role:
-          type: string
-        password:
-          type: string
-
     Team:
       type: object
       properties:
         id:
           type: string
         name:
-          type: string
-        slug:
           type: string
         usersCount:
           type: integer
@@ -1147,8 +973,6 @@ components:
     TeamCreate:
       type: object
       properties:
-        slug:
-          type: string
         name:
           type: string
         description:
@@ -1161,8 +985,6 @@ components:
     TeamUpdate:
       type: object
       properties:
-        slug:
-          type: string
         name:
           type: string
         description:
@@ -1188,8 +1010,6 @@ components:
               type: string
             name:
               type: string
-            slug:
-              type: string
         envCount:
           type: integer
         createdAt:
@@ -1206,8 +1026,6 @@ components:
           type: string
         description:
           type: string
-        team_id:
-          type: integer
 
     ProjectUpdate:
       type: object
@@ -1288,8 +1106,6 @@ components:
               type: string
             name:
               type: string
-            slug:
-              type: string
         createdAt:
           type: string
           format: date-time
@@ -1329,9 +1145,10 @@ components:
       format: binary
 
   securitySchemes:
-    OpenID:
-      type: openIdConnect
-      openIdConnectUrl: https://example.com/.well-known/openid-configuration
-    BasicAuth:
+    openId:
+      type: http
+      scheme: bearer # using bearer token
+      bearerFormat: JWT
+    basicAuth:
       type: http
       scheme: basic

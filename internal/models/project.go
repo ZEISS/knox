@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/zeiss/fiber-goth/adapters"
 	"gorm.io/gorm"
 )
 
@@ -14,10 +13,10 @@ type Project struct {
 	ID uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`
 	// Name is the name of the project.
 	Name string `json:"name" gorm:"uniqueIndex:idx_team_name"`
-	// Team is the team of the project.
-	Team adapters.GothTeam `json:"team"`
-	// TeamID is the team id of the project.
-	TeamID uuid.UUID `json:"team_id" gorm:"uniqueIndex:idx_team_name"`
+	// Owner is the owner of the project.
+	Owner Team `json:"owner"`
+	// OwnerID is the team id of the project.
+	OwnerID uuid.UUID `json:"owner_id" gorm:"uniqueIndex:idx_team_name"`
 	// Description is the description of the project.
 	Description *string `json:"description"`
 	// Environments are the environments in the project.

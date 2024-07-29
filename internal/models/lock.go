@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/zeiss/fiber-goth/adapters"
 )
 
 // Lock is a lock for a project.
@@ -21,18 +20,10 @@ type Lock struct {
 	Version string `json:"version" form:"version"`
 	// Who is the who of the lock.
 	Who string `json:"who" form:"who"`
-	// Team is the team of the lock.
-	Team adapters.GothTeam `json:"team" form:"team"`
-	// TeamID is the team id of the lock.
-	TeamID uuid.UUID `json:"team_id" gorm:"uniqueIndex:idx_team_project_environment"`
 	// Environment is the environment of the lock.
 	Environment Environment `json:"environment" form:"environment"`
 	// EnvironmentID is the environment id of the lock.
-	EnvironmentID uuid.UUID `json:"environment_id" gorm:"uniqueIndex:idx_team_project_environment"`
-	// Project is the project of the lock.
-	Project Project `json:"project" form:"project"`
-	// ProjectID is the project id of the lock.
-	ProjectID uuid.UUID `json:"project_id" gorm:"uniqueIndex:idx_team_project_environment"`
+	EnvironmentID uuid.UUID `json:"environment_id" gorm:"uniqueIndex"`
 	// CreatedAt is the time the team was created.
 	CreatedAt time.Time
 	// UpdatedAt is the time the team was last updated.

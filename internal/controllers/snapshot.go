@@ -51,7 +51,6 @@ func (c *SnapshotControllerImpl) CreateSnapshot(ctx context.Context, cmd CreateS
 	snapshot := models.Snapshot{
 		Title:         cmd.Title,
 		Description:   &cmd.Description,
-		TeamID:        state.TeamID,
 		EnvironmentID: state.EnvironmentID,
 		ProjectID:     state.ProjectID,
 		Data:          state.Data,

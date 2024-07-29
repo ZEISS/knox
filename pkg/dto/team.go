@@ -1,9 +1,9 @@
 package dto
 
 import (
-	"github.com/zeiss/fiber-goth/adapters"
 	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/controllers"
+	"github.com/zeiss/knox/internal/models"
 	openapi "github.com/zeiss/knox/pkg/apis"
 	"github.com/zeiss/knox/pkg/utils"
 )
@@ -13,7 +13,6 @@ func FromCreateTeamRequestObject(request openapi.CreateTeamRequestObject) contro
 	return controllers.CreateTeamCommand{
 		Name:        utils.PtrStr(request.Body.Name),
 		Description: utils.PtrStr(request.Body.Description),
-		Slug:        utils.PtrStr(request.Body.Slug),
 	}
 }
 
@@ -27,12 +26,12 @@ func ToCreateTeamResponseObject() openapi.CreateTeamResponseObject {
 // FromGetTeamRequestObject ...
 func FromGetTeamRequestObject(request openapi.GetTeamRequestObject) controllers.GetTeamQuery {
 	return controllers.GetTeamQuery{
-		Slug: request.TeamId,
+		ID: request.TeamId,
 	}
 }
 
 // ToGetTeamResponseObject ...
-func ToGetTeamResponseObject(team adapters.GothTeam) openapi.GetTeamResponseObject {
+func ToGetTeamResponseObject(team models.Team) openapi.GetTeamResponseObject {
 	res := openapi.GetTeam200JSONResponse(openapi.Team{
 		Id:          utils.StrPtr(team.ID.String()),
 		Name:        utils.StrPtr(team.Name),
@@ -45,7 +44,7 @@ func ToGetTeamResponseObject(team adapters.GothTeam) openapi.GetTeamResponseObje
 // FromDeleteTeamRequestObject ...
 func FromDeleteTeamRequestObject(request openapi.DeleteTeamRequestObject) controllers.DeleteTeamCommand {
 	return controllers.DeleteTeamCommand{
-		Slug: request.TeamId,
+		ID: request.TeamId,
 	}
 }
 
@@ -65,7 +64,7 @@ func FromGetTeamsRequestObject(request openapi.GetTeamsRequestObject) controller
 }
 
 // ToGetTeamsResponseObject ...
-func ToGetTeamsResponseObject(results tables.Results[adapters.GothTeam]) openapi.GetTeamsResponseObject {
+func ToGetTeamsResponseObject(results tables.Results[models.Team]) openapi.GetTeamsResponseObject {
 	res := openapi.GetTeams200JSONResponse{}
 
 	teams := []openapi.Team{}

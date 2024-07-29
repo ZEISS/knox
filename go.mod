@@ -19,8 +19,7 @@ require (
 	github.com/openfga/go-sdk v0.5.0
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
-	github.com/zeiss/fiber-authz v1.0.32-0.20240725152253-068ad0fedae1
-	github.com/zeiss/fiber-goth v1.2.8
+	github.com/zeiss/fiber-authz v1.0.32-0.20240726111857-caaacc279019
 	github.com/zeiss/fiber-htmx v1.3.20
 	github.com/zeiss/gorm-seed v0.1.2
 	golang.org/x/crypto v0.25.0
@@ -231,6 +230,7 @@ require (
 	github.com/yeya24/promlinter v0.3.0 // indirect
 	github.com/ykadowak/zerologlint v0.1.5 // indirect
 	github.com/yuin/goldmark v1.4.13 // indirect
+	github.com/zeiss/fiber-goth v1.2.8 // indirect
 	gitlab.com/bosi/decorder v0.4.2 // indirect
 	go-simpler.org/musttag v0.12.2 // indirect
 	go-simpler.org/sloglint v0.7.1 // indirect

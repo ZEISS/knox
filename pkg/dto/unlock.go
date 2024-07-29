@@ -10,9 +10,9 @@ import (
 func FromUnlockEnvironmentRequestObject(request openapi.UnlockEnvironmentRequestObject) controllers.UnlockControllerCommand {
 	return controllers.UnlockControllerCommand{
 		ID:          utils.PtrUUID(request.Body.Id),
-		Team:        request.TeamId,
-		Project:     request.ProjectId,
-		Environment: request.EnvironmentId,
+		Team:        request.TeamName,
+		Project:     request.ProjectName,
+		Environment: request.EnvironmentName,
 	}
 }
 

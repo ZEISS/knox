@@ -39,7 +39,6 @@ func init() {
 		log.Fatal(err)
 	}
 
-	Root.AddCommand(Seed)
 	Root.AddCommand(Migrate)
 
 	Root.PersistentFlags().StringVar(&config.Flags.Addr, "addr", config.Flags.Addr, "addr")

@@ -8,9 +8,9 @@ import (
 // FromGetEnvironmentStateRequestObject ...
 func FromGetEnvironmentStateRequestObject(request openapi.GetEnvironmentStateRequestObject) controllers.GetStateControllerQuery {
 	return controllers.GetStateControllerQuery{
-		Team:        request.TeamId,
-		Project:     request.ProjectId,
-		Environment: request.EnvironmentId,
+		Team:        request.TeamName,
+		Project:     request.ProjectName,
+		Environment: request.EnvironmentName,
 	}
 }
 
@@ -24,9 +24,9 @@ func ToGetEnvironmentStateResponseObject(data map[string]interface{}) openapi.Ge
 // FromUpdateEnvironmentStateRequestObject ...
 func FromUpdateEnvironmentStateRequestObject(request openapi.UpdateEnvironmentStateRequestObject) controllers.UpdateStateControllerCommand {
 	return controllers.UpdateStateControllerCommand{
-		Team:        request.TeamId,
-		Project:     request.ProjectId,
-		Environment: request.EnvironmentId,
+		Team:        request.TeamName,
+		Project:     request.ProjectName,
+		Environment: request.EnvironmentName,
 		State:       request.Body,
 	}
 }

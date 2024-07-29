@@ -11,7 +11,7 @@ import (
 // FromCreateProjectRequestObject ...
 func FromCreateProjectRequestObject(req openapi.CreateProjectRequestObject) controllers.CreateProjectCommand {
 	return controllers.CreateProjectCommand{
-		Team:        req.TeamId,
+		TeamID:      req.TeamId,
 		Name:        utils.PtrStr(req.Body.Name),
 		Description: utils.PtrStr(req.Body.Description),
 	}
@@ -29,7 +29,7 @@ func FromGetProjectsRequestObject(req openapi.GetProjectsRequestObject) controll
 	return controllers.ListProjectsQuery{
 		Limit:  utils.PtrInt(req.Params.Limit),
 		Offset: utils.PtrInt(req.Params.Offset),
-		Team:   req.TeamId,
+		TeamID: req.TeamId,
 	}
 }
 
@@ -55,7 +55,7 @@ func ToGetProjectsResponseObject(results tables.Results[models.Project]) openapi
 // FromDeleteProjectRequestObject ...
 func FromDeleteProjectRequestObject(req openapi.DeleteProjectRequestObject) controllers.DeleteProjectCommand {
 	return controllers.DeleteProjectCommand{
-		Name: req.ProjectId,
+		ID: req.ProjectId,
 	}
 }
 

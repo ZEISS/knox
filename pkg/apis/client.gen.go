@@ -96,22 +96,22 @@ type ClientInterface interface {
 	GetReady(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// LockEnvironmentWithBody request with any body
-	LockEnvironmentWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	LockEnvironmentWithBody(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	LockEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body LockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	LockEnvironment(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body LockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetEnvironmentState request
-	GetEnvironmentState(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetEnvironmentState(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateEnvironmentStateWithBody request with any body
-	UpdateEnvironmentStateWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateEnvironmentStateWithBody(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateEnvironmentState(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateEnvironmentState(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UnlockEnvironmentWithBody request with any body
-	UnlockEnvironmentWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UnlockEnvironmentWithBody(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UnlockEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UnlockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UnlockEnvironment(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UnlockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetTeams request
 	GetTeams(ctx context.Context, params *GetTeamsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -183,25 +183,6 @@ type ClientInterface interface {
 
 	// GetSnapshot request
 	GetSnapshot(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetUsers request
-	GetUsers(ctx context.Context, params *GetUsersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostUserWithBody request with any body
-	PostUserWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	PostUser(ctx context.Context, body PostUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// DeleteUser request
-	DeleteUser(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetUser request
-	GetUser(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// UpdateUserWithBody request with any body
-	UpdateUserWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	UpdateUser(ctx context.Context, id string, body UpdateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetHealth(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -228,8 +209,8 @@ func (c *Client) GetReady(ctx context.Context, reqEditors ...RequestEditorFn) (*
 	return c.Client.Do(req)
 }
 
-func (c *Client) LockEnvironmentWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewLockEnvironmentRequestWithBody(c.Server, teamId, projectId, environmentId, contentType, body)
+func (c *Client) LockEnvironmentWithBody(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLockEnvironmentRequestWithBody(c.Server, teamName, projectName, environmentName, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -240,8 +221,8 @@ func (c *Client) LockEnvironmentWithBody(ctx context.Context, teamId TeamId, pro
 	return c.Client.Do(req)
 }
 
-func (c *Client) LockEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body LockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewLockEnvironmentRequest(c.Server, teamId, projectId, environmentId, body)
+func (c *Client) LockEnvironment(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body LockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLockEnvironmentRequest(c.Server, teamName, projectName, environmentName, body)
 	if err != nil {
 		return nil, err
 	}
@@ -252,8 +233,8 @@ func (c *Client) LockEnvironment(ctx context.Context, teamId TeamId, projectId P
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetEnvironmentState(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetEnvironmentStateRequest(c.Server, teamId, projectId, environmentId)
+func (c *Client) GetEnvironmentState(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetEnvironmentStateRequest(c.Server, teamName, projectName, environmentName)
 	if err != nil {
 		return nil, err
 	}
@@ -264,8 +245,8 @@ func (c *Client) GetEnvironmentState(ctx context.Context, teamId TeamId, project
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateEnvironmentStateWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateEnvironmentStateRequestWithBody(c.Server, teamId, projectId, environmentId, contentType, body)
+func (c *Client) UpdateEnvironmentStateWithBody(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEnvironmentStateRequestWithBody(c.Server, teamName, projectName, environmentName, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -276,8 +257,8 @@ func (c *Client) UpdateEnvironmentStateWithBody(ctx context.Context, teamId Team
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateEnvironmentState(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateEnvironmentStateRequest(c.Server, teamId, projectId, environmentId, body)
+func (c *Client) UpdateEnvironmentState(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEnvironmentStateRequest(c.Server, teamName, projectName, environmentName, body)
 	if err != nil {
 		return nil, err
 	}
@@ -288,8 +269,8 @@ func (c *Client) UpdateEnvironmentState(ctx context.Context, teamId TeamId, proj
 	return c.Client.Do(req)
 }
 
-func (c *Client) UnlockEnvironmentWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUnlockEnvironmentRequestWithBody(c.Server, teamId, projectId, environmentId, contentType, body)
+func (c *Client) UnlockEnvironmentWithBody(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUnlockEnvironmentRequestWithBody(c.Server, teamName, projectName, environmentName, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -300,8 +281,8 @@ func (c *Client) UnlockEnvironmentWithBody(ctx context.Context, teamId TeamId, p
 	return c.Client.Do(req)
 }
 
-func (c *Client) UnlockEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UnlockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUnlockEnvironmentRequest(c.Server, teamId, projectId, environmentId, body)
+func (c *Client) UnlockEnvironment(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UnlockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUnlockEnvironmentRequest(c.Server, teamName, projectName, environmentName, body)
 	if err != nil {
 		return nil, err
 	}
@@ -624,90 +605,6 @@ func (c *Client) GetSnapshot(ctx context.Context, teamId TeamId, projectId Proje
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUsers(ctx context.Context, params *GetUsersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUsersRequest(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) PostUserWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostUserRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) PostUser(ctx context.Context, body PostUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostUserRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) DeleteUser(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteUserRequest(c.Server, id)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetUser(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserRequest(c.Server, id)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateUserWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateUserRequestWithBody(c.Server, id, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateUser(ctx context.Context, id string, body UpdateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateUserRequest(c.Server, id, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
 // NewGetHealthRequest generates requests for GetHealth
 func NewGetHealthRequest(server string) (*http.Request, error) {
 	var err error
@@ -763,37 +660,37 @@ func NewGetReadyRequest(server string) (*http.Request, error) {
 }
 
 // NewLockEnvironmentRequest calls the generic LockEnvironment builder with application/json body
-func NewLockEnvironmentRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body LockEnvironmentJSONRequestBody) (*http.Request, error) {
+func NewLockEnvironmentRequest(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body LockEnvironmentJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewLockEnvironmentRequestWithBody(server, teamId, projectId, environmentId, "application/json", bodyReader)
+	return NewLockEnvironmentRequestWithBody(server, teamName, projectName, environmentName, "application/json", bodyReader)
 }
 
 // NewLockEnvironmentRequestWithBody generates requests for LockEnvironment with any type of body
-func NewLockEnvironmentRequestWithBody(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader) (*http.Request, error) {
+func NewLockEnvironmentRequestWithBody(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam2 string
 
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentName", runtime.ParamLocationPath, environmentName)
 	if err != nil {
 		return nil, err
 	}
@@ -824,26 +721,26 @@ func NewLockEnvironmentRequestWithBody(server string, teamId TeamId, projectId P
 }
 
 // NewGetEnvironmentStateRequest generates requests for GetEnvironmentState
-func NewGetEnvironmentStateRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) (*http.Request, error) {
+func NewGetEnvironmentStateRequest(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam2 string
 
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentName", runtime.ParamLocationPath, environmentName)
 	if err != nil {
 		return nil, err
 	}
@@ -872,37 +769,37 @@ func NewGetEnvironmentStateRequest(server string, teamId TeamId, projectId Proje
 }
 
 // NewUpdateEnvironmentStateRequest calls the generic UpdateEnvironmentState builder with application/json body
-func NewUpdateEnvironmentStateRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody) (*http.Request, error) {
+func NewUpdateEnvironmentStateRequest(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UpdateEnvironmentStateJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateEnvironmentStateRequestWithBody(server, teamId, projectId, environmentId, "application/json", bodyReader)
+	return NewUpdateEnvironmentStateRequestWithBody(server, teamName, projectName, environmentName, "application/json", bodyReader)
 }
 
 // NewUpdateEnvironmentStateRequestWithBody generates requests for UpdateEnvironmentState with any type of body
-func NewUpdateEnvironmentStateRequestWithBody(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader) (*http.Request, error) {
+func NewUpdateEnvironmentStateRequestWithBody(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam2 string
 
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentName", runtime.ParamLocationPath, environmentName)
 	if err != nil {
 		return nil, err
 	}
@@ -933,37 +830,37 @@ func NewUpdateEnvironmentStateRequestWithBody(server string, teamId TeamId, proj
 }
 
 // NewUnlockEnvironmentRequest calls the generic UnlockEnvironment builder with application/json body
-func NewUnlockEnvironmentRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UnlockEnvironmentJSONRequestBody) (*http.Request, error) {
+func NewUnlockEnvironmentRequest(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UnlockEnvironmentJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUnlockEnvironmentRequestWithBody(server, teamId, projectId, environmentId, "application/json", bodyReader)
+	return NewUnlockEnvironmentRequestWithBody(server, teamName, projectName, environmentName, "application/json", bodyReader)
 }
 
 // NewUnlockEnvironmentRequestWithBody generates requests for UnlockEnvironment with any type of body
-func NewUnlockEnvironmentRequestWithBody(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader) (*http.Request, error) {
+func NewUnlockEnvironmentRequestWithBody(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam2 string
 
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentName", runtime.ParamLocationPath, environmentName)
 	if err != nil {
 		return nil, err
 	}
@@ -2015,226 +1912,6 @@ func NewGetSnapshotRequest(server string, teamId TeamId, projectId ProjectId, en
 	return req, nil
 }
 
-// NewGetUsersRequest generates requests for GetUsers
-func NewGetUsersRequest(server string, params *GetUsersParams) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/user")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-		queryValues := queryURL.Query()
-
-		if params.Limit != nil {
-
-			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		if params.Offset != nil {
-
-			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
-				return nil, err
-			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-				return nil, err
-			} else {
-				for k, v := range parsed {
-					for _, v2 := range v {
-						queryValues.Add(k, v2)
-					}
-				}
-			}
-
-		}
-
-		queryURL.RawQuery = queryValues.Encode()
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPostUserRequest calls the generic PostUser builder with application/json body
-func NewPostUserRequest(server string, body PostUserJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPostUserRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewPostUserRequestWithBody generates requests for PostUser with any type of body
-func NewPostUserRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/user")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewDeleteUserRequest generates requests for DeleteUser
-func NewDeleteUserRequest(server string, id string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/user/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetUserRequest generates requests for GetUser
-func NewGetUserRequest(server string, id string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/user/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewUpdateUserRequest calls the generic UpdateUser builder with application/json body
-func NewUpdateUserRequest(server string, id string, body UpdateUserJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewUpdateUserRequestWithBody(server, id, "application/json", bodyReader)
-}
-
-// NewUpdateUserRequestWithBody generates requests for UpdateUser with any type of body
-func NewUpdateUserRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/user/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("PUT", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -2285,22 +1962,22 @@ type ClientWithResponsesInterface interface {
 	GetReadyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetReadyResponse, error)
 
 	// LockEnvironmentWithBodyWithResponse request with any body
-	LockEnvironmentWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LockEnvironmentResponse, error)
+	LockEnvironmentWithBodyWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LockEnvironmentResponse, error)
 
-	LockEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body LockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*LockEnvironmentResponse, error)
+	LockEnvironmentWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body LockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*LockEnvironmentResponse, error)
 
 	// GetEnvironmentStateWithResponse request
-	GetEnvironmentStateWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*GetEnvironmentStateResponse, error)
+	GetEnvironmentStateWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, reqEditors ...RequestEditorFn) (*GetEnvironmentStateResponse, error)
 
 	// UpdateEnvironmentStateWithBodyWithResponse request with any body
-	UpdateEnvironmentStateWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error)
+	UpdateEnvironmentStateWithBodyWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error)
 
-	UpdateEnvironmentStateWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error)
+	UpdateEnvironmentStateWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error)
 
 	// UnlockEnvironmentWithBodyWithResponse request with any body
-	UnlockEnvironmentWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UnlockEnvironmentResponse, error)
+	UnlockEnvironmentWithBodyWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UnlockEnvironmentResponse, error)
 
-	UnlockEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UnlockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UnlockEnvironmentResponse, error)
+	UnlockEnvironmentWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UnlockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UnlockEnvironmentResponse, error)
 
 	// GetTeamsWithResponse request
 	GetTeamsWithResponse(ctx context.Context, params *GetTeamsParams, reqEditors ...RequestEditorFn) (*GetTeamsResponse, error)
@@ -2372,25 +2049,6 @@ type ClientWithResponsesInterface interface {
 
 	// GetSnapshotWithResponse request
 	GetSnapshotWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*GetSnapshotResponse, error)
-
-	// GetUsersWithResponse request
-	GetUsersWithResponse(ctx context.Context, params *GetUsersParams, reqEditors ...RequestEditorFn) (*GetUsersResponse, error)
-
-	// PostUserWithBodyWithResponse request with any body
-	PostUserWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostUserResponse, error)
-
-	PostUserWithResponse(ctx context.Context, body PostUserJSONRequestBody, reqEditors ...RequestEditorFn) (*PostUserResponse, error)
-
-	// DeleteUserWithResponse request
-	DeleteUserWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteUserResponse, error)
-
-	// GetUserWithResponse request
-	GetUserWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetUserResponse, error)
-
-	// UpdateUserWithBodyWithResponse request with any body
-	UpdateUserWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateUserResponse, error)
-
-	UpdateUserWithResponse(ctx context.Context, id string, body UpdateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateUserResponse, error)
 }
 
 type GetHealthResponse struct {
@@ -3006,130 +2664,6 @@ func (r GetSnapshotResponse) StatusCode() int {
 	return 0
 }
 
-type GetUsersResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *struct {
-		Metadata *struct {
-			Limit      *int `json:"limit,omitempty"`
-			Offset     *int `json:"offset,omitempty"`
-			TotalCount *int `json:"totalCount,omitempty"`
-		} `json:"metadata,omitempty"`
-		Users *[]User `json:"users,omitempty"`
-	}
-	JSON500 *ErrorResponse
-}
-
-// Status returns HTTPResponse.Status
-func (r GetUsersResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetUsersResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type PostUserResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON201      *User
-	JSON500      *ErrorResponse
-}
-
-// Status returns HTTPResponse.Status
-func (r PostUserResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostUserResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type DeleteUserResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON404      *ErrorResponse
-	JSON500      *ErrorResponse
-}
-
-// Status returns HTTPResponse.Status
-func (r DeleteUserResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r DeleteUserResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetUserResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *User
-	JSON404      *ErrorResponse
-	JSON500      *ErrorResponse
-}
-
-// Status returns HTTPResponse.Status
-func (r GetUserResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetUserResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type UpdateUserResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *User
-	JSON404      *ErrorResponse
-	JSON500      *ErrorResponse
-}
-
-// Status returns HTTPResponse.Status
-func (r UpdateUserResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r UpdateUserResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
 // GetHealthWithResponse request returning *GetHealthResponse
 func (c *ClientWithResponses) GetHealthWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetHealthResponse, error) {
 	rsp, err := c.GetHealth(ctx, reqEditors...)
@@ -3149,16 +2683,16 @@ func (c *ClientWithResponses) GetReadyWithResponse(ctx context.Context, reqEdito
 }
 
 // LockEnvironmentWithBodyWithResponse request with arbitrary body returning *LockEnvironmentResponse
-func (c *ClientWithResponses) LockEnvironmentWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LockEnvironmentResponse, error) {
-	rsp, err := c.LockEnvironmentWithBody(ctx, teamId, projectId, environmentId, contentType, body, reqEditors...)
+func (c *ClientWithResponses) LockEnvironmentWithBodyWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LockEnvironmentResponse, error) {
+	rsp, err := c.LockEnvironmentWithBody(ctx, teamName, projectName, environmentName, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseLockEnvironmentResponse(rsp)
 }
 
-func (c *ClientWithResponses) LockEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body LockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*LockEnvironmentResponse, error) {
-	rsp, err := c.LockEnvironment(ctx, teamId, projectId, environmentId, body, reqEditors...)
+func (c *ClientWithResponses) LockEnvironmentWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body LockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*LockEnvironmentResponse, error) {
+	rsp, err := c.LockEnvironment(ctx, teamName, projectName, environmentName, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -3166,8 +2700,8 @@ func (c *ClientWithResponses) LockEnvironmentWithResponse(ctx context.Context, t
 }
 
 // GetEnvironmentStateWithResponse request returning *GetEnvironmentStateResponse
-func (c *ClientWithResponses) GetEnvironmentStateWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*GetEnvironmentStateResponse, error) {
-	rsp, err := c.GetEnvironmentState(ctx, teamId, projectId, environmentId, reqEditors...)
+func (c *ClientWithResponses) GetEnvironmentStateWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, reqEditors ...RequestEditorFn) (*GetEnvironmentStateResponse, error) {
+	rsp, err := c.GetEnvironmentState(ctx, teamName, projectName, environmentName, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -3175,16 +2709,16 @@ func (c *ClientWithResponses) GetEnvironmentStateWithResponse(ctx context.Contex
 }
 
 // UpdateEnvironmentStateWithBodyWithResponse request with arbitrary body returning *UpdateEnvironmentStateResponse
-func (c *ClientWithResponses) UpdateEnvironmentStateWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error) {
-	rsp, err := c.UpdateEnvironmentStateWithBody(ctx, teamId, projectId, environmentId, contentType, body, reqEditors...)
+func (c *ClientWithResponses) UpdateEnvironmentStateWithBodyWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error) {
+	rsp, err := c.UpdateEnvironmentStateWithBody(ctx, teamName, projectName, environmentName, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseUpdateEnvironmentStateResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateEnvironmentStateWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error) {
-	rsp, err := c.UpdateEnvironmentState(ctx, teamId, projectId, environmentId, body, reqEditors...)
+func (c *ClientWithResponses) UpdateEnvironmentStateWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UpdateEnvironmentStateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentStateResponse, error) {
+	rsp, err := c.UpdateEnvironmentState(ctx, teamName, projectName, environmentName, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -3192,16 +2726,16 @@ func (c *ClientWithResponses) UpdateEnvironmentStateWithResponse(ctx context.Con
 }
 
 // UnlockEnvironmentWithBodyWithResponse request with arbitrary body returning *UnlockEnvironmentResponse
-func (c *ClientWithResponses) UnlockEnvironmentWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UnlockEnvironmentResponse, error) {
-	rsp, err := c.UnlockEnvironmentWithBody(ctx, teamId, projectId, environmentId, contentType, body, reqEditors...)
+func (c *ClientWithResponses) UnlockEnvironmentWithBodyWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UnlockEnvironmentResponse, error) {
+	rsp, err := c.UnlockEnvironmentWithBody(ctx, teamName, projectName, environmentName, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseUnlockEnvironmentResponse(rsp)
 }
 
-func (c *ClientWithResponses) UnlockEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UnlockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UnlockEnvironmentResponse, error) {
-	rsp, err := c.UnlockEnvironment(ctx, teamId, projectId, environmentId, body, reqEditors...)
+func (c *ClientWithResponses) UnlockEnvironmentWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UnlockEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UnlockEnvironmentResponse, error) {
+	rsp, err := c.UnlockEnvironment(ctx, teamName, projectName, environmentName, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -3433,67 +2967,6 @@ func (c *ClientWithResponses) GetSnapshotWithResponse(ctx context.Context, teamI
 		return nil, err
 	}
 	return ParseGetSnapshotResponse(rsp)
-}
-
-// GetUsersWithResponse request returning *GetUsersResponse
-func (c *ClientWithResponses) GetUsersWithResponse(ctx context.Context, params *GetUsersParams, reqEditors ...RequestEditorFn) (*GetUsersResponse, error) {
-	rsp, err := c.GetUsers(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetUsersResponse(rsp)
-}
-
-// PostUserWithBodyWithResponse request with arbitrary body returning *PostUserResponse
-func (c *ClientWithResponses) PostUserWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostUserResponse, error) {
-	rsp, err := c.PostUserWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostUserResponse(rsp)
-}
-
-func (c *ClientWithResponses) PostUserWithResponse(ctx context.Context, body PostUserJSONRequestBody, reqEditors ...RequestEditorFn) (*PostUserResponse, error) {
-	rsp, err := c.PostUser(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostUserResponse(rsp)
-}
-
-// DeleteUserWithResponse request returning *DeleteUserResponse
-func (c *ClientWithResponses) DeleteUserWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteUserResponse, error) {
-	rsp, err := c.DeleteUser(ctx, id, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseDeleteUserResponse(rsp)
-}
-
-// GetUserWithResponse request returning *GetUserResponse
-func (c *ClientWithResponses) GetUserWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetUserResponse, error) {
-	rsp, err := c.GetUser(ctx, id, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetUserResponse(rsp)
-}
-
-// UpdateUserWithBodyWithResponse request with arbitrary body returning *UpdateUserResponse
-func (c *ClientWithResponses) UpdateUserWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateUserResponse, error) {
-	rsp, err := c.UpdateUserWithBody(ctx, id, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateUserResponse(rsp)
-}
-
-func (c *ClientWithResponses) UpdateUserWithResponse(ctx context.Context, id string, body UpdateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateUserResponse, error) {
-	rsp, err := c.UpdateUser(ctx, id, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateUserResponse(rsp)
 }
 
 // ParseGetHealthResponse parses an HTTP response from a GetHealthWithResponse call
@@ -4395,192 +3868,6 @@ func ParseGetSnapshotResponse(rsp *http.Response) (*GetSnapshotResponse, error) 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest Snapshot
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetUsersResponse parses an HTTP response from a GetUsersWithResponse call
-func ParseGetUsersResponse(rsp *http.Response) (*GetUsersResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetUsersResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			Metadata *struct {
-				Limit      *int `json:"limit,omitempty"`
-				Offset     *int `json:"offset,omitempty"`
-				TotalCount *int `json:"totalCount,omitempty"`
-			} `json:"metadata,omitempty"`
-			Users *[]User `json:"users,omitempty"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostUserResponse parses an HTTP response from a PostUserWithResponse call
-func ParsePostUserResponse(rsp *http.Response) (*PostUserResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostUserResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest User
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON201 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseDeleteUserResponse parses an HTTP response from a DeleteUserWithResponse call
-func ParseDeleteUserResponse(rsp *http.Response) (*DeleteUserResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &DeleteUserResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetUserResponse parses an HTTP response from a GetUserWithResponse call
-func ParseGetUserResponse(rsp *http.Response) (*GetUserResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetUserResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest User
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest ErrorResponse
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseUpdateUserResponse parses an HTTP response from a UpdateUserWithResponse call
-func ParseUpdateUserResponse(rsp *http.Response) (*UpdateUserResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &UpdateUserResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest User
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

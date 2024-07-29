@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/zeiss/fiber-goth/adapters"
 	seed "github.com/zeiss/gorm-seed"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
@@ -66,8 +65,8 @@ func NewLocksController(store seed.Database[ports.ReadTx, ports.ReadWriteTx]) *L
 
 // Lock ...
 func (c *LocksControllerImpl) Lock(ctx context.Context, cmd LockControllerCommand) error {
-	team := adapters.GothTeam{
-		Slug: cmd.Team,
+	team := models.Team{
+		Name: cmd.Team,
 	}
 
 	err := c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
@@ -78,8 +77,8 @@ func (c *LocksControllerImpl) Lock(ctx context.Context, cmd LockControllerComman
 	}
 
 	project := models.Project{
-		Name:   cmd.Project,
-		TeamID: team.ID,
+		Name:    cmd.Project,
+		OwnerID: team.ID,
 	}
 
 	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
@@ -103,8 +102,6 @@ func (c *LocksControllerImpl) Lock(ctx context.Context, cmd LockControllerComman
 
 	l := models.Lock{}
 	l.ID = cmd.ID
-	l.TeamID = team.ID
-	l.ProjectID = project.ID
 	l.EnvironmentID = env.ID
 
 	return c.store.ReadWriteTx(ctx, func(ctx context.Context, tx ports.ReadWriteTx) error {

@@ -10,9 +10,9 @@ import (
 func FromLockEnvironmentRequestObject(request openapi.LockEnvironmentRequestObject) controllers.LockControllerCommand {
 	return controllers.LockControllerCommand{
 		ID:          utils.PtrUUID(request.Body.Id),
-		Team:        request.TeamId,
-		Project:     request.ProjectId,
-		Environment: request.EnvironmentId,
+		Team:        request.TeamName,
+		Project:     request.ProjectName,
+		Environment: request.EnvironmentName,
 		Info:        utils.PtrStr(request.Body.Info),
 	}
 }

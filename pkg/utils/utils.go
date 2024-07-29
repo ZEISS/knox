@@ -8,8 +8,16 @@ func PtrStr(s *string) string {
 }
 
 // PtrInt return a string of a string pointer.
-func PtrInt(i *int) int {
-	return *i
+func PtrInt(i *int, defaults ...int) int {
+	if i != nil {
+		return *i
+	}
+
+	if len(defaults) > 0 {
+		return defaults[0]
+	}
+
+	return 0
 }
 
 // IntPtr return a string pointer of a string.

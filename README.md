@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Taylor Swift](https://img.shields.io/badge/secured%20by-taylor%20swift-brightgreen.svg)](https://twitter.com/SwiftOnSecurity)
 
-Knox is a simple and secure Terraform backend. 
+Knox is a simple and secure Terraform backend.
 
 ## Features
 
@@ -16,6 +16,8 @@ Knox is a simple and secure Terraform backend.
 - **Versioned**: Knox supports versioning of the Terraform state.
 
 Knox has a team-based management of the Terraform state. It is designed to be used in a multi-team environment where each team has its own workspace.
+
+Knox is using [OpenFGA](https://openfga.dev/) as authorization backend.
 
 ## Terraform
 

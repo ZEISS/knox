@@ -210,36 +210,6 @@ func (h *apiHandlers) UpdateTeam(ctx context.Context, request openapi.UpdateTeam
 	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
-// Get a list of users
-// (GET /user)
-func (h *apiHandlers) GetUsers(ctx context.Context, request openapi.GetUsersRequestObject) (openapi.GetUsersResponseObject, error) {
-	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
-}
-
-// Create a new user
-// (POST /user)
-func (h *apiHandlers) PostUser(ctx context.Context, request openapi.PostUserRequestObject) (openapi.PostUserResponseObject, error) {
-	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
-}
-
-// Delete a user
-// (DELETE /user/{id})
-func (h *apiHandlers) DeleteUser(ctx context.Context, request openapi.DeleteUserRequestObject) (openapi.DeleteUserResponseObject, error) {
-	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
-}
-
-// Get a user
-// (GET /user/{id})
-func (h *apiHandlers) GetUser(ctx context.Context, request openapi.GetUserRequestObject) (openapi.GetUserResponseObject, error) {
-	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
-}
-
-// Update a user
-// (PUT /user/{id})
-func (h *apiHandlers) UpdateUser(ctx context.Context, request openapi.UpdateUserRequestObject) (openapi.UpdateUserResponseObject, error) {
-	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
-}
-
 // Create a new snapshot
 // (POST /snapshot)
 func (a *apiHandlers) CreateSnapshot(ctx context.Context, request openapi.CreateSnapshotRequestObject) (openapi.CreateSnapshotResponseObject, error) {

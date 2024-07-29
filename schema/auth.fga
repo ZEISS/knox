@@ -28,3 +28,10 @@ type environment
     define owner: [project]
     define reader: [user, team#member] or reader from owner
     define writer: [user, team#member] or writer from owner
+
+type snapshot
+  relations
+    define admin: [user, team#member] or admin from owner
+    define owner: [environment]
+    define reader: [user, team#member] or reader from owner
+    define writer: [user, team#member] or writer from owner

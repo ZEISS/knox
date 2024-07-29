@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 
+	"github.com/google/uuid"
 	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
 
-	"github.com/zeiss/fiber-goth/adapters"
 	seed "github.com/zeiss/gorm-seed"
 	"gorm.io/gorm"
 )
@@ -42,7 +42,7 @@ func (r *readTxImpl) GetEnvironment(ctx context.Context, environment *models.Env
 }
 
 // GetTeam ...
-func (r *readTxImpl) GetTeam(ctx context.Context, team *adapters.GothTeam) error {
+func (r *readTxImpl) GetTeam(ctx context.Context, team *models.Team) error {
 	return r.conn.Where(team).First(team).Error
 }
 
@@ -52,21 +52,17 @@ func (r *readTxImpl) GetState(ctx context.Context, state *models.State) error {
 }
 
 // ListProjects ...
-func (r *readTxImpl) ListProjects(ctx context.Context, slug string, results *tables.Results[models.Project]) error {
-	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).
-		Where("team_id = (?)", r.conn.Model(&adapters.GothTeam{}).Where("slug = ?", slug).Select("id")).
-		Find(&results.Rows).Error
+func (r *readTxImpl) ListProjects(ctx context.Context, teamId uuid.UUID, results *tables.Results[models.Project]) error {
+	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).Where(&models.Project{OwnerID: teamId}).Find(&results.Rows).Error
 }
 
 // ListEnvironments ...
-func (r *readTxImpl) ListEnvironments(ctx context.Context, teamId, projectId string, results *tables.Results[models.Environment]) error {
-	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).
-		Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projectId).Where("team_id = (?)", r.conn.Model(&adapters.GothTeam{}).Where("slug = ?", teamId).Select("id")).Select("id")).
-		Find(&results.Rows).Error
+func (r *readTxImpl) ListEnvironments(ctx context.Context, projectId uuid.UUID, results *tables.Results[models.Environment]) error {
+	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).Where(&models.Environment{ProjectID: projectId}).Find(&results.Rows).Error
 }
 
 // ListTeams ...
-func (r *readTxImpl) ListTeams(ctx context.Context, results *tables.Results[adapters.GothTeam]) error {
+func (r *readTxImpl) ListTeams(ctx context.Context, results *tables.Results[models.Team]) error {
 	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).Find(&results.Rows).Error
 }
 
@@ -79,7 +75,7 @@ func (r *readTxImpl) AuthenticateClient(ctx context.Context, teamId, projectId, 
 
 	err := r.conn.Debug().
 		Model(&models.Environment{}).
-		Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projectId).Where("team_id = (?)", r.conn.Model(&adapters.GothTeam{}).Where("slug = ?", teamId).Select("id")).Select("id")).
+		Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projectId).Where("team_id = (?)", r.conn.Model(&models.Team{}).Where("name = ?", teamId).Select("id")).Select("id")).
 		Where(&environment).
 		First(&environment).Error
 	if err != nil {
@@ -127,7 +123,7 @@ func (rw *writeTxImpl) UpdateState(ctx context.Context, state *models.State) err
 
 	result := rw.conn.Debug().
 		Model(&models.State{}).
-		Where("team_id = ? AND project_id = ? AND environment_id = ?", state.TeamID, state.ProjectID, state.EnvironmentID).
+		Where("project_id = ? AND environment_id = ?", state.ProjectID, state.EnvironmentID).
 		Last(&latest)
 
 	if result.Error != nil && !errors.Is(result.Error, gorm.ErrRecordNotFound) {
@@ -154,17 +150,17 @@ func (rw *writeTxImpl) CreateSnapshot(ctx context.Context, snapshot *models.Snap
 }
 
 // GetTeam ...
-func (rw *writeTxImpl) GetTeam(ctx context.Context, team *adapters.GothTeam) error {
+func (rw *writeTxImpl) GetTeam(ctx context.Context, team *models.Team) error {
 	return rw.conn.Where(team).First(team).Error
 }
 
 // CreateTeam creates a new team.
-func (rw *writeTxImpl) CreateTeam(ctx context.Context, team *adapters.GothTeam) error {
+func (rw *writeTxImpl) CreateTeam(ctx context.Context, team *models.Team) error {
 	return rw.conn.Create(team).Error
 }
 
 // DeleteTeam deletes a team.
-func (rw *writeTxImpl) DeleteTeam(ctx context.Context, team *adapters.GothTeam) error {
+func (rw *writeTxImpl) DeleteTeam(ctx context.Context, team *models.Team) error {
 	return rw.conn.Delete(team).Error
 }
 

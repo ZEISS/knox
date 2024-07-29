@@ -18,8 +18,8 @@ import (
 )
 
 const (
-	BasicAuthScopes = "BasicAuth.Scopes"
-	OpenIDScopes    = "OpenID.Scopes"
+	BasicAuthScopes = "basicAuth.Scopes"
+	OpenIdScopes    = "openId.Scopes"
 )
 
 // Environment defines model for Environment.
@@ -86,7 +86,6 @@ type Project struct {
 	Team        *struct {
 		Id   *string `json:"id,omitempty"`
 		Name *string `json:"name,omitempty"`
-		Slug *string `json:"slug,omitempty"`
 	} `json:"team,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 }
@@ -95,7 +94,6 @@ type Project struct {
 type ProjectCreate struct {
 	Description *string `json:"description,omitempty"`
 	Name        *string `json:"name,omitempty"`
-	TeamId      *int    `json:"team_id,omitempty"`
 }
 
 // ProjectUpdate defines model for ProjectUpdate.
@@ -116,7 +114,6 @@ type Snapshot struct {
 	Team        *struct {
 		Id   *string `json:"id,omitempty"`
 		Name *string `json:"name,omitempty"`
-		Slug *string `json:"slug,omitempty"`
 	} `json:"team,omitempty"`
 	Title     *string    `json:"title,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
@@ -144,7 +141,6 @@ type Team struct {
 	Members       *[]string  `json:"members,omitempty"`
 	Name          *string    `json:"name,omitempty"`
 	ProjectsCount *int       `json:"projectsCount,omitempty"`
-	Slug          *string    `json:"slug,omitempty"`
 	UpdatedAt     *time.Time `json:"updatedAt,omitempty"`
 	UsersCount    *int       `json:"usersCount,omitempty"`
 }
@@ -154,7 +150,6 @@ type TeamCreate struct {
 	Description *string   `json:"description,omitempty"`
 	Members     *[]string `json:"members,omitempty"`
 	Name        *string   `json:"name,omitempty"`
-	Slug        *string   `json:"slug,omitempty"`
 }
 
 // TeamUpdate defines model for TeamUpdate.
@@ -162,37 +157,13 @@ type TeamUpdate struct {
 	Description *string   `json:"description,omitempty"`
 	Members     *[]string `json:"members,omitempty"`
 	Name        *string   `json:"name,omitempty"`
-	Slug        *string   `json:"slug,omitempty"`
-}
-
-// User defines model for User.
-type User struct {
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-	Email     *string    `json:"email,omitempty"`
-	Id        *string    `json:"id,omitempty"`
-	Name      *string    `json:"name,omitempty"`
-	Role      *string    `json:"role,omitempty"`
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
-}
-
-// UserCreate defines model for UserCreate.
-type UserCreate struct {
-	Email    *string `json:"email,omitempty"`
-	Name     *string `json:"name,omitempty"`
-	Password *string `json:"password,omitempty"`
-	Role     *string `json:"role,omitempty"`
-}
-
-// UserUpdate defines model for UserUpdate.
-type UserUpdate struct {
-	Email    *string `json:"email,omitempty"`
-	Name     *string `json:"name,omitempty"`
-	Password *string `json:"password,omitempty"`
-	Role     *string `json:"role,omitempty"`
 }
 
 // EnvironmentId defines model for environmentId.
-type EnvironmentId = string
+type EnvironmentId = openapi_types.UUID
+
+// EnvironmentName defines model for environmentName.
+type EnvironmentName = string
 
 // Limit defines model for limit.
 type Limit = int
@@ -201,13 +172,19 @@ type Limit = int
 type Offset = int
 
 // ProjectId defines model for projectId.
-type ProjectId = string
+type ProjectId = openapi_types.UUID
+
+// ProjectName defines model for projectName.
+type ProjectName = string
 
 // SnapshotId defines model for snapshotId.
-type SnapshotId = string
+type SnapshotId = openapi_types.UUID
 
 // TeamId defines model for teamId.
-type TeamId = string
+type TeamId = openapi_types.UUID
+
+// TeamName defines model for teamName.
+type TeamName = string
 
 // GetTeamsParams defines parameters for GetTeams.
 type GetTeamsParams struct {
@@ -229,12 +206,6 @@ type GetEnvironmentsParams struct {
 
 // GetSnapshotsParams defines parameters for GetSnapshots.
 type GetSnapshotsParams struct {
-	Limit  *Limit  `form:"limit,omitempty" json:"limit,omitempty"`
-	Offset *Offset `form:"offset,omitempty" json:"offset,omitempty"`
-}
-
-// GetUsersParams defines parameters for GetUsers.
-type GetUsersParams struct {
 	Limit  *Limit  `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset *Offset `form:"offset,omitempty" json:"offset,omitempty"`
 }
@@ -269,53 +240,44 @@ type UpdateEnvironmentJSONRequestBody = EnvironmentUpdate
 // CreateSnapshotJSONRequestBody defines body for CreateSnapshot for application/json ContentType.
 type CreateSnapshotJSONRequestBody = SnapshotCreate
 
-// PostUserJSONRequestBody defines body for PostUser for application/json ContentType.
-type PostUserJSONRequestBody = UserCreate
-
-// UpdateUserJSONRequestBody defines body for UpdateUser for application/json ContentType.
-type UpdateUserJSONRequestBody = UserUpdate
-
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"Jdpeb/8KAAD//wpL6bA/YgAA",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

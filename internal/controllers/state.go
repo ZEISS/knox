@@ -9,7 +9,6 @@ import (
 	openapi "github.com/zeiss/knox/pkg/apis"
 
 	"github.com/google/uuid"
-	"github.com/zeiss/fiber-goth/adapters"
 	seed "github.com/zeiss/gorm-seed"
 	"gorm.io/datatypes"
 )
@@ -62,8 +61,8 @@ func NewStateController(store seed.Database[ports.ReadTx, ports.ReadWriteTx]) *S
 func (c *StateControllerImpl) GetState(ctx context.Context, query GetStateControllerQuery) (map[string]interface{}, error) {
 	var data map[string]interface{}
 
-	team := adapters.GothTeam{
-		Slug: query.Team,
+	team := models.Team{
+		Name: query.Team,
 	}
 
 	err := c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
@@ -74,8 +73,8 @@ func (c *StateControllerImpl) GetState(ctx context.Context, query GetStateContro
 	}
 
 	project := models.Project{
-		Name:   query.Project,
-		TeamID: team.ID,
+		Name:    query.Project,
+		OwnerID: team.ID,
 	}
 
 	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
@@ -98,7 +97,6 @@ func (c *StateControllerImpl) GetState(ctx context.Context, query GetStateContro
 	}
 
 	state := models.State{
-		TeamID:        team.ID,
 		ProjectID:     project.ID,
 		EnvironmentID: env.ID,
 	}
@@ -131,8 +129,8 @@ func (c *StateControllerImpl) UpdateState(ctx context.Context, cmd UpdateStateCo
 		return err
 	}
 
-	team := adapters.GothTeam{
-		Slug: cmd.Team,
+	team := models.Team{
+		Name: cmd.Team,
 	}
 
 	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
@@ -143,8 +141,8 @@ func (c *StateControllerImpl) UpdateState(ctx context.Context, cmd UpdateStateCo
 	}
 
 	project := models.Project{
-		Name:   cmd.Project,
-		TeamID: team.ID,
+		Name:    cmd.Project,
+		OwnerID: team.ID,
 	}
 
 	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
@@ -172,7 +170,6 @@ func (c *StateControllerImpl) UpdateState(ctx context.Context, cmd UpdateStateCo
 	}
 
 	state := models.State{
-		TeamID:        team.ID,
 		ProjectID:     project.ID,
 		EnvironmentID: env.ID,
 		Data:          datatypes.JSON(b),

@@ -4,9 +4,9 @@ import (
 	"context"
 	"io"
 
+	"github.com/google/uuid"
 	"github.com/zeiss/knox/internal/models"
 
-	"github.com/zeiss/fiber-goth/adapters"
 	"github.com/zeiss/fiber-htmx/components/tables"
 )
 
@@ -34,19 +34,19 @@ type ReadTx interface {
 	// GetEnvironment ...
 	GetEnvironment(context.Context, *models.Environment) error
 	// GetTeam ...
-	GetTeam(context.Context, *adapters.GothTeam) error
+	GetTeam(context.Context, *models.Team) error
 	// GetState ...
 	GetState(context.Context, *models.State) error
 	// GetLock ...
 	GetLock(context.Context, *models.Lock) error
 	// ListProjects ...
-	ListProjects(context.Context, string, *tables.Results[models.Project]) error
+	ListProjects(context.Context, uuid.UUID, *tables.Results[models.Project]) error
 	// AuthenticateClient ...
 	AuthenticateClient(context.Context, string, string, string, string, string) error
 	// ListEnvironments ...
-	ListEnvironments(context.Context, string, string, *tables.Results[models.Environment]) error
+	ListEnvironments(context.Context, uuid.UUID, *tables.Results[models.Environment]) error
 	// ListTeams ...
-	ListTeams(context.Context, *tables.Results[adapters.GothTeam]) error
+	ListTeams(context.Context, *tables.Results[models.Team]) error
 }
 
 // ReadWriteTx provides methods for transactional read and write operations.
@@ -60,9 +60,9 @@ type ReadWriteTx interface {
 	// CreateSnapshot creates a new snapshot.
 	CreateSnapshot(context.Context, *models.Snapshot) error
 	// CreateTeam creates a new team.
-	CreateTeam(context.Context, *adapters.GothTeam) error
+	CreateTeam(context.Context, *models.Team) error
 	// DeleteTeam deletes a team.
-	DeleteTeam(context.Context, *adapters.GothTeam) error
+	DeleteTeam(context.Context, *models.Team) error
 	// CreateProject creates a new project.
 	CreateProject(context.Context, *models.Project) error
 	// DeleteProject deletes a project.
