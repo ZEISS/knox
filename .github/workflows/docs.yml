@@ -18,16 +18,15 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: true
-        fetch-depth: 0
-    - uses: actions/setup-node@v4
-    - run: |
-        make docs
-    - uses: peaceiris/actions-gh-pages@v4
-      if: github.ref == 'refs/heads/main'
-      with:
-        keep_files: true
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./public
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+      - run: |
+          make docs
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          keep_files: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
