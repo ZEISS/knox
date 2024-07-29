@@ -90,7 +90,7 @@ func (c *StateControllerImpl) GetState(ctx context.Context, query GetStateContro
 	}
 
 	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
-		return tx.GetEnvironment(ctx, &env)
+		return tx.GetEnvironment(ctx, query.Team, query.Project, &env)
 	})
 	if err != nil {
 		return data, err
@@ -158,7 +158,7 @@ func (c *StateControllerImpl) UpdateState(ctx context.Context, cmd UpdateStateCo
 	}
 
 	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
-		return tx.GetEnvironment(ctx, &env)
+		return tx.GetEnvironment(ctx, cmd.Team, cmd.Project, &env)
 	})
 	if err != nil {
 		return err

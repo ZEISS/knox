@@ -36,8 +36,10 @@ func (r *readTxImpl) GetProject(ctx context.Context, project *models.Project) er
 }
 
 // GetEnvironment ...
-func (r *readTxImpl) GetEnvironment(ctx context.Context, environment *models.Environment) error {
-	return r.conn.Where(environment).First(environment).Error
+func (r *readTxImpl) GetEnvironment(ctx context.Context, teamName string, projectName string, environment *models.Environment) error {
+	return r.conn.
+		Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projectName).Where("owner_id = (?)", r.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).Select("id")).
+		First(environment).Error
 }
 
 // GetTeam ...

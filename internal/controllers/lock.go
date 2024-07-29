@@ -94,7 +94,7 @@ func (c *LocksControllerImpl) Lock(ctx context.Context, cmd LockControllerComman
 	}
 
 	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
-		return tx.GetEnvironment(ctx, &env)
+		return tx.GetEnvironment(ctx, cmd.Team, cmd.Project, &env)
 	})
 	if err != nil {
 		return err

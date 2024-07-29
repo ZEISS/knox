@@ -614,6 +614,21 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+      # Add the policy to check if the user has access to delete the project
+      x-fiber-authz-fga:
+        user:
+          namespace: user
+          auth_type: oidc
+        relation:
+          name: writer
+        object:
+          namespace: project
+          separator: /
+          components:
+            - in: path
+              name: teamName
+            - in: path
+              name: projectName
 
     get:
       tags:
@@ -655,6 +670,22 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+      # Add the policy to check if the user has access to delete the project
+      x-fiber-authz-fga:
+        user:
+          namespace: user
+          auth_type: oidc
+        relation:
+          name: reader
+        object:
+          namespace: project
+          separator: /
+          components:
+            - in: path
+              name: teamName
+            - in: path
+              name: projectName
+
   /teams/{teamName}/projects/{projectName}/environments/{environmentName}:
     get:
       tags:
@@ -686,6 +717,23 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+      # Add the policy to check if the user has access to delete the project
+      x-fiber-authz-fga:
+        user:
+          namespace: user
+          auth_type: oidc
+        relation:
+          name: reader
+        object:
+          namespace: environment
+          separator: /
+          components:
+            - in: path
+              name: teamName
+            - in: path
+              name: projectName
+            - in: path
+              name: environmentName
 
     put:
       tags:
@@ -722,6 +770,23 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+      # Add the policy to check if the user has access to delete the project
+      x-fiber-authz-fga:
+        user:
+          namespace: user
+          auth_type: oidc
+        relation:
+          name: writer
+        object:
+          namespace: environment
+          separator: /
+          components:
+            - in: path
+              name: teamName
+            - in: path
+              name: projectName
+            - in: path
+              name: environmentName
 
     delete:
       tags:
@@ -749,6 +814,23 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+      # Add the policy to check if the user has access to delete the project
+      x-fiber-authz-fga:
+        user:
+          namespace: user
+          auth_type: oidc
+        relation:
+          name: reader
+        object:
+          namespace: environment
+          separator: /
+          components:
+            - in: path
+              name: teamName
+            - in: path
+              name: projectName
+            - in: path
+              name: environmentName
 
   /teams/{teamName}/projects/{projectName}/environments/{environmentName}/snapshots:
     get:

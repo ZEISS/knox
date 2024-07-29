@@ -53,3 +53,22 @@ func ToGetEnvironmentsResponseObject(results tables.Results[models.Environment])
 
 	return res
 }
+
+// FromGetEnvironmentRequestObject ...
+func FromGetEnvironmentRequestObject(req openapi.GetEnvironmentRequestObject) controllers.GetEnvironmentQuery {
+	return controllers.GetEnvironmentQuery{
+		TeamName:        req.TeamName,
+		ProjectName:     req.ProjectName,
+		EnvironmentName: req.EnvironmentName,
+	}
+}
+
+// ToGetEnvironmentResponseObject ...
+func ToGetEnvironmentResponseObject(environment models.Environment) openapi.GetEnvironment200JSONResponse {
+	res := openapi.GetEnvironment200JSONResponse{
+		Id:   utils.StrPtr(environment.ID.String()),
+		Name: utils.StrPtr(environment.Name),
+	}
+
+	return res
+}

@@ -132,7 +132,14 @@ func (h *apiHandlers) DeleteEnvironment(ctx context.Context, request openapi.Del
 // Get an environment
 // (GET /project/{projectId}/environment/{environmentId})
 func (h *apiHandlers) GetEnvironment(ctx context.Context, request openapi.GetEnvironmentRequestObject) (openapi.GetEnvironmentResponseObject, error) {
-	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
+	query := dto.FromGetEnvironmentRequestObject(request)
+
+	environment, err := h.environment.GetEnvironment(ctx, query)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusNotFound, err.Error())
+	}
+
+	return dto.ToGetEnvironmentResponseObject(environment), nil
 }
 
 // Update an environment

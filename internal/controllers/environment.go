@@ -32,6 +32,13 @@ type ListEnvironmentsQuery struct {
 	Offset      int    `json:"offset" form:"offset" validate:"omitempty,min=0"`
 }
 
+// GetEnvironmentQuery ...
+type GetEnvironmentQuery struct {
+	TeamName        string `json:"team_name" form:"team_name" validate:"required"`
+	ProjectName     string `json:"project_name" form:"project_name" validate:"required"`
+	EnvironmentName string `json:"environment_name" form:"environment_name" validate:"required"`
+}
+
 // EnvironmentControllerImpl ...
 type EnvironmentControllerImpl struct {
 	store seed.Database[ports.ReadTx, ports.ReadWriteTx]
@@ -43,11 +50,36 @@ type EnvironmentController interface {
 	CreateEnvironment(ctx context.Context, cmd CreateEnvironmentCommand) error
 	// ListEnvironments ...
 	ListEnvironments(ctx context.Context, query ListEnvironmentsQuery) (tables.Results[models.Environment], error)
+	// GetEnvironment ...
+	GetEnvironment(ctx context.Context, query GetEnvironmentQuery) (models.Environment, error)
 }
 
 // NewEnvironmentController ...
 func NewEnvironmentController(store seed.Database[ports.ReadTx, ports.ReadWriteTx]) *EnvironmentControllerImpl {
 	return &EnvironmentControllerImpl{store}
+}
+
+// GetEnvironment ...
+func (c *EnvironmentControllerImpl) GetEnvironment(ctx context.Context, query GetEnvironmentQuery) (models.Environment, error) {
+	validate = validator.New()
+
+	environment := models.Environment{
+		Name: query.EnvironmentName,
+	}
+
+	err := validate.Struct(query)
+	if err != nil {
+		return environment, err
+	}
+
+	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
+		return tx.GetEnvironment(ctx, query.TeamName, query.ProjectName, &environment)
+	})
+	if err != nil {
+		return environment, err
+	}
+
+	return environment, nil
 }
 
 // CreateEnvironment ...
