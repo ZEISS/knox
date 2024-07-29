@@ -2,6 +2,21 @@ apiVersion: v1
 entries:
   knox:
   - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2024-07-29T19:22:03.019962103Z"
+    description: A helm chart for Knox
+    digest: 74f84e4c78d14e80d12d16037b52fae56bfeb3aec4e05225650e4b3ef058a5ea
+    home: http://github.com/zeiss/knox
+    keywords:
+    - terraform
+    - state
+    name: knox
+    sources:
+    - https://github.com/zeiss/knox
+    urls:
+    - https://github.com/ZEISS/knox/releases/download/knox-0.1.0/knox-0.1.0.tgz
+    version: 0.1.0
+  - apiVersion: v2
     appVersion: 0.1.0-beta.4
     created: "2024-07-16T13:11:56.719253351Z"
     description: A helm chart for Knox
@@ -31,4 +46,4 @@ entries:
     urls:
     - https://github.com/ZEISS/knox/releases/download/knox-0.1.0-beta.3/knox-0.1.0-beta.3.tgz
     version: 0.1.0-beta.3
-generated: "2024-07-16T13:11:56.719318383Z"
+generated: "2024-07-29T19:22:03.020004683Z"
