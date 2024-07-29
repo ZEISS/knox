@@ -23,7 +23,7 @@ type Lock struct {
 	// Environment is the environment of the lock.
 	Environment Environment `json:"environment" form:"environment"`
 	// EnvironmentID is the environment id of the lock.
-	EnvironmentID uuid.UUID `json:"environment_id" gorm:"uniqueIndex"`
+	EnvironmentID uuid.UUID `json:"environment_id" gorm:"uniqueIndex:idx_environment_lock,sort:desc"`
 	// CreatedAt is the time the team was created.
 	CreatedAt time.Time
 	// UpdatedAt is the time the team was last updated.

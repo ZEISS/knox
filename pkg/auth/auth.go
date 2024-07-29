@@ -74,23 +74,23 @@ func NewBasicAuthenticator(store seed.Database[ports.ReadTx, ports.ReadWriteTx])
 		username := creds[:index]
 		password := creds[index+1:]
 
-		teamId, ok := input.RequestValidationInput.PathParams["teamId"]
+		teamName, ok := input.RequestValidationInput.PathParams["teamName"]
 		if !ok {
 			return fiber.NewError(fiber.StatusForbidden, "forbidden")
 		}
 
-		projectID, ok := input.RequestValidationInput.PathParams["projectId"]
+		projectName, ok := input.RequestValidationInput.PathParams["projectName"]
 		if !ok {
 			return fiber.NewError(fiber.StatusForbidden, "forbidden")
 		}
 
-		environmentId, ok := input.RequestValidationInput.PathParams["environmentId"]
+		environmentName, ok := input.RequestValidationInput.PathParams["environmentName"]
 		if !ok {
 			return fiber.NewError(fiber.StatusForbidden, "forbidden")
 		}
 
 		err = store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
-			return tx.AuthenticateClient(ctx, teamId, projectID, environmentId, username, password)
+			return tx.AuthenticateClient(ctx, teamName, projectName, environmentName, username, password)
 		})
 		if err != nil {
 			return fiber.NewError(fiber.StatusForbidden, "forbidden")

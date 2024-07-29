@@ -24,9 +24,9 @@ type Snapshot struct {
 	// Project is the project of the state.
 	Project Project `json:"project" form:"project"`
 	// ProjectID is the project id of the state.
-	ProjectID uuid.UUID `json:"project_id" gorm:"uniqueIndex:idx_environment_version"`
+	ProjectID uuid.UUID `json:"project_id" gorm:"uniqueIndex:idx_project_environment_version"`
 	// Version is the version of the state.
-	Version int `json:"version" gorm:"uniqueIndex:idx_environment_version"`
+	Version int `json:"version" gorm:"uniqueIndex:idx_project_environment_version"`
 	// Data is the data of the state.
 	Data datatypes.JSON `json:"data" form:"data"`
 	// CreatedAt is the time the snapshot was created.

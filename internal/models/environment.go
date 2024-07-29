@@ -18,6 +18,8 @@ type Environment struct {
 	Project Project `json:"project" form:"project"`
 	// ProjectID is the project id of the environment.
 	ProjectID uuid.UUID `json:"project_id" gorm:"uniqueIndex:idx_project_environment"`
+	// States is the states of the environment.
+	States []State `json:"states" gorm:"foreignKey:EnvironmentID"`
 	// Username is the username of the environment.
 	Username string `json:"username"`
 	// Password is the password of the environment.

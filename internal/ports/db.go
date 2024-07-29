@@ -68,6 +68,8 @@ type ReadWriteTx interface {
 	DeleteProject(context.Context, string, *models.Project) error
 	// CreateEnvironment creates a new environment.
 	CreateEnvironment(context.Context, *models.Environment) error
+	// DeleteEnvironment deletes an environment.
+	DeleteEnvironment(context.Context, string, string, *models.Environment) error
 
 	ReadTx
 }

@@ -4,12 +4,13 @@ import (
 	"context"
 	"log"
 
+	"github.com/zeiss/fiber-authz/oas"
 	"github.com/zeiss/knox/internal/adapters/database"
 	"github.com/zeiss/knox/internal/adapters/handlers"
-	"github.com/zeiss/knox/internal/authn"
 
 	"github.com/zeiss/knox/internal/controllers"
 	openapi "github.com/zeiss/knox/pkg/apis"
+	"github.com/zeiss/knox/pkg/auth"
 	"github.com/zeiss/knox/pkg/cfg"
 	"github.com/zeiss/knox/pkg/utils"
 
@@ -125,8 +126,11 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 
 		validatorOptions := &middleware.Options{}
 		// validatorOptions.Options.AuthenticationFunc = auth.NewAuthenticator(auth.WithBasicAuthenticator(auth.NewBasicAuthenticator(store)))
-		validatorOptions.Options.AuthenticationFunc = authn.Authenticate2(
-			oidc.Authenticate(validator),
+		validatorOptions.Options.AuthenticationFunc = ofga.Authenticate(
+			oas.Authenticate(
+				oas.WithBearerSchema(oidc.Authenticate(validator)),
+				oas.WithBasicAuthSchema(auth.NewBasicAuthenticator(store)),
+			),
 			ofga.OasAuthenticate(
 				ofga.WithChecker(ofga.NewClient(fgaClient)),
 			),

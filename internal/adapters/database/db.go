@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/models"
@@ -129,6 +130,8 @@ func (rw *writeTxImpl) DeleteProject(ctx context.Context, teamName string, proje
 func (rw *writeTxImpl) UpdateState(ctx context.Context, teamName string, projectName string, state *models.State) error {
 	latest := models.State{}
 
+	fmt.Println("teamName: ", teamName, "projectName: ", projectName)
+
 	result := rw.conn.Debug().
 		Where(&models.State{}).
 		Where("project_id = (?)", rw.conn.Model(&models.Project{}).Where("name = ?", projectName).Where("owner_id = (?)", rw.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).Select("id")).
@@ -175,4 +178,12 @@ func (rw *writeTxImpl) DeleteTeam(ctx context.Context, team *models.Team) error 
 // CreateEnvironment creates a new environment.
 func (rw *writeTxImpl) CreateEnvironment(ctx context.Context, environment *models.Environment) error {
 	return rw.conn.Create(environment).Error
+}
+
+// DeleteEnvironment deletes an environment.
+func (rw *writeTxImpl) DeleteEnvironment(ctx context.Context, teamName, projectName string, environment *models.Environment) error {
+	return rw.conn.
+		Where("project_id = (?)", rw.conn.Model(&models.Project{}).Where("name = ?", projectName).Where("owner_id = (?)", rw.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).Select("id")).
+		Delete(environment).
+		Error
 }

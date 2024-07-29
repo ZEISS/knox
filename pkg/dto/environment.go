@@ -72,3 +72,19 @@ func ToGetEnvironmentResponseObject(environment models.Environment) openapi.GetE
 
 	return res
 }
+
+// FromDeleteEnvironmentRequestObject ...
+func FromDeleteEnvironmentRequestObject(req openapi.DeleteEnvironmentRequestObject) controllers.DeleteEnvironmentCommand {
+	return controllers.DeleteEnvironmentCommand{
+		TeamName:        req.TeamName,
+		ProjectName:     req.ProjectName,
+		EnvironmentName: req.EnvironmentName,
+	}
+}
+
+// ToDeleteEnvironmentResponseObject ...
+func ToDeleteEnvironmentResponseObject() openapi.DeleteEnvironment204Response {
+	res := openapi.DeleteEnvironment204Response{}
+
+	return res
+}

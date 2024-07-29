@@ -7,6 +7,7 @@ import (
 	"github.com/MicahParks/keyfunc/v2"
 	"github.com/getkin/kin-openapi/openapi3filter"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
 )
 
 var (
@@ -115,6 +116,8 @@ func Authenticate(opts ...AuthenticatorOpt) openapi3filter.AuthenticationFunc {
 	options.Configure(opts...)
 
 	return func(ctx context.Context, input *openapi3filter.AuthenticationInput) error {
+		log.Debug(input.SecurityScheme.Type)
+
 		auth, ok := options.Schemas[input.SecurityScheme.Type]
 		if !ok {
 			return fiber.ErrForbidden
