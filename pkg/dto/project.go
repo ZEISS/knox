@@ -11,7 +11,7 @@ import (
 // FromCreateProjectRequestObject ...
 func FromCreateProjectRequestObject(req openapi.CreateProjectRequestObject) controllers.CreateProjectCommand {
 	return controllers.CreateProjectCommand{
-		TeamID:      req.TeamId,
+		TeamName:    req.TeamName,
 		Name:        utils.PtrStr(req.Body.Name),
 		Description: utils.PtrStr(req.Body.Description),
 	}
@@ -27,9 +27,9 @@ func ToCreateProjectResponseObject() openapi.CreateProject201JSONResponse {
 // FromGetProjectsRequestObject ...
 func FromGetProjectsRequestObject(req openapi.GetProjectsRequestObject) controllers.ListProjectsQuery {
 	return controllers.ListProjectsQuery{
-		Limit:  utils.PtrInt(req.Params.Limit),
-		Offset: utils.PtrInt(req.Params.Offset),
-		TeamID: req.TeamId,
+		TeamName: req.TeamName,
+		Limit:    utils.PtrInt(req.Params.Limit),
+		Offset:   utils.PtrInt(req.Params.Offset),
 	}
 }
 
@@ -55,13 +55,32 @@ func ToGetProjectsResponseObject(results tables.Results[models.Project]) openapi
 // FromDeleteProjectRequestObject ...
 func FromDeleteProjectRequestObject(req openapi.DeleteProjectRequestObject) controllers.DeleteProjectCommand {
 	return controllers.DeleteProjectCommand{
-		ID: req.ProjectId,
+		TeamName: req.TeamName,
 	}
 }
 
 // ToDeleteProjectResponseObject ...
 func ToDeleteProjectResponseObject() openapi.DeleteProject204Response {
 	res := openapi.DeleteProject204Response{}
+
+	return res
+}
+
+// FromGetProjectRequestObject ...
+func FromGetProjectRequestObject(req openapi.GetProjectRequestObject) controllers.GetProjectQuery {
+	return controllers.GetProjectQuery{
+		TeamName:    req.TeamName,
+		ProjectName: req.ProjectName,
+	}
+}
+
+// ToGetProjectResponseObject ...
+func ToGetProjectResponseObject(project models.Project) openapi.GetProjectResponseObject {
+	res := openapi.GetProject200JSONResponse(openapi.Project{
+		Id:          utils.StrPtr(project.ID.String()),
+		Name:        utils.StrPtr(project.Name),
+		Description: project.Description,
+	})
 
 	return res
 }

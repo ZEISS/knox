@@ -9,11 +9,11 @@ type system
 
 type team
   relations
-    define admin: [user, team#member]
-    define member: [user] or owner
-    define owner: [user]
-    define reader: [user, team#member]
-    define writer: [user, team#member]
+    define admin: [user, team#member] or owner
+    define member: [user]
+    define owner: [user, team#member]
+    define reader: [user, team#member] or owner or admin or writer
+    define writer: [user, team#member] or owner or admin
 
 type project
   relations

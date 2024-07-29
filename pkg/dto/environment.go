@@ -11,11 +11,11 @@ import (
 // FromCreateEnvironmentRequestObject ...
 func FromCreateEnvironmentRequestObject(req openapi.CreateEnvironmentRequestObject) controllers.CreateEnvironmentCommand {
 	return controllers.CreateEnvironmentCommand{
-		TeamID:    req.TeamId,
-		ProjectID: req.ProjectId,
-		Name:      utils.PtrStr(req.Body.Name),
-		Username:  utils.PtrStr(req.Body.Username),
-		Password:  utils.PtrStr(req.Body.Secret),
+		TeamName:    req.TeamName,
+		ProjectName: req.ProjectName,
+		Name:        utils.PtrStr(req.Body.Name),
+		Username:    utils.PtrStr(req.Body.Username),
+		Password:    utils.PtrStr(req.Body.Secret),
 	}
 }
 
@@ -29,10 +29,10 @@ func ToCreateEnvironmentResponseObject() openapi.CreateEnvironment201JSONRespons
 // FromGetEnvironmentsRequestObject ...
 func FromGetEnvironmentsRequestObject(req openapi.GetEnvironmentsRequestObject) controllers.ListEnvironmentsQuery {
 	return controllers.ListEnvironmentsQuery{
-		Limit:     utils.PtrInt(req.Params.Limit),
-		Offset:    utils.PtrInt(req.Params.Offset),
-		TeamID:    req.TeamId,
-		ProjectID: req.ProjectId,
+		TeamName:    req.TeamName,
+		ProjectName: req.ProjectName,
+		Limit:       utils.PtrInt(req.Params.Limit),
+		Offset:      utils.PtrInt(req.Params.Offset),
 	}
 }
 

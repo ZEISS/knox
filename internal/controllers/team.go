@@ -3,7 +3,6 @@ package controllers
 import (
 	"context"
 
-	"github.com/google/uuid"
 	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
@@ -17,29 +16,29 @@ var _ TeamController = (*TeamControllerImpl)(nil)
 // CreateTeamCommand ...
 type CreateTeamCommand struct {
 	// Name is the name of the team.
-	Name string `json:"name" form:"name"`
+	Name string `json:"name" form:"name" validate:"required,min=1,max=255,alphanum,lowercase"`
 	// Description is the description of the team.
 	Description string `json:"description" form:"description"`
-	// Slug is the slug of the team.
-	Slug string `json:"slug" form:"slug"`
 }
 
 // GetTeamQuery ...
 type GetTeamQuery struct {
 	// ID is the ID of the team.
-	ID uuid.UUID `json:"id" form:"id"`
+	TeamName string `json:"team_name" form:"team_name"`
 }
 
 // ListTeamsQuery ...
 type ListTeamsQuery struct {
-	Limit  int `json:"limit" form:"limit"`
+	// Limit is the maximum number of teams to return.
+	Limit int `json:"limit" form:"limit"`
+	// Offset is the number of teams to skip.
 	Offset int `json:"offset" form:"offset"`
 }
 
 // DeleteTeamCommand ...
 type DeleteTeamCommand struct {
-	// ID is the ID of the team.
-	ID uuid.UUID `json:"id" form:"id"`
+	// TeamName is the name of the team.
+	TeamName string `json:"team_name" form:"team_name"`
 }
 
 // TeamController ...
@@ -86,7 +85,7 @@ func (c *TeamControllerImpl) CreateTeam(ctx context.Context, cmd CreateTeamComma
 // GetTeam gets a team.
 func (c *TeamControllerImpl) GetTeam(ctx context.Context, query GetTeamQuery) (models.Team, error) {
 	team := models.Team{
-		ID: query.ID,
+		Name: query.TeamName,
 	}
 
 	err := c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
@@ -99,7 +98,7 @@ func (c *TeamControllerImpl) GetTeam(ctx context.Context, query GetTeamQuery) (m
 // DeleteTeam deletes a team.
 func (c *TeamControllerImpl) DeleteTeam(ctx context.Context, cmd DeleteTeamCommand) error {
 	return c.store.ReadWriteTx(ctx, func(ctx context.Context, tx ports.ReadWriteTx) error {
-		return tx.DeleteTeam(ctx, &models.Team{ID: cmd.ID})
+		return tx.DeleteTeam(ctx, &models.Team{Name: cmd.TeamName})
 	})
 }
 

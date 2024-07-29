@@ -26,7 +26,7 @@ func ToCreateTeamResponseObject() openapi.CreateTeamResponseObject {
 // FromGetTeamRequestObject ...
 func FromGetTeamRequestObject(request openapi.GetTeamRequestObject) controllers.GetTeamQuery {
 	return controllers.GetTeamQuery{
-		ID: request.TeamId,
+		TeamName: request.TeamName,
 	}
 }
 
@@ -44,7 +44,7 @@ func ToGetTeamResponseObject(team models.Team) openapi.GetTeamResponseObject {
 // FromDeleteTeamRequestObject ...
 func FromDeleteTeamRequestObject(request openapi.DeleteTeamRequestObject) controllers.DeleteTeamCommand {
 	return controllers.DeleteTeamCommand{
-		ID: request.TeamId,
+		TeamName: request.TeamName,
 	}
 }
 

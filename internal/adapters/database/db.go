@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/google/uuid"
 	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
@@ -52,13 +51,17 @@ func (r *readTxImpl) GetState(ctx context.Context, state *models.State) error {
 }
 
 // ListProjects ...
-func (r *readTxImpl) ListProjects(ctx context.Context, teamId uuid.UUID, results *tables.Results[models.Project]) error {
-	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).Where(&models.Project{OwnerID: teamId}).Find(&results.Rows).Error
+func (r *readTxImpl) ListProjects(ctx context.Context, teamName string, results *tables.Results[models.Project]) error {
+	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).
+		Where("owner_id = (?)", r.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).
+		Find(&results.Rows).Error
 }
 
 // ListEnvironments ...
-func (r *readTxImpl) ListEnvironments(ctx context.Context, projectId uuid.UUID, results *tables.Results[models.Environment]) error {
-	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).Where(&models.Environment{ProjectID: projectId}).Find(&results.Rows).Error
+func (r *readTxImpl) ListEnvironments(ctx context.Context, teamName, projetName string, results *tables.Results[models.Environment]) error {
+	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).
+		Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projetName).Where("owner_id = (?)", r.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).Select("id")).
+		Find(&results.Rows).Error
 }
 
 // ListTeams ...
@@ -75,7 +78,7 @@ func (r *readTxImpl) AuthenticateClient(ctx context.Context, teamId, projectId, 
 
 	err := r.conn.Debug().
 		Model(&models.Environment{}).
-		Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projectId).Where("team_id = (?)", r.conn.Model(&models.Team{}).Where("name = ?", teamId).Select("id")).Select("id")).
+		Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projectId).Where("owner_id = (?)", r.conn.Model(&models.Team{}).Where("name = ?", teamId).Select("id")).Select("id")).
 		Where(&environment).
 		First(&environment).Error
 	if err != nil {
@@ -113,17 +116,20 @@ func (rw *writeTxImpl) CreateProject(ctx context.Context, project *models.Projec
 }
 
 // DeleteProject deletes a project.
-func (rw *writeTxImpl) DeleteProject(ctx context.Context, project *models.Project) error {
-	return rw.conn.Delete(project).Error
+func (rw *writeTxImpl) DeleteProject(ctx context.Context, teamName string, project *models.Project) error {
+	return rw.conn.
+		Where("owner_id = (?)", rw.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).
+		Delete(project).
+		Error
 }
 
 // UpdateState...
-func (rw *writeTxImpl) UpdateState(ctx context.Context, state *models.State) error {
+func (rw *writeTxImpl) UpdateState(ctx context.Context, teamName string, projectName string, state *models.State) error {
 	latest := models.State{}
 
 	result := rw.conn.Debug().
-		Model(&models.State{}).
-		Where("project_id = ? AND environment_id = ?", state.ProjectID, state.EnvironmentID).
+		Where(&models.State{}).
+		Where("project_id = (?)", rw.conn.Model(&models.Project{}).Where("name = ?", projectName).Where("owner_id = (?)", rw.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).Select("id")).
 		Last(&latest)
 
 	if result.Error != nil && !errors.Is(result.Error, gorm.ErrRecordNotFound) {

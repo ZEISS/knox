@@ -122,67 +122,67 @@ type ClientInterface interface {
 	CreateTeam(ctx context.Context, body CreateTeamJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteTeam request
-	DeleteTeam(ctx context.Context, teamId TeamId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteTeam(ctx context.Context, teamName TeamName, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetTeam request
-	GetTeam(ctx context.Context, teamId TeamId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetTeam(ctx context.Context, teamName TeamName, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateTeamWithBody request with any body
-	UpdateTeamWithBody(ctx context.Context, teamId TeamId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateTeamWithBody(ctx context.Context, teamName TeamName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateTeam(ctx context.Context, teamId TeamId, body UpdateTeamJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateTeam(ctx context.Context, teamName TeamName, body UpdateTeamJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetProjects request
-	GetProjects(ctx context.Context, teamId TeamId, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetProjects(ctx context.Context, teamName TeamName, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateProjectWithBody request with any body
-	CreateProjectWithBody(ctx context.Context, teamId TeamId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateProjectWithBody(ctx context.Context, teamName TeamName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	CreateProject(ctx context.Context, teamId TeamId, body CreateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateProject(ctx context.Context, teamName TeamName, body CreateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteProject request
-	DeleteProject(ctx context.Context, teamId TeamId, projectId ProjectId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteProject(ctx context.Context, teamName TeamName, projectName ProjectName, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetProject request
-	GetProject(ctx context.Context, teamId TeamId, projectId ProjectId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetProject(ctx context.Context, teamName TeamName, projectName ProjectName, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateProjectWithBody request with any body
-	UpdateProjectWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateProjectWithBody(ctx context.Context, teamName TeamName, projectName ProjectName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateProject(ctx context.Context, teamId TeamId, projectId ProjectId, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateProject(ctx context.Context, teamName TeamName, projectName ProjectName, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetEnvironments request
-	GetEnvironments(ctx context.Context, teamId TeamId, projectId ProjectId, params *GetEnvironmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetEnvironments(ctx context.Context, teamName TeamName, projectName ProjectName, params *GetEnvironmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateEnvironmentWithBody request with any body
-	CreateEnvironmentWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateEnvironmentWithBody(ctx context.Context, teamName TeamName, projectName ProjectName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	CreateEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateEnvironment(ctx context.Context, teamName TeamName, projectName ProjectName, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteEnvironment request
-	DeleteEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteEnvironment(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetEnvironment request
-	GetEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetEnvironment(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateEnvironmentWithBody request with any body
-	UpdateEnvironmentWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateEnvironmentWithBody(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateEnvironment(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetSnapshots request
-	GetSnapshots(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *GetSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetSnapshots(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, params *GetSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateSnapshotWithBody request with any body
-	CreateSnapshotWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateSnapshotWithBody(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	CreateSnapshot(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body CreateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateSnapshot(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body CreateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteSnapshot request
-	DeleteSnapshot(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteSnapshot(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetSnapshot request
-	GetSnapshot(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetSnapshot(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetHealth(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -329,8 +329,8 @@ func (c *Client) CreateTeam(ctx context.Context, body CreateTeamJSONRequestBody,
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteTeam(ctx context.Context, teamId TeamId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteTeamRequest(c.Server, teamId)
+func (c *Client) DeleteTeam(ctx context.Context, teamName TeamName, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteTeamRequest(c.Server, teamName)
 	if err != nil {
 		return nil, err
 	}
@@ -341,8 +341,8 @@ func (c *Client) DeleteTeam(ctx context.Context, teamId TeamId, reqEditors ...Re
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetTeam(ctx context.Context, teamId TeamId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetTeamRequest(c.Server, teamId)
+func (c *Client) GetTeam(ctx context.Context, teamName TeamName, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTeamRequest(c.Server, teamName)
 	if err != nil {
 		return nil, err
 	}
@@ -353,8 +353,8 @@ func (c *Client) GetTeam(ctx context.Context, teamId TeamId, reqEditors ...Reque
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateTeamWithBody(ctx context.Context, teamId TeamId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateTeamRequestWithBody(c.Server, teamId, contentType, body)
+func (c *Client) UpdateTeamWithBody(ctx context.Context, teamName TeamName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateTeamRequestWithBody(c.Server, teamName, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -365,8 +365,8 @@ func (c *Client) UpdateTeamWithBody(ctx context.Context, teamId TeamId, contentT
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateTeam(ctx context.Context, teamId TeamId, body UpdateTeamJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateTeamRequest(c.Server, teamId, body)
+func (c *Client) UpdateTeam(ctx context.Context, teamName TeamName, body UpdateTeamJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateTeamRequest(c.Server, teamName, body)
 	if err != nil {
 		return nil, err
 	}
@@ -377,8 +377,8 @@ func (c *Client) UpdateTeam(ctx context.Context, teamId TeamId, body UpdateTeamJ
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetProjects(ctx context.Context, teamId TeamId, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetProjectsRequest(c.Server, teamId, params)
+func (c *Client) GetProjects(ctx context.Context, teamName TeamName, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetProjectsRequest(c.Server, teamName, params)
 	if err != nil {
 		return nil, err
 	}
@@ -389,8 +389,8 @@ func (c *Client) GetProjects(ctx context.Context, teamId TeamId, params *GetProj
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateProjectWithBody(ctx context.Context, teamId TeamId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateProjectRequestWithBody(c.Server, teamId, contentType, body)
+func (c *Client) CreateProjectWithBody(ctx context.Context, teamName TeamName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateProjectRequestWithBody(c.Server, teamName, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -401,8 +401,8 @@ func (c *Client) CreateProjectWithBody(ctx context.Context, teamId TeamId, conte
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateProject(ctx context.Context, teamId TeamId, body CreateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateProjectRequest(c.Server, teamId, body)
+func (c *Client) CreateProject(ctx context.Context, teamName TeamName, body CreateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateProjectRequest(c.Server, teamName, body)
 	if err != nil {
 		return nil, err
 	}
@@ -413,8 +413,8 @@ func (c *Client) CreateProject(ctx context.Context, teamId TeamId, body CreatePr
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteProject(ctx context.Context, teamId TeamId, projectId ProjectId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteProjectRequest(c.Server, teamId, projectId)
+func (c *Client) DeleteProject(ctx context.Context, teamName TeamName, projectName ProjectName, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteProjectRequest(c.Server, teamName, projectName)
 	if err != nil {
 		return nil, err
 	}
@@ -425,8 +425,8 @@ func (c *Client) DeleteProject(ctx context.Context, teamId TeamId, projectId Pro
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetProject(ctx context.Context, teamId TeamId, projectId ProjectId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetProjectRequest(c.Server, teamId, projectId)
+func (c *Client) GetProject(ctx context.Context, teamName TeamName, projectName ProjectName, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetProjectRequest(c.Server, teamName, projectName)
 	if err != nil {
 		return nil, err
 	}
@@ -437,8 +437,8 @@ func (c *Client) GetProject(ctx context.Context, teamId TeamId, projectId Projec
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateProjectWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateProjectRequestWithBody(c.Server, teamId, projectId, contentType, body)
+func (c *Client) UpdateProjectWithBody(ctx context.Context, teamName TeamName, projectName ProjectName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateProjectRequestWithBody(c.Server, teamName, projectName, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -449,8 +449,8 @@ func (c *Client) UpdateProjectWithBody(ctx context.Context, teamId TeamId, proje
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateProject(ctx context.Context, teamId TeamId, projectId ProjectId, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateProjectRequest(c.Server, teamId, projectId, body)
+func (c *Client) UpdateProject(ctx context.Context, teamName TeamName, projectName ProjectName, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateProjectRequest(c.Server, teamName, projectName, body)
 	if err != nil {
 		return nil, err
 	}
@@ -461,8 +461,8 @@ func (c *Client) UpdateProject(ctx context.Context, teamId TeamId, projectId Pro
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetEnvironments(ctx context.Context, teamId TeamId, projectId ProjectId, params *GetEnvironmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetEnvironmentsRequest(c.Server, teamId, projectId, params)
+func (c *Client) GetEnvironments(ctx context.Context, teamName TeamName, projectName ProjectName, params *GetEnvironmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetEnvironmentsRequest(c.Server, teamName, projectName, params)
 	if err != nil {
 		return nil, err
 	}
@@ -473,8 +473,8 @@ func (c *Client) GetEnvironments(ctx context.Context, teamId TeamId, projectId P
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateEnvironmentWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateEnvironmentRequestWithBody(c.Server, teamId, projectId, contentType, body)
+func (c *Client) CreateEnvironmentWithBody(ctx context.Context, teamName TeamName, projectName ProjectName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateEnvironmentRequestWithBody(c.Server, teamName, projectName, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -485,8 +485,8 @@ func (c *Client) CreateEnvironmentWithBody(ctx context.Context, teamId TeamId, p
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateEnvironmentRequest(c.Server, teamId, projectId, body)
+func (c *Client) CreateEnvironment(ctx context.Context, teamName TeamName, projectName ProjectName, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateEnvironmentRequest(c.Server, teamName, projectName, body)
 	if err != nil {
 		return nil, err
 	}
@@ -497,8 +497,8 @@ func (c *Client) CreateEnvironment(ctx context.Context, teamId TeamId, projectId
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteEnvironmentRequest(c.Server, teamId, projectId, environmentId)
+func (c *Client) DeleteEnvironment(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteEnvironmentRequest(c.Server, teamName, projectName, environmentName)
 	if err != nil {
 		return nil, err
 	}
@@ -509,8 +509,8 @@ func (c *Client) DeleteEnvironment(ctx context.Context, teamId TeamId, projectId
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetEnvironmentRequest(c.Server, teamId, projectId, environmentId)
+func (c *Client) GetEnvironment(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetEnvironmentRequest(c.Server, teamName, projectName, environmentName)
 	if err != nil {
 		return nil, err
 	}
@@ -521,8 +521,8 @@ func (c *Client) GetEnvironment(ctx context.Context, teamId TeamId, projectId Pr
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateEnvironmentWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateEnvironmentRequestWithBody(c.Server, teamId, projectId, environmentId, contentType, body)
+func (c *Client) UpdateEnvironmentWithBody(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEnvironmentRequestWithBody(c.Server, teamName, projectName, environmentName, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -533,8 +533,8 @@ func (c *Client) UpdateEnvironmentWithBody(ctx context.Context, teamId TeamId, p
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateEnvironment(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateEnvironmentRequest(c.Server, teamId, projectId, environmentId, body)
+func (c *Client) UpdateEnvironment(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEnvironmentRequest(c.Server, teamName, projectName, environmentName, body)
 	if err != nil {
 		return nil, err
 	}
@@ -545,8 +545,8 @@ func (c *Client) UpdateEnvironment(ctx context.Context, teamId TeamId, projectId
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetSnapshots(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *GetSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetSnapshotsRequest(c.Server, teamId, projectId, environmentId, params)
+func (c *Client) GetSnapshots(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, params *GetSnapshotsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSnapshotsRequest(c.Server, teamName, projectName, environmentName, params)
 	if err != nil {
 		return nil, err
 	}
@@ -557,8 +557,8 @@ func (c *Client) GetSnapshots(ctx context.Context, teamId TeamId, projectId Proj
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateSnapshotWithBody(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateSnapshotRequestWithBody(c.Server, teamId, projectId, environmentId, contentType, body)
+func (c *Client) CreateSnapshotWithBody(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSnapshotRequestWithBody(c.Server, teamName, projectName, environmentName, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -569,8 +569,8 @@ func (c *Client) CreateSnapshotWithBody(ctx context.Context, teamId TeamId, proj
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateSnapshot(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body CreateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateSnapshotRequest(c.Server, teamId, projectId, environmentId, body)
+func (c *Client) CreateSnapshot(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body CreateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSnapshotRequest(c.Server, teamName, projectName, environmentName, body)
 	if err != nil {
 		return nil, err
 	}
@@ -581,8 +581,8 @@ func (c *Client) CreateSnapshot(ctx context.Context, teamId TeamId, projectId Pr
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteSnapshot(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteSnapshotRequest(c.Server, teamId, projectId, environmentId, snapshotId)
+func (c *Client) DeleteSnapshot(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteSnapshotRequest(c.Server, teamName, projectName, environmentName, snapshotId)
 	if err != nil {
 		return nil, err
 	}
@@ -593,8 +593,8 @@ func (c *Client) DeleteSnapshot(ctx context.Context, teamId TeamId, projectId Pr
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetSnapshot(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetSnapshotRequest(c.Server, teamId, projectId, environmentId, snapshotId)
+func (c *Client) GetSnapshot(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSnapshotRequest(c.Server, teamName, projectName, environmentName, snapshotId)
 	if err != nil {
 		return nil, err
 	}
@@ -996,12 +996,12 @@ func NewCreateTeamRequestWithBody(server string, contentType string, body io.Rea
 }
 
 // NewDeleteTeamRequest generates requests for DeleteTeam
-func NewDeleteTeamRequest(server string, teamId TeamId) (*http.Request, error) {
+func NewDeleteTeamRequest(server string, teamName TeamName) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
@@ -1030,12 +1030,12 @@ func NewDeleteTeamRequest(server string, teamId TeamId) (*http.Request, error) {
 }
 
 // NewGetTeamRequest generates requests for GetTeam
-func NewGetTeamRequest(server string, teamId TeamId) (*http.Request, error) {
+func NewGetTeamRequest(server string, teamName TeamName) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
@@ -1064,23 +1064,23 @@ func NewGetTeamRequest(server string, teamId TeamId) (*http.Request, error) {
 }
 
 // NewUpdateTeamRequest calls the generic UpdateTeam builder with application/json body
-func NewUpdateTeamRequest(server string, teamId TeamId, body UpdateTeamJSONRequestBody) (*http.Request, error) {
+func NewUpdateTeamRequest(server string, teamName TeamName, body UpdateTeamJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateTeamRequestWithBody(server, teamId, "application/json", bodyReader)
+	return NewUpdateTeamRequestWithBody(server, teamName, "application/json", bodyReader)
 }
 
 // NewUpdateTeamRequestWithBody generates requests for UpdateTeam with any type of body
-func NewUpdateTeamRequestWithBody(server string, teamId TeamId, contentType string, body io.Reader) (*http.Request, error) {
+func NewUpdateTeamRequestWithBody(server string, teamName TeamName, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
@@ -1111,12 +1111,12 @@ func NewUpdateTeamRequestWithBody(server string, teamId TeamId, contentType stri
 }
 
 // NewGetProjectsRequest generates requests for GetProjects
-func NewGetProjectsRequest(server string, teamId TeamId, params *GetProjectsParams) (*http.Request, error) {
+func NewGetProjectsRequest(server string, teamName TeamName, params *GetProjectsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
@@ -1183,23 +1183,23 @@ func NewGetProjectsRequest(server string, teamId TeamId, params *GetProjectsPara
 }
 
 // NewCreateProjectRequest calls the generic CreateProject builder with application/json body
-func NewCreateProjectRequest(server string, teamId TeamId, body CreateProjectJSONRequestBody) (*http.Request, error) {
+func NewCreateProjectRequest(server string, teamName TeamName, body CreateProjectJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreateProjectRequestWithBody(server, teamId, "application/json", bodyReader)
+	return NewCreateProjectRequestWithBody(server, teamName, "application/json", bodyReader)
 }
 
 // NewCreateProjectRequestWithBody generates requests for CreateProject with any type of body
-func NewCreateProjectRequestWithBody(server string, teamId TeamId, contentType string, body io.Reader) (*http.Request, error) {
+func NewCreateProjectRequestWithBody(server string, teamName TeamName, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
@@ -1230,19 +1230,19 @@ func NewCreateProjectRequestWithBody(server string, teamId TeamId, contentType s
 }
 
 // NewDeleteProjectRequest generates requests for DeleteProject
-func NewDeleteProjectRequest(server string, teamId TeamId, projectId ProjectId) (*http.Request, error) {
+func NewDeleteProjectRequest(server string, teamName TeamName, projectName ProjectName) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
@@ -1271,19 +1271,19 @@ func NewDeleteProjectRequest(server string, teamId TeamId, projectId ProjectId) 
 }
 
 // NewGetProjectRequest generates requests for GetProject
-func NewGetProjectRequest(server string, teamId TeamId, projectId ProjectId) (*http.Request, error) {
+func NewGetProjectRequest(server string, teamName TeamName, projectName ProjectName) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
@@ -1312,30 +1312,30 @@ func NewGetProjectRequest(server string, teamId TeamId, projectId ProjectId) (*h
 }
 
 // NewUpdateProjectRequest calls the generic UpdateProject builder with application/json body
-func NewUpdateProjectRequest(server string, teamId TeamId, projectId ProjectId, body UpdateProjectJSONRequestBody) (*http.Request, error) {
+func NewUpdateProjectRequest(server string, teamName TeamName, projectName ProjectName, body UpdateProjectJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateProjectRequestWithBody(server, teamId, projectId, "application/json", bodyReader)
+	return NewUpdateProjectRequestWithBody(server, teamName, projectName, "application/json", bodyReader)
 }
 
 // NewUpdateProjectRequestWithBody generates requests for UpdateProject with any type of body
-func NewUpdateProjectRequestWithBody(server string, teamId TeamId, projectId ProjectId, contentType string, body io.Reader) (*http.Request, error) {
+func NewUpdateProjectRequestWithBody(server string, teamName TeamName, projectName ProjectName, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
@@ -1366,19 +1366,19 @@ func NewUpdateProjectRequestWithBody(server string, teamId TeamId, projectId Pro
 }
 
 // NewGetEnvironmentsRequest generates requests for GetEnvironments
-func NewGetEnvironmentsRequest(server string, teamId TeamId, projectId ProjectId, params *GetEnvironmentsParams) (*http.Request, error) {
+func NewGetEnvironmentsRequest(server string, teamName TeamName, projectName ProjectName, params *GetEnvironmentsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
@@ -1445,30 +1445,30 @@ func NewGetEnvironmentsRequest(server string, teamId TeamId, projectId ProjectId
 }
 
 // NewCreateEnvironmentRequest calls the generic CreateEnvironment builder with application/json body
-func NewCreateEnvironmentRequest(server string, teamId TeamId, projectId ProjectId, body CreateEnvironmentJSONRequestBody) (*http.Request, error) {
+func NewCreateEnvironmentRequest(server string, teamName TeamName, projectName ProjectName, body CreateEnvironmentJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreateEnvironmentRequestWithBody(server, teamId, projectId, "application/json", bodyReader)
+	return NewCreateEnvironmentRequestWithBody(server, teamName, projectName, "application/json", bodyReader)
 }
 
 // NewCreateEnvironmentRequestWithBody generates requests for CreateEnvironment with any type of body
-func NewCreateEnvironmentRequestWithBody(server string, teamId TeamId, projectId ProjectId, contentType string, body io.Reader) (*http.Request, error) {
+func NewCreateEnvironmentRequestWithBody(server string, teamName TeamName, projectName ProjectName, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
@@ -1499,26 +1499,26 @@ func NewCreateEnvironmentRequestWithBody(server string, teamId TeamId, projectId
 }
 
 // NewDeleteEnvironmentRequest generates requests for DeleteEnvironment
-func NewDeleteEnvironmentRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) (*http.Request, error) {
+func NewDeleteEnvironmentRequest(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam2 string
 
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentName", runtime.ParamLocationPath, environmentName)
 	if err != nil {
 		return nil, err
 	}
@@ -1547,26 +1547,26 @@ func NewDeleteEnvironmentRequest(server string, teamId TeamId, projectId Project
 }
 
 // NewGetEnvironmentRequest generates requests for GetEnvironment
-func NewGetEnvironmentRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId) (*http.Request, error) {
+func NewGetEnvironmentRequest(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam2 string
 
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentName", runtime.ParamLocationPath, environmentName)
 	if err != nil {
 		return nil, err
 	}
@@ -1595,37 +1595,37 @@ func NewGetEnvironmentRequest(server string, teamId TeamId, projectId ProjectId,
 }
 
 // NewUpdateEnvironmentRequest calls the generic UpdateEnvironment builder with application/json body
-func NewUpdateEnvironmentRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentJSONRequestBody) (*http.Request, error) {
+func NewUpdateEnvironmentRequest(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UpdateEnvironmentJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateEnvironmentRequestWithBody(server, teamId, projectId, environmentId, "application/json", bodyReader)
+	return NewUpdateEnvironmentRequestWithBody(server, teamName, projectName, environmentName, "application/json", bodyReader)
 }
 
 // NewUpdateEnvironmentRequestWithBody generates requests for UpdateEnvironment with any type of body
-func NewUpdateEnvironmentRequestWithBody(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader) (*http.Request, error) {
+func NewUpdateEnvironmentRequestWithBody(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam2 string
 
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentName", runtime.ParamLocationPath, environmentName)
 	if err != nil {
 		return nil, err
 	}
@@ -1656,26 +1656,26 @@ func NewUpdateEnvironmentRequestWithBody(server string, teamId TeamId, projectId
 }
 
 // NewGetSnapshotsRequest generates requests for GetSnapshots
-func NewGetSnapshotsRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *GetSnapshotsParams) (*http.Request, error) {
+func NewGetSnapshotsRequest(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, params *GetSnapshotsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam2 string
 
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentName", runtime.ParamLocationPath, environmentName)
 	if err != nil {
 		return nil, err
 	}
@@ -1742,37 +1742,37 @@ func NewGetSnapshotsRequest(server string, teamId TeamId, projectId ProjectId, e
 }
 
 // NewCreateSnapshotRequest calls the generic CreateSnapshot builder with application/json body
-func NewCreateSnapshotRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body CreateSnapshotJSONRequestBody) (*http.Request, error) {
+func NewCreateSnapshotRequest(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body CreateSnapshotJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreateSnapshotRequestWithBody(server, teamId, projectId, environmentId, "application/json", bodyReader)
+	return NewCreateSnapshotRequestWithBody(server, teamName, projectName, environmentName, "application/json", bodyReader)
 }
 
 // NewCreateSnapshotRequestWithBody generates requests for CreateSnapshot with any type of body
-func NewCreateSnapshotRequestWithBody(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader) (*http.Request, error) {
+func NewCreateSnapshotRequestWithBody(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam2 string
 
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentName", runtime.ParamLocationPath, environmentName)
 	if err != nil {
 		return nil, err
 	}
@@ -1803,26 +1803,26 @@ func NewCreateSnapshotRequestWithBody(server string, teamId TeamId, projectId Pr
 }
 
 // NewDeleteSnapshotRequest generates requests for DeleteSnapshot
-func NewDeleteSnapshotRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, snapshotId SnapshotId) (*http.Request, error) {
+func NewDeleteSnapshotRequest(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, snapshotId SnapshotId) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam2 string
 
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentName", runtime.ParamLocationPath, environmentName)
 	if err != nil {
 		return nil, err
 	}
@@ -1858,26 +1858,26 @@ func NewDeleteSnapshotRequest(server string, teamId TeamId, projectId ProjectId,
 }
 
 // NewGetSnapshotRequest generates requests for GetSnapshot
-func NewGetSnapshotRequest(server string, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, snapshotId SnapshotId) (*http.Request, error) {
+func NewGetSnapshotRequest(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, snapshotId SnapshotId) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectId", runtime.ParamLocationPath, projectId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam2 string
 
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentId", runtime.ParamLocationPath, environmentId)
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentName", runtime.ParamLocationPath, environmentName)
 	if err != nil {
 		return nil, err
 	}
@@ -1988,67 +1988,67 @@ type ClientWithResponsesInterface interface {
 	CreateTeamWithResponse(ctx context.Context, body CreateTeamJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTeamResponse, error)
 
 	// DeleteTeamWithResponse request
-	DeleteTeamWithResponse(ctx context.Context, teamId TeamId, reqEditors ...RequestEditorFn) (*DeleteTeamResponse, error)
+	DeleteTeamWithResponse(ctx context.Context, teamName TeamName, reqEditors ...RequestEditorFn) (*DeleteTeamResponse, error)
 
 	// GetTeamWithResponse request
-	GetTeamWithResponse(ctx context.Context, teamId TeamId, reqEditors ...RequestEditorFn) (*GetTeamResponse, error)
+	GetTeamWithResponse(ctx context.Context, teamName TeamName, reqEditors ...RequestEditorFn) (*GetTeamResponse, error)
 
 	// UpdateTeamWithBodyWithResponse request with any body
-	UpdateTeamWithBodyWithResponse(ctx context.Context, teamId TeamId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateTeamResponse, error)
+	UpdateTeamWithBodyWithResponse(ctx context.Context, teamName TeamName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateTeamResponse, error)
 
-	UpdateTeamWithResponse(ctx context.Context, teamId TeamId, body UpdateTeamJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateTeamResponse, error)
+	UpdateTeamWithResponse(ctx context.Context, teamName TeamName, body UpdateTeamJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateTeamResponse, error)
 
 	// GetProjectsWithResponse request
-	GetProjectsWithResponse(ctx context.Context, teamId TeamId, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*GetProjectsResponse, error)
+	GetProjectsWithResponse(ctx context.Context, teamName TeamName, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*GetProjectsResponse, error)
 
 	// CreateProjectWithBodyWithResponse request with any body
-	CreateProjectWithBodyWithResponse(ctx context.Context, teamId TeamId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProjectResponse, error)
+	CreateProjectWithBodyWithResponse(ctx context.Context, teamName TeamName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProjectResponse, error)
 
-	CreateProjectWithResponse(ctx context.Context, teamId TeamId, body CreateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProjectResponse, error)
+	CreateProjectWithResponse(ctx context.Context, teamName TeamName, body CreateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProjectResponse, error)
 
 	// DeleteProjectWithResponse request
-	DeleteProjectWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, reqEditors ...RequestEditorFn) (*DeleteProjectResponse, error)
+	DeleteProjectWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, reqEditors ...RequestEditorFn) (*DeleteProjectResponse, error)
 
 	// GetProjectWithResponse request
-	GetProjectWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, reqEditors ...RequestEditorFn) (*GetProjectResponse, error)
+	GetProjectWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, reqEditors ...RequestEditorFn) (*GetProjectResponse, error)
 
 	// UpdateProjectWithBodyWithResponse request with any body
-	UpdateProjectWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error)
+	UpdateProjectWithBodyWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error)
 
-	UpdateProjectWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error)
+	UpdateProjectWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error)
 
 	// GetEnvironmentsWithResponse request
-	GetEnvironmentsWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, params *GetEnvironmentsParams, reqEditors ...RequestEditorFn) (*GetEnvironmentsResponse, error)
+	GetEnvironmentsWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, params *GetEnvironmentsParams, reqEditors ...RequestEditorFn) (*GetEnvironmentsResponse, error)
 
 	// CreateEnvironmentWithBodyWithResponse request with any body
-	CreateEnvironmentWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateEnvironmentResponse, error)
+	CreateEnvironmentWithBodyWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateEnvironmentResponse, error)
 
-	CreateEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateEnvironmentResponse, error)
+	CreateEnvironmentWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateEnvironmentResponse, error)
 
 	// DeleteEnvironmentWithResponse request
-	DeleteEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*DeleteEnvironmentResponse, error)
+	DeleteEnvironmentWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, reqEditors ...RequestEditorFn) (*DeleteEnvironmentResponse, error)
 
 	// GetEnvironmentWithResponse request
-	GetEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*GetEnvironmentResponse, error)
+	GetEnvironmentWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, reqEditors ...RequestEditorFn) (*GetEnvironmentResponse, error)
 
 	// UpdateEnvironmentWithBodyWithResponse request with any body
-	UpdateEnvironmentWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error)
+	UpdateEnvironmentWithBodyWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error)
 
-	UpdateEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error)
+	UpdateEnvironmentWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error)
 
 	// GetSnapshotsWithResponse request
-	GetSnapshotsWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *GetSnapshotsParams, reqEditors ...RequestEditorFn) (*GetSnapshotsResponse, error)
+	GetSnapshotsWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, params *GetSnapshotsParams, reqEditors ...RequestEditorFn) (*GetSnapshotsResponse, error)
 
 	// CreateSnapshotWithBodyWithResponse request with any body
-	CreateSnapshotWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSnapshotResponse, error)
+	CreateSnapshotWithBodyWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSnapshotResponse, error)
 
-	CreateSnapshotWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body CreateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSnapshotResponse, error)
+	CreateSnapshotWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body CreateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSnapshotResponse, error)
 
 	// DeleteSnapshotWithResponse request
-	DeleteSnapshotWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*DeleteSnapshotResponse, error)
+	DeleteSnapshotWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*DeleteSnapshotResponse, error)
 
 	// GetSnapshotWithResponse request
-	GetSnapshotWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*GetSnapshotResponse, error)
+	GetSnapshotWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*GetSnapshotResponse, error)
 }
 
 type GetHealthResponse struct {
@@ -2769,8 +2769,8 @@ func (c *ClientWithResponses) CreateTeamWithResponse(ctx context.Context, body C
 }
 
 // DeleteTeamWithResponse request returning *DeleteTeamResponse
-func (c *ClientWithResponses) DeleteTeamWithResponse(ctx context.Context, teamId TeamId, reqEditors ...RequestEditorFn) (*DeleteTeamResponse, error) {
-	rsp, err := c.DeleteTeam(ctx, teamId, reqEditors...)
+func (c *ClientWithResponses) DeleteTeamWithResponse(ctx context.Context, teamName TeamName, reqEditors ...RequestEditorFn) (*DeleteTeamResponse, error) {
+	rsp, err := c.DeleteTeam(ctx, teamName, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2778,8 +2778,8 @@ func (c *ClientWithResponses) DeleteTeamWithResponse(ctx context.Context, teamId
 }
 
 // GetTeamWithResponse request returning *GetTeamResponse
-func (c *ClientWithResponses) GetTeamWithResponse(ctx context.Context, teamId TeamId, reqEditors ...RequestEditorFn) (*GetTeamResponse, error) {
-	rsp, err := c.GetTeam(ctx, teamId, reqEditors...)
+func (c *ClientWithResponses) GetTeamWithResponse(ctx context.Context, teamName TeamName, reqEditors ...RequestEditorFn) (*GetTeamResponse, error) {
+	rsp, err := c.GetTeam(ctx, teamName, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2787,16 +2787,16 @@ func (c *ClientWithResponses) GetTeamWithResponse(ctx context.Context, teamId Te
 }
 
 // UpdateTeamWithBodyWithResponse request with arbitrary body returning *UpdateTeamResponse
-func (c *ClientWithResponses) UpdateTeamWithBodyWithResponse(ctx context.Context, teamId TeamId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateTeamResponse, error) {
-	rsp, err := c.UpdateTeamWithBody(ctx, teamId, contentType, body, reqEditors...)
+func (c *ClientWithResponses) UpdateTeamWithBodyWithResponse(ctx context.Context, teamName TeamName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateTeamResponse, error) {
+	rsp, err := c.UpdateTeamWithBody(ctx, teamName, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseUpdateTeamResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateTeamWithResponse(ctx context.Context, teamId TeamId, body UpdateTeamJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateTeamResponse, error) {
-	rsp, err := c.UpdateTeam(ctx, teamId, body, reqEditors...)
+func (c *ClientWithResponses) UpdateTeamWithResponse(ctx context.Context, teamName TeamName, body UpdateTeamJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateTeamResponse, error) {
+	rsp, err := c.UpdateTeam(ctx, teamName, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2804,8 +2804,8 @@ func (c *ClientWithResponses) UpdateTeamWithResponse(ctx context.Context, teamId
 }
 
 // GetProjectsWithResponse request returning *GetProjectsResponse
-func (c *ClientWithResponses) GetProjectsWithResponse(ctx context.Context, teamId TeamId, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*GetProjectsResponse, error) {
-	rsp, err := c.GetProjects(ctx, teamId, params, reqEditors...)
+func (c *ClientWithResponses) GetProjectsWithResponse(ctx context.Context, teamName TeamName, params *GetProjectsParams, reqEditors ...RequestEditorFn) (*GetProjectsResponse, error) {
+	rsp, err := c.GetProjects(ctx, teamName, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2813,16 +2813,16 @@ func (c *ClientWithResponses) GetProjectsWithResponse(ctx context.Context, teamI
 }
 
 // CreateProjectWithBodyWithResponse request with arbitrary body returning *CreateProjectResponse
-func (c *ClientWithResponses) CreateProjectWithBodyWithResponse(ctx context.Context, teamId TeamId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProjectResponse, error) {
-	rsp, err := c.CreateProjectWithBody(ctx, teamId, contentType, body, reqEditors...)
+func (c *ClientWithResponses) CreateProjectWithBodyWithResponse(ctx context.Context, teamName TeamName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProjectResponse, error) {
+	rsp, err := c.CreateProjectWithBody(ctx, teamName, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseCreateProjectResponse(rsp)
 }
 
-func (c *ClientWithResponses) CreateProjectWithResponse(ctx context.Context, teamId TeamId, body CreateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProjectResponse, error) {
-	rsp, err := c.CreateProject(ctx, teamId, body, reqEditors...)
+func (c *ClientWithResponses) CreateProjectWithResponse(ctx context.Context, teamName TeamName, body CreateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProjectResponse, error) {
+	rsp, err := c.CreateProject(ctx, teamName, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2830,8 +2830,8 @@ func (c *ClientWithResponses) CreateProjectWithResponse(ctx context.Context, tea
 }
 
 // DeleteProjectWithResponse request returning *DeleteProjectResponse
-func (c *ClientWithResponses) DeleteProjectWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, reqEditors ...RequestEditorFn) (*DeleteProjectResponse, error) {
-	rsp, err := c.DeleteProject(ctx, teamId, projectId, reqEditors...)
+func (c *ClientWithResponses) DeleteProjectWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, reqEditors ...RequestEditorFn) (*DeleteProjectResponse, error) {
+	rsp, err := c.DeleteProject(ctx, teamName, projectName, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2839,8 +2839,8 @@ func (c *ClientWithResponses) DeleteProjectWithResponse(ctx context.Context, tea
 }
 
 // GetProjectWithResponse request returning *GetProjectResponse
-func (c *ClientWithResponses) GetProjectWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, reqEditors ...RequestEditorFn) (*GetProjectResponse, error) {
-	rsp, err := c.GetProject(ctx, teamId, projectId, reqEditors...)
+func (c *ClientWithResponses) GetProjectWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, reqEditors ...RequestEditorFn) (*GetProjectResponse, error) {
+	rsp, err := c.GetProject(ctx, teamName, projectName, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2848,16 +2848,16 @@ func (c *ClientWithResponses) GetProjectWithResponse(ctx context.Context, teamId
 }
 
 // UpdateProjectWithBodyWithResponse request with arbitrary body returning *UpdateProjectResponse
-func (c *ClientWithResponses) UpdateProjectWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error) {
-	rsp, err := c.UpdateProjectWithBody(ctx, teamId, projectId, contentType, body, reqEditors...)
+func (c *ClientWithResponses) UpdateProjectWithBodyWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error) {
+	rsp, err := c.UpdateProjectWithBody(ctx, teamName, projectName, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseUpdateProjectResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateProjectWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error) {
-	rsp, err := c.UpdateProject(ctx, teamId, projectId, body, reqEditors...)
+func (c *ClientWithResponses) UpdateProjectWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error) {
+	rsp, err := c.UpdateProject(ctx, teamName, projectName, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2865,8 +2865,8 @@ func (c *ClientWithResponses) UpdateProjectWithResponse(ctx context.Context, tea
 }
 
 // GetEnvironmentsWithResponse request returning *GetEnvironmentsResponse
-func (c *ClientWithResponses) GetEnvironmentsWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, params *GetEnvironmentsParams, reqEditors ...RequestEditorFn) (*GetEnvironmentsResponse, error) {
-	rsp, err := c.GetEnvironments(ctx, teamId, projectId, params, reqEditors...)
+func (c *ClientWithResponses) GetEnvironmentsWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, params *GetEnvironmentsParams, reqEditors ...RequestEditorFn) (*GetEnvironmentsResponse, error) {
+	rsp, err := c.GetEnvironments(ctx, teamName, projectName, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2874,16 +2874,16 @@ func (c *ClientWithResponses) GetEnvironmentsWithResponse(ctx context.Context, t
 }
 
 // CreateEnvironmentWithBodyWithResponse request with arbitrary body returning *CreateEnvironmentResponse
-func (c *ClientWithResponses) CreateEnvironmentWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateEnvironmentResponse, error) {
-	rsp, err := c.CreateEnvironmentWithBody(ctx, teamId, projectId, contentType, body, reqEditors...)
+func (c *ClientWithResponses) CreateEnvironmentWithBodyWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateEnvironmentResponse, error) {
+	rsp, err := c.CreateEnvironmentWithBody(ctx, teamName, projectName, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseCreateEnvironmentResponse(rsp)
 }
 
-func (c *ClientWithResponses) CreateEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateEnvironmentResponse, error) {
-	rsp, err := c.CreateEnvironment(ctx, teamId, projectId, body, reqEditors...)
+func (c *ClientWithResponses) CreateEnvironmentWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateEnvironmentResponse, error) {
+	rsp, err := c.CreateEnvironment(ctx, teamName, projectName, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2891,8 +2891,8 @@ func (c *ClientWithResponses) CreateEnvironmentWithResponse(ctx context.Context,
 }
 
 // DeleteEnvironmentWithResponse request returning *DeleteEnvironmentResponse
-func (c *ClientWithResponses) DeleteEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*DeleteEnvironmentResponse, error) {
-	rsp, err := c.DeleteEnvironment(ctx, teamId, projectId, environmentId, reqEditors...)
+func (c *ClientWithResponses) DeleteEnvironmentWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, reqEditors ...RequestEditorFn) (*DeleteEnvironmentResponse, error) {
+	rsp, err := c.DeleteEnvironment(ctx, teamName, projectName, environmentName, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2900,8 +2900,8 @@ func (c *ClientWithResponses) DeleteEnvironmentWithResponse(ctx context.Context,
 }
 
 // GetEnvironmentWithResponse request returning *GetEnvironmentResponse
-func (c *ClientWithResponses) GetEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, reqEditors ...RequestEditorFn) (*GetEnvironmentResponse, error) {
-	rsp, err := c.GetEnvironment(ctx, teamId, projectId, environmentId, reqEditors...)
+func (c *ClientWithResponses) GetEnvironmentWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, reqEditors ...RequestEditorFn) (*GetEnvironmentResponse, error) {
+	rsp, err := c.GetEnvironment(ctx, teamName, projectName, environmentName, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2909,16 +2909,16 @@ func (c *ClientWithResponses) GetEnvironmentWithResponse(ctx context.Context, te
 }
 
 // UpdateEnvironmentWithBodyWithResponse request with arbitrary body returning *UpdateEnvironmentResponse
-func (c *ClientWithResponses) UpdateEnvironmentWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error) {
-	rsp, err := c.UpdateEnvironmentWithBody(ctx, teamId, projectId, environmentId, contentType, body, reqEditors...)
+func (c *ClientWithResponses) UpdateEnvironmentWithBodyWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error) {
+	rsp, err := c.UpdateEnvironmentWithBody(ctx, teamName, projectName, environmentName, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseUpdateEnvironmentResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateEnvironmentWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error) {
-	rsp, err := c.UpdateEnvironment(ctx, teamId, projectId, environmentId, body, reqEditors...)
+func (c *ClientWithResponses) UpdateEnvironmentWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error) {
+	rsp, err := c.UpdateEnvironment(ctx, teamName, projectName, environmentName, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2926,8 +2926,8 @@ func (c *ClientWithResponses) UpdateEnvironmentWithResponse(ctx context.Context,
 }
 
 // GetSnapshotsWithResponse request returning *GetSnapshotsResponse
-func (c *ClientWithResponses) GetSnapshotsWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, params *GetSnapshotsParams, reqEditors ...RequestEditorFn) (*GetSnapshotsResponse, error) {
-	rsp, err := c.GetSnapshots(ctx, teamId, projectId, environmentId, params, reqEditors...)
+func (c *ClientWithResponses) GetSnapshotsWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, params *GetSnapshotsParams, reqEditors ...RequestEditorFn) (*GetSnapshotsResponse, error) {
+	rsp, err := c.GetSnapshots(ctx, teamName, projectName, environmentName, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2935,16 +2935,16 @@ func (c *ClientWithResponses) GetSnapshotsWithResponse(ctx context.Context, team
 }
 
 // CreateSnapshotWithBodyWithResponse request with arbitrary body returning *CreateSnapshotResponse
-func (c *ClientWithResponses) CreateSnapshotWithBodyWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSnapshotResponse, error) {
-	rsp, err := c.CreateSnapshotWithBody(ctx, teamId, projectId, environmentId, contentType, body, reqEditors...)
+func (c *ClientWithResponses) CreateSnapshotWithBodyWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSnapshotResponse, error) {
+	rsp, err := c.CreateSnapshotWithBody(ctx, teamName, projectName, environmentName, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseCreateSnapshotResponse(rsp)
 }
 
-func (c *ClientWithResponses) CreateSnapshotWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, body CreateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSnapshotResponse, error) {
-	rsp, err := c.CreateSnapshot(ctx, teamId, projectId, environmentId, body, reqEditors...)
+func (c *ClientWithResponses) CreateSnapshotWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, body CreateSnapshotJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSnapshotResponse, error) {
+	rsp, err := c.CreateSnapshot(ctx, teamName, projectName, environmentName, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2952,8 +2952,8 @@ func (c *ClientWithResponses) CreateSnapshotWithResponse(ctx context.Context, te
 }
 
 // DeleteSnapshotWithResponse request returning *DeleteSnapshotResponse
-func (c *ClientWithResponses) DeleteSnapshotWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*DeleteSnapshotResponse, error) {
-	rsp, err := c.DeleteSnapshot(ctx, teamId, projectId, environmentId, snapshotId, reqEditors...)
+func (c *ClientWithResponses) DeleteSnapshotWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*DeleteSnapshotResponse, error) {
+	rsp, err := c.DeleteSnapshot(ctx, teamName, projectName, environmentName, snapshotId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2961,8 +2961,8 @@ func (c *ClientWithResponses) DeleteSnapshotWithResponse(ctx context.Context, te
 }
 
 // GetSnapshotWithResponse request returning *GetSnapshotResponse
-func (c *ClientWithResponses) GetSnapshotWithResponse(ctx context.Context, teamId TeamId, projectId ProjectId, environmentId EnvironmentId, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*GetSnapshotResponse, error) {
-	rsp, err := c.GetSnapshot(ctx, teamId, projectId, environmentId, snapshotId, reqEditors...)
+func (c *ClientWithResponses) GetSnapshotWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*GetSnapshotResponse, error) {
+	rsp, err := c.GetSnapshot(ctx, teamName, projectName, environmentName, snapshotId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

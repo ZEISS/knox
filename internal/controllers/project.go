@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/google/uuid"
 	"github.com/zeiss/fiber-htmx/components/tables"
 	seed "github.com/zeiss/gorm-seed"
 	"github.com/zeiss/knox/internal/models"
@@ -16,22 +15,29 @@ var _ ProjectController = (*ProjectControllerImpl)(nil)
 
 // CreateProjectCommand ...
 type CreateProjectCommand struct {
-	TeamID      uuid.UUID `json:"team_ID" form:"team_id" validate:"required"`
-	Name        string    `json:"name" form:"name" validate:"required,min=1,max=255,alphanum,lowercase"`
-	Description string    `json:"description" form:"description" validate:"omitempty,min=3,max=2048"`
+	TeamName    string `json:"team_name" form:"team_name" validate:"required"`
+	Name        string `json:"name" form:"name" validate:"required,min=1,max=255,alphanum,lowercase"`
+	Description string `json:"description" form:"description" validate:"omitempty,min=3,max=2048"`
 }
 
 // ListProjectsQuery ...
 type ListProjectsQuery struct {
-	TeamID uuid.UUID `json:"team_id" form:"team_id"`
-	Limit  int       `json:"limit" form:"limit"`
-	Offset int       `json:"offset" form:"offset"`
-	Sort   string    `json:"sort" form:"sort"`
+	TeamName string `json:"team_name" form:"team_name" validate:"required"`
+	Limit    int    `json:"limit" form:"limit"`
+	Offset   int    `json:"offset" form:"offset"`
+	Sort     string `json:"sort" form:"sort"`
+}
+
+// GetProjectQuery ...
+type GetProjectQuery struct {
+	TeamName    string `json:"team_name" form:"team_name" validate:"required"`
+	ProjectName string `json:"project_name" form:"project_name" validate:"required"`
 }
 
 // DeleteProjectCommand ...
 type DeleteProjectCommand struct {
-	ID uuid.UUID `json:"id" form:"id" validate:"required"`
+	TeamName    string `json:"team_name" form:"team_name" validate:"required"`
+	ProjectName string `json:"project_name" form:"project_name" validate:"required"`
 }
 
 // ProjectControllerImpl ...
@@ -43,6 +49,8 @@ type ProjectControllerImpl struct {
 type ProjectController interface {
 	// CreateProject ...
 	CreateProject(ctx context.Context, cmd CreateProjectCommand) error
+	// GetProject ...
+	GetProject(ctx context.Context, cmd GetProjectQuery) (models.Project, error)
 	// ListProjects ...
 	ListProjects(ctx context.Context, cmd ListProjectsQuery) (tables.Results[models.Project], error)
 	// DeleteProject ...
@@ -64,7 +72,7 @@ func (c *ProjectControllerImpl) CreateProject(ctx context.Context, cmd CreatePro
 	}
 
 	team := models.Team{
-		ID: cmd.TeamID,
+		Name: cmd.TeamName,
 	}
 
 	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
@@ -85,6 +93,22 @@ func (c *ProjectControllerImpl) CreateProject(ctx context.Context, cmd CreatePro
 	})
 }
 
+// GetProject ...
+func (c *ProjectControllerImpl) GetProject(ctx context.Context, cmd GetProjectQuery) (models.Project, error) {
+	project := models.Project{
+		Name: cmd.ProjectName,
+	}
+
+	err := c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
+		return tx.GetProject(ctx, &project)
+	})
+	if err != nil {
+		return project, err
+	}
+
+	return project, nil
+}
+
 // ListProjects ...
 func (c *ProjectControllerImpl) ListProjects(ctx context.Context, cmd ListProjectsQuery) (tables.Results[models.Project], error) {
 	teams := tables.Results[models.Project]{
@@ -94,7 +118,7 @@ func (c *ProjectControllerImpl) ListProjects(ctx context.Context, cmd ListProjec
 	}
 
 	err := c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
-		return tx.ListProjects(ctx, cmd.TeamID, &teams)
+		return tx.ListProjects(ctx, cmd.TeamName, &teams)
 	})
 	if err != nil {
 		return teams, err
@@ -106,6 +130,6 @@ func (c *ProjectControllerImpl) ListProjects(ctx context.Context, cmd ListProjec
 // DeleteProject ...
 func (c *ProjectControllerImpl) DeleteProject(ctx context.Context, cmd DeleteProjectCommand) error {
 	return c.store.ReadWriteTx(ctx, func(ctx context.Context, tx ports.ReadWriteTx) error {
-		return tx.DeleteProject(ctx, &models.Project{ID: cmd.ID})
+		return tx.DeleteProject(ctx, cmd.TeamName, &models.Project{Name: cmd.ProjectName})
 	})
 }

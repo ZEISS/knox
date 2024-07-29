@@ -225,7 +225,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-      $ref: "#/components/policies/createTeam"
+      # Add the policy to check if the user has access to create a team
+      x-fiber-authz-fga:
+        user:
+          namespace: user
+          auth_type: oidc
+        relation:
+          name: admin
+        object:
+          namespace: system
+          components:
+            - in: path
+              name: teamName
 
     get:
       tags:
@@ -264,9 +275,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-      $ref: "#/components/policies/listTeams"
+      # Add the policy to check if the user has access to list teams
+      x-fiber-authz-fga:
+        user:
+          namespace: user
+          auth_type: oidc
+        relation:
+          name: admin
+        object:
+          namespace: system
+          name: global
 
-  /teams/{teamId}:
+  /teams/{teamName}:
     get:
       tags:
         - Teams
@@ -275,7 +295,7 @@ paths:
       security:
         - openId: []
       parameters:
-        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/teamName"
       responses:
         "200":
           description: Successful response
@@ -304,7 +324,7 @@ paths:
       security:
         - openId: []
       parameters:
-        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/teamName"
       requestBody:
         content:
           application/json:
@@ -338,7 +358,7 @@ paths:
       security:
         - openId: []
       parameters:
-        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/teamName"
       responses:
         "204":
           description: Successful response
@@ -354,15 +374,27 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+      # Add the policy to check if the user has access to delete a team
+      x-fiber-authz-fga:
+        user:
+          namespace: user
+          auth_type: oidc
+        relation:
+          name: admin
+        object:
+          namespace: system
+          components:
+            - in: path
+              name: teamName
 
-  /teams/{teamId}/projects:
+  /teams/{teamName}/projects:
     post:
       tags:
         - Projects
       summary: Create a new project
       operationId: createProject
       parameters:
-        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/teamName"
       security:
         - openId: []
       requestBody:
@@ -392,7 +424,7 @@ paths:
       security:
         - openId: []
       parameters:
-        - $ref: "#/components/parameters/teamId"
+        - $ref: "#/components/parameters/teamName"
         - in: query
           name: limit
           schema:
@@ -431,7 +463,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /teams/{teamId}/projects/{projectId}:
+  /teams/{teamName}/projects/{projectName}:
     get:
       tags:
         - Projects
@@ -440,8 +472,8 @@ paths:
       security:
         - openId: []
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
       responses:
         "200":
           description: Successful response
@@ -461,6 +493,21 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+      # Add the policy to check if the user has access to the project
+      x-fiber-authz-fga:
+        user:
+          namespace: user
+          auth_type: oidc
+        relation:
+          name: reader
+        object:
+          namespace: project
+          separator: /
+          components:
+            - in: path
+              name: teamName
+            - in: path
+              name: projectName
 
     put:
       tags:
@@ -468,8 +515,8 @@ paths:
       summary: Update a project
       operationId: updateProject
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
       security:
         - openId: []
       requestBody:
@@ -503,8 +550,8 @@ paths:
       summary: Delete a project
       operationId: deleteProject
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
       security:
         - openId: []
       responses:
@@ -522,8 +569,23 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+      # Add the policy to check if the user has access to delete the project
+      x-fiber-authz-fga:
+        user:
+          namespace: user
+          auth_type: oidc
+        relation:
+          name: admin
+        object:
+          namespace: project
+          separator: /
+          components:
+            - in: path
+              name: teamName
+            - in: path
+              name: projectName
 
-  /teams/{teamId}/projects/{projectId}/environments:
+  /teams/{teamName}/projects/{projectName}/environments:
     post:
       tags:
         - Environments
@@ -532,8 +594,8 @@ paths:
       security:
         - openId: []
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
       requestBody:
         content:
           application/json:
@@ -561,8 +623,8 @@ paths:
       security:
         - openId: []
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
         - $ref: "#/components/parameters/limit"
         - $ref: "#/components/parameters/offset"
       responses:
@@ -593,16 +655,16 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /teams/{teamId}/projects/{projectId}/environments/{environmentId}:
+  /teams/{teamName}/projects/{projectName}/environments/{environmentName}:
     get:
       tags:
         - Environments
       summary: Get an environment
       operationId: getEnvironment
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
-        - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
+        - $ref: "#/components/parameters/environmentName"
       security:
         - openId: []
       responses:
@@ -631,9 +693,9 @@ paths:
       summary: Update an environment
       operationId: updateEnvironment
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
-        - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
+        - $ref: "#/components/parameters/environmentName"
       security:
         - openId: []
       requestBody:
@@ -667,9 +729,9 @@ paths:
       summary: Delete an environment
       operationId: deleteEnvironment
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
-        - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
+        - $ref: "#/components/parameters/environmentName"
       security:
         - openId: []
       responses:
@@ -688,16 +750,16 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /teams/{teamId}/projects/{projectId}/environments/{environmentId}/snapshots:
+  /teams/{teamName}/projects/{projectName}/environments/{environmentName}/snapshots:
     get:
       tags:
         - Snapshots
       summary: Get a list of snapshots
       operationId: getSnapshots
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
-        - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
+        - $ref: "#/components/parameters/environmentName"
         - $ref: "#/components/parameters/limit"
         - $ref: "#/components/parameters/offset"
       responses:
@@ -734,9 +796,9 @@ paths:
       summary: Create a new snapshot
       operationId: createSnapshot
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
-        - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
+        - $ref: "#/components/parameters/environmentName"
       security:
         - openId: []
       requestBody:
@@ -758,16 +820,16 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-  /teams/{teamId}/projects/{projectId}/environments/{environmentId}/snapshots/{snapshotId}:
+  /teams/{teamName}/projects/{projectName}/environments/{environmentName}/snapshots/{snapshotId}:
     get:
       tags:
         - Snapshots
       summary: Get a snapshot
       operationId: getSnapshot
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
-        - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
+        - $ref: "#/components/parameters/environmentName"
         - $ref: "#/components/parameters/snapshotId"
       security:
         - openId: []
@@ -796,9 +858,9 @@ paths:
       summary: Delete a snapshot
       operationId: deleteSnapshot
       parameters:
-        - $ref: "#/components/parameters/teamId"
-        - $ref: "#/components/parameters/projectId"
-        - $ref: "#/components/parameters/environmentId"
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
+        - $ref: "#/components/parameters/environmentName"
         - $ref: "#/components/parameters/snapshotId"
       security:
         - openId: []
@@ -819,42 +881,6 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
 
 components:
-  policies:
-    createTeam:
-      x-fiber-authz-fga:
-        user:
-          namespace: user
-          auth_type: oidc
-        relation:
-          name: admin
-        object:
-          namespace: system
-          components:
-            - in: params
-              name: teamId
-    listTeams:
-      x-fiber-authz-fga:
-        user:
-          namespace: user
-          auth_type: oidc
-        relation:
-          name: admin
-        object:
-          namespace: system
-          name: global
-    deleteTeam:
-      x-fiber-authz-fga:
-        user:
-          namespace: user
-          auth_type: oidc
-        relation:
-          name: admin
-        object:
-          namespace: system
-          components:
-            - in: params
-              name: teamId
-
   parameters:
     teamName:
       name: teamName
@@ -874,27 +900,6 @@ components:
       required: true
       schema:
         type: string
-    teamId:
-      name: teamId
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-    projectId:
-      name: projectId
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-    environmentId:
-      name: environmentId
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
     snapshotId:
       name: snapshotId
       in: path

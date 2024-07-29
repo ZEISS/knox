@@ -81,7 +81,14 @@ func (h *apiHandlers) DeleteProject(ctx context.Context, request openapi.DeleteP
 // Get a project
 // (GET /project/{id})
 func (h *apiHandlers) GetProject(ctx context.Context, request openapi.GetProjectRequestObject) (openapi.GetProjectResponseObject, error) {
-	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
+	query := dto.FromGetProjectRequestObject(request)
+
+	project, err := h.project.GetProject(ctx, query)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusNotFound, err.Error())
+	}
+
+	return dto.ToGetProjectResponseObject(project), nil
 }
 
 // Update a project
