@@ -89,6 +89,9 @@ type ServerInterface interface {
 	// Get a snapshot
 	// (GET /teams/{teamName}/projects/{projectName}/environments/{environmentName}/snapshots/{snapshotId})
 	GetSnapshot(c *fiber.Ctx, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, snapshotId SnapshotId) error
+	// Get the state of Terraform environment
+	// (GET /teams/{teamName}/projects/{projectName}/environments/{environmentName}/states)
+	GetStates(c *fiber.Ctx, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, params GetStatesParams) error
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -828,6 +831,63 @@ func (siw *ServerInterfaceWrapper) GetSnapshot(c *fiber.Ctx) error {
 	return siw.Handler.GetSnapshot(c, teamName, projectName, environmentName, snapshotId)
 }
 
+// GetStates operation middleware
+func (siw *ServerInterfaceWrapper) GetStates(c *fiber.Ctx) error {
+
+	var err error
+
+	// ------------- Path parameter "teamName" -------------
+	var teamName TeamName
+
+	err = runtime.BindStyledParameterWithOptions("simple", "teamName", c.Params("teamName"), &teamName, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter teamName: %w", err).Error())
+	}
+
+	// ------------- Path parameter "projectName" -------------
+	var projectName ProjectName
+
+	err = runtime.BindStyledParameterWithOptions("simple", "projectName", c.Params("projectName"), &projectName, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter projectName: %w", err).Error())
+	}
+
+	// ------------- Path parameter "environmentName" -------------
+	var environmentName EnvironmentName
+
+	err = runtime.BindStyledParameterWithOptions("simple", "environmentName", c.Params("environmentName"), &environmentName, runtime.BindStyledParameterOptions{Explode: false, Required: true})
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter environmentName: %w", err).Error())
+	}
+
+	c.Context().SetUserValue(OpenIdScopes, []string{})
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetStatesParams
+
+	var query url.Values
+	query, err = url.ParseQuery(string(c.Request().URI().QueryString()))
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for query string: %w", err).Error())
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "limit", query, &params.Limit)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter limit: %w", err).Error())
+	}
+
+	// ------------- Optional query parameter "offset" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "offset", query, &params.Offset)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, fmt.Errorf("Invalid format for parameter offset: %w", err).Error())
+	}
+
+	return siw.Handler.GetStates(c, teamName, projectName, environmentName, params)
+}
+
 // FiberServerOptions provides options for the Fiber server.
 type FiberServerOptions struct {
 	BaseURL     string
@@ -898,6 +958,8 @@ func RegisterHandlersWithOptions(router fiber.Router, si ServerInterface, option
 	router.Delete(options.BaseURL+"/teams/:teamName/projects/:projectName/environments/:environmentName/snapshots/:snapshotId", wrapper.DeleteSnapshot)
 
 	router.Get(options.BaseURL+"/teams/:teamName/projects/:projectName/environments/:environmentName/snapshots/:snapshotId", wrapper.GetSnapshot)
+
+	router.Get(options.BaseURL+"/teams/:teamName/projects/:projectName/environments/:environmentName/states", wrapper.GetStates)
 
 }
 
@@ -1756,6 +1818,46 @@ func (response GetSnapshot500JSONResponse) VisitGetSnapshotResponse(ctx *fiber.C
 	return ctx.JSON(&response)
 }
 
+type GetStatesRequestObject struct {
+	TeamName        TeamName        `json:"teamName"`
+	ProjectName     ProjectName     `json:"projectName"`
+	EnvironmentName EnvironmentName `json:"environmentName"`
+	Params          GetStatesParams
+}
+
+type GetStatesResponseObject interface {
+	VisitGetStatesResponse(ctx *fiber.Ctx) error
+}
+
+type GetStates200JSONResponse struct {
+	States *[]State `json:"states,omitempty"`
+}
+
+func (response GetStates200JSONResponse) VisitGetStatesResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(200)
+
+	return ctx.JSON(&response)
+}
+
+type GetStates404JSONResponse ErrorResponse
+
+func (response GetStates404JSONResponse) VisitGetStatesResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(404)
+
+	return ctx.JSON(&response)
+}
+
+type GetStates500JSONResponse ErrorResponse
+
+func (response GetStates500JSONResponse) VisitGetStatesResponse(ctx *fiber.Ctx) error {
+	ctx.Response().Header.Set("Content-Type", "application/json")
+	ctx.Status(500)
+
+	return ctx.JSON(&response)
+}
+
 // StrictServerInterface represents all server handlers.
 type StrictServerInterface interface {
 	// Get system health status
@@ -1833,6 +1935,9 @@ type StrictServerInterface interface {
 	// Get a snapshot
 	// (GET /teams/{teamName}/projects/{projectName}/environments/{environmentName}/snapshots/{snapshotId})
 	GetSnapshot(ctx context.Context, request GetSnapshotRequestObject) (GetSnapshotResponseObject, error)
+	// Get the state of Terraform environment
+	// (GET /teams/{teamName}/projects/{projectName}/environments/{environmentName}/states)
+	GetStates(ctx context.Context, request GetStatesRequestObject) (GetStatesResponseObject, error)
 }
 
 type StrictHandlerFunc func(ctx *fiber.Ctx, args interface{}) (interface{}, error)
@@ -2601,6 +2706,36 @@ func (sh *strictHandler) GetSnapshot(ctx *fiber.Ctx, teamName TeamName, projectN
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	} else if validResponse, ok := response.(GetSnapshotResponseObject); ok {
 		if err := validResponse.VisitGetSnapshotResponse(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetStates operation middleware
+func (sh *strictHandler) GetStates(ctx *fiber.Ctx, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, params GetStatesParams) error {
+	var request GetStatesRequestObject
+
+	request.TeamName = teamName
+	request.ProjectName = projectName
+	request.EnvironmentName = environmentName
+	request.Params = params
+
+	handler := func(ctx *fiber.Ctx, request interface{}) (interface{}, error) {
+		return sh.ssi.GetStates(ctx.UserContext(), request.(GetStatesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetStates")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	} else if validResponse, ok := response.(GetStatesResponseObject); ok {
+		if err := validResponse.VisitGetStatesResponse(ctx); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, err.Error())
 		}
 	} else if response != nil {

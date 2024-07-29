@@ -183,6 +183,9 @@ type ClientInterface interface {
 
 	// GetSnapshot request
 	GetSnapshot(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetStates request
+	GetStates(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, params *GetStatesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetHealth(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -595,6 +598,18 @@ func (c *Client) DeleteSnapshot(ctx context.Context, teamName TeamName, projectN
 
 func (c *Client) GetSnapshot(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetSnapshotRequest(c.Server, teamName, projectName, environmentName, snapshotId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetStates(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, params *GetStatesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetStatesRequest(c.Server, teamName, projectName, environmentName, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1912,6 +1927,92 @@ func NewGetSnapshotRequest(server string, teamName TeamName, projectName Project
 	return req, nil
 }
 
+// NewGetStatesRequest generates requests for GetStates
+func NewGetStatesRequest(server string, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, params *GetStatesParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamName", runtime.ParamLocationPath, teamName)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "projectName", runtime.ParamLocationPath, projectName)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "environmentName", runtime.ParamLocationPath, environmentName)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/teams/%s/projects/%s/environments/%s/states", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -2049,6 +2150,9 @@ type ClientWithResponsesInterface interface {
 
 	// GetSnapshotWithResponse request
 	GetSnapshotWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, snapshotId SnapshotId, reqEditors ...RequestEditorFn) (*GetSnapshotResponse, error)
+
+	// GetStatesWithResponse request
+	GetStatesWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, params *GetStatesParams, reqEditors ...RequestEditorFn) (*GetStatesResponse, error)
 }
 
 type GetHealthResponse struct {
@@ -2664,6 +2768,32 @@ func (r GetSnapshotResponse) StatusCode() int {
 	return 0
 }
 
+type GetStatesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		States *[]State `json:"states,omitempty"`
+	}
+	JSON404 *ErrorResponse
+	JSON500 *ErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetStatesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetStatesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 // GetHealthWithResponse request returning *GetHealthResponse
 func (c *ClientWithResponses) GetHealthWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetHealthResponse, error) {
 	rsp, err := c.GetHealth(ctx, reqEditors...)
@@ -2967,6 +3097,15 @@ func (c *ClientWithResponses) GetSnapshotWithResponse(ctx context.Context, teamN
 		return nil, err
 	}
 	return ParseGetSnapshotResponse(rsp)
+}
+
+// GetStatesWithResponse request returning *GetStatesResponse
+func (c *ClientWithResponses) GetStatesWithResponse(ctx context.Context, teamName TeamName, projectName ProjectName, environmentName EnvironmentName, params *GetStatesParams, reqEditors ...RequestEditorFn) (*GetStatesResponse, error) {
+	rsp, err := c.GetStates(ctx, teamName, projectName, environmentName, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetStatesResponse(rsp)
 }
 
 // ParseGetHealthResponse parses an HTTP response from a GetHealthWithResponse call
@@ -3868,6 +4007,48 @@ func ParseGetSnapshotResponse(rsp *http.Response) (*GetSnapshotResponse, error) 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest Snapshot
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest ErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetStatesResponse parses an HTTP response from a GetStatesWithResponse call
+func ParseGetStatesResponse(rsp *http.Response) (*GetStatesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetStatesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			States *[]State `json:"states,omitempty"`
+		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

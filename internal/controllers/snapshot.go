@@ -6,6 +6,7 @@ import (
 	seed "github.com/zeiss/gorm-seed"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
+	"github.com/zeiss/knox/pkg/utils"
 
 	"github.com/google/uuid"
 )
@@ -50,9 +51,10 @@ func (c *SnapshotControllerImpl) CreateSnapshot(ctx context.Context, cmd CreateS
 
 	snapshot := models.Snapshot{
 		Title:         cmd.Title,
-		Description:   &cmd.Description,
+		Description:   utils.StrPtr(cmd.Description),
 		EnvironmentID: state.EnvironmentID,
 		ProjectID:     state.ProjectID,
+		StateID:       state.ID,
 		Data:          state.Data,
 	}
 

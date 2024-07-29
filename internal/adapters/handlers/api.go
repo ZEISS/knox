@@ -173,6 +173,8 @@ func (h *apiHandlers) GetSnapshot(ctx context.Context, request openapi.GetSnapsh
 	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
+// Update a snapshot
+
 // Get a list of teams
 // (GET /team)
 func (h *apiHandlers) GetTeams(ctx context.Context, request openapi.GetTeamsRequestObject) (openapi.GetTeamsResponseObject, error) {
@@ -298,4 +300,17 @@ func (a *apiHandlers) UnlockEnvironment(ctx context.Context, request openapi.Unl
 	}
 
 	return dto.ToUnlockEnvironmentResponseObject(), nil
+}
+
+// Get the state of Terraform environment
+// (GET /teams/{teamName}/projects/{projectName}/environments/{environmentName}/states)
+func (a *apiHandlers) GetStates(ctx context.Context, request openapi.GetStatesRequestObject) (openapi.GetStatesResponseObject, error) {
+	query := dto.FromGetStatesRequestObject(request)
+
+	results, err := a.environment.ListStates(ctx, query)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	return dto.ToGetStatesResponseObject(results), nil
 }

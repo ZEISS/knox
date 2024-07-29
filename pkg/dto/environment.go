@@ -88,3 +88,31 @@ func ToDeleteEnvironmentResponseObject() openapi.DeleteEnvironment204Response {
 
 	return res
 }
+
+// FromGetStatesRequestObject ...
+func FromGetStatesRequestObject(req openapi.GetStatesRequestObject) controllers.ListStatesQuery {
+	return controllers.ListStatesQuery{
+		TeamName:        req.TeamName,
+		ProjectName:     req.ProjectName,
+		EnvironmentName: req.EnvironmentName,
+		Limit:           utils.PtrInt(req.Params.Limit),
+		Offset:          utils.PtrInt(req.Params.Offset),
+	}
+}
+
+// ToGetStatesResponseObject ...
+func ToGetStatesResponseObject(results tables.Results[models.State]) openapi.GetStates200JSONResponse {
+	res := openapi.GetStates200JSONResponse{}
+
+	states := make([]openapi.State, results.GetLen())
+
+	for i, state := range results.GetRows() {
+		states[i] = openapi.State{
+			Id: utils.StrPtr(state.ID.String()),
+		}
+	}
+
+	res.States = &states
+
+	return res
+}

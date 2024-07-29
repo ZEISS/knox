@@ -3,7 +3,6 @@ package database
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/models"
@@ -91,6 +90,13 @@ func (r *readTxImpl) AuthenticateClient(ctx context.Context, teamId, projectId, 
 	return environment.ComparePassword(password)
 }
 
+// ListStates ...
+func (r *readTxImpl) ListStates(ctx context.Context, teamName, projectName, environmentName string, results *tables.Results[models.State]) error {
+	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).
+		Where("environment_id = (?)", r.conn.Model(&models.Environment{}).Where("name = ?", environmentName).Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projectName).Where("owner_id = (?)", r.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).Select("id")).Select("id")).
+		Find(&results.Rows).Error
+}
+
 type writeTxImpl struct {
 	conn *gorm.DB
 	readTxImpl
@@ -129,8 +135,6 @@ func (rw *writeTxImpl) DeleteProject(ctx context.Context, teamName string, proje
 // UpdateState...
 func (rw *writeTxImpl) UpdateState(ctx context.Context, teamName string, projectName string, state *models.State) error {
 	latest := models.State{}
-
-	fmt.Println("teamName: ", teamName, "projectName: ", projectName)
 
 	result := rw.conn.Debug().
 		Where(&models.State{}).

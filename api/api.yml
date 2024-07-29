@@ -832,6 +832,62 @@ paths:
             - in: path
               name: environmentName
 
+  /teams/{teamName}/projects/{projectName}/environments/{environmentName}/states:
+    get:
+      tags:
+        - States
+      summary: Get the state of Terraform environment
+      operationId: getStates
+      parameters:
+        - $ref: "#/components/parameters/teamName"
+        - $ref: "#/components/parameters/projectName"
+        - $ref: "#/components/parameters/environmentName"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      security:
+        - openId: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  states:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/State"
+        "404":
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      # Add the policy to check if the user has access to delete the project
+      x-fiber-authz-fga:
+        user:
+          namespace: user
+          auth_type: oidc
+        relation:
+          name: reader
+        object:
+          namespace: environment
+          separator: /
+          components:
+            - in: path
+              name: teamName
+            - in: path
+              name: projectName
+            - in: path
+              name: environmentName
+
   /teams/{teamName}/projects/{projectName}/environments/{environmentName}/snapshots:
     get:
       tags:
@@ -1180,23 +1236,15 @@ components:
           type: string
         description:
           type: string
-        record_type:
-          type: string
-        record_uuid:
-          type: string
-        status:
-          type: string
-        team:
-          type: object
-          properties:
-            id:
-              type: string
-            name:
-              type: string
+        version:
+          type: integer
         createdAt:
           type: string
           format: date-time
         updatedAt:
+          type: string
+          format: date-time
+        deletedAt:
           type: string
           format: date-time
 
@@ -1230,6 +1278,25 @@ components:
     Payload:
       type: object
       format: binary
+
+    State:
+      type: object
+      properties:
+        id:
+          type: string
+        state:
+          type: string
+        version:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        deletedAt:
+          type: string
+          format: date-time
 
   securitySchemes:
     openId:

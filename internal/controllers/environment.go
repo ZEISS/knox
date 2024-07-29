@@ -46,6 +46,15 @@ type DeleteEnvironmentCommand struct {
 	EnvironmentName string `json:"environment_name" form:"environment_name" validate:"required"`
 }
 
+// ListStatesQuery ...
+type ListStatesQuery struct {
+	TeamName        string `json:"team_name" form:"team_name" validate:"required"`
+	ProjectName     string `json:"project_name" form:"project_name" validate:"required"`
+	EnvironmentName string `json:"environment_name" form:"environment_name" validate:"required"`
+	Limit           int    `json:"limit" form:"limit" validate:"omitempty,min=1,max=100"`
+	Offset          int    `json:"offset" form:"offset" validate:"omitempty,min=0"`
+}
+
 // EnvironmentControllerImpl ...
 type EnvironmentControllerImpl struct {
 	store seed.Database[ports.ReadTx, ports.ReadWriteTx]
@@ -61,6 +70,8 @@ type EnvironmentController interface {
 	GetEnvironment(ctx context.Context, query GetEnvironmentQuery) (models.Environment, error)
 	// DeleteEnvironment ...
 	DeleteEnvironment(ctx context.Context, cmd DeleteEnvironmentCommand) error
+	// ListStates ...
+	ListStates(ctx context.Context, query ListStatesQuery) (tables.Results[models.State], error)
 }
 
 // NewEnvironmentController ...
@@ -163,4 +174,20 @@ func (c *EnvironmentControllerImpl) DeleteEnvironment(ctx context.Context, cmd D
 	return c.store.ReadWriteTx(ctx, func(ctx context.Context, tx ports.ReadWriteTx) error {
 		return tx.DeleteEnvironment(ctx, cmd.TeamName, cmd.ProjectName, &environment)
 	})
+}
+
+// ListStates ...
+func (c *EnvironmentControllerImpl) ListStates(ctx context.Context, query ListStatesQuery) (tables.Results[models.State], error) {
+	validate = validator.New()
+
+	results := tables.Results[models.State]{}
+
+	err := c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
+		return tx.ListStates(ctx, query.TeamName, query.ProjectName, query.EnvironmentName, &results)
+	})
+	if err != nil {
+		return results, err
+	}
+
+	return results, nil
 }

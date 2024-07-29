@@ -46,6 +46,8 @@ type ReadTx interface {
 	ListEnvironments(context.Context, string, string, *tables.Results[models.Environment]) error
 	// ListTeams ...
 	ListTeams(context.Context, *tables.Results[models.Team]) error
+	// ListStates ...
+	ListStates(context.Context, string, string, string, *tables.Results[models.State]) error
 }
 
 // ReadWriteTx provides methods for transactional read and write operations.
