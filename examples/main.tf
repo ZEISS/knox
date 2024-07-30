@@ -19,5 +19,5 @@ terraform {
 
 resource "local_file" "foo" {
   content  = "foo!"
-  filename = "${path.module}/foo2.bar"
+  filename = "${path.module}/foo3.bar"
 }

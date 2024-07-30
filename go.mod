@@ -19,7 +19,7 @@ require (
 	github.com/openfga/go-sdk v0.5.0
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
-	github.com/zeiss/fiber-authz v1.0.32
+	github.com/zeiss/fiber-authz v1.0.33
 	github.com/zeiss/fiber-htmx v1.3.20
 	github.com/zeiss/gorm-seed v0.1.2
 	golang.org/x/crypto v0.25.0

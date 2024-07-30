@@ -89,11 +89,6 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 			return err
 		}
 
-		store, err := seed.NewDatabase(conn, database.NewReadTx(), database.NewWriteTx())
-		if err != nil {
-			return err
-		}
-
 		fgaClient, err := openfga.NewSdkClient(
 			&openfga.ClientConfiguration{
 				ApiUrl:               s.cfg.Flags.FGAApiUrl,
@@ -101,6 +96,11 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 				AuthorizationModelId: s.cfg.Flags.FGAAuthorizationModelID,
 			},
 		)
+		if err != nil {
+			return err
+		}
+
+		store, err := seed.NewDatabase(conn, database.NewReadTx(), database.NewWriteTx(fgaClient))
 		if err != nil {
 			return err
 		}

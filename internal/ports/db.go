@@ -57,7 +57,7 @@ type ReadWriteTx interface {
 	// DeleteLock deletes a lock.
 	DeleteLock(context.Context, *models.Lock) error
 	// UpdateState creates a new state.
-	UpdateState(context.Context, string, string, *models.State) error
+	UpdateState(context.Context, *models.State) error
 	// CreateSnapshot creates a new snapshot.
 	CreateSnapshot(context.Context, *models.Snapshot) error
 	// CreateTeam creates a new team.
@@ -71,7 +71,7 @@ type ReadWriteTx interface {
 	// CreateEnvironment creates a new environment.
 	CreateEnvironment(context.Context, *models.Environment) error
 	// DeleteEnvironment deletes an environment.
-	DeleteEnvironment(context.Context, string, string, *models.Environment) error
+	DeleteEnvironment(context.Context, *models.Environment) error
 
 	ReadTx
 }

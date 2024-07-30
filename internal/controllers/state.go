@@ -175,7 +175,7 @@ func (c *StateControllerImpl) UpdateState(ctx context.Context, cmd UpdateStateCo
 		Data:          datatypes.JSON(b),
 	}
 	err = c.store.ReadWriteTx(ctx, func(ctx context.Context, tx ports.ReadWriteTx) error {
-		return tx.UpdateState(ctx, cmd.Team, cmd.Project, &state)
+		return tx.UpdateState(ctx, &state)
 	})
 	if err != nil {
 		return err

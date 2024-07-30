@@ -8,8 +8,11 @@ import (
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
 
+	openfga "github.com/openfga/go-sdk/client"
+	fga "github.com/zeiss/fiber-authz/openfga"
 	seed "github.com/zeiss/gorm-seed"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 var _ ports.ReadTx = (*readTxImpl)(nil)
@@ -39,6 +42,7 @@ func (r *readTxImpl) GetProject(ctx context.Context, project *models.Project) er
 func (r *readTxImpl) GetEnvironment(ctx context.Context, teamName string, projectName string, environment *models.Environment) error {
 	return r.conn.
 		Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projectName).Where("owner_id = (?)", r.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).Select("id")).
+		Where(environment).
 		First(environment).Error
 }
 
@@ -99,13 +103,14 @@ func (r *readTxImpl) ListStates(ctx context.Context, teamName, projectName, envi
 
 type writeTxImpl struct {
 	conn *gorm.DB
+	fga  *openfga.OpenFgaClient
 	readTxImpl
 }
 
 // NewWriteTx ...
-func NewWriteTx() seed.ReadWriteTxFactory[ports.ReadWriteTx] {
+func NewWriteTx(fga *openfga.OpenFgaClient) seed.ReadWriteTxFactory[ports.ReadWriteTx] {
 	return func(db *gorm.DB) (ports.ReadWriteTx, error) {
-		return &writeTxImpl{conn: db}, nil
+		return &writeTxImpl{conn: db, fga: fga}, nil
 	}
 }
 
@@ -133,13 +138,13 @@ func (rw *writeTxImpl) DeleteProject(ctx context.Context, teamName string, proje
 }
 
 // UpdateState...
-func (rw *writeTxImpl) UpdateState(ctx context.Context, teamName string, projectName string, state *models.State) error {
-	latest := models.State{}
+func (rw *writeTxImpl) UpdateState(ctx context.Context, state *models.State) error {
+	latest := &models.State{}
 
 	result := rw.conn.Debug().
-		Where(&models.State{}).
-		Where("project_id = (?)", rw.conn.Model(&models.Project{}).Where("name = ?", projectName).Where("owner_id = (?)", rw.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).Select("id")).
-		Last(&latest)
+		Where("project_id = (?)", state.ProjectID).
+		Where("environment_id = (?)", state.EnvironmentID).
+		Last(latest)
 
 	if result.Error != nil && !errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return result.Error
@@ -181,13 +186,60 @@ func (rw *writeTxImpl) DeleteTeam(ctx context.Context, team *models.Team) error 
 
 // CreateEnvironment creates a new environment.
 func (rw *writeTxImpl) CreateEnvironment(ctx context.Context, environment *models.Environment) error {
-	return rw.conn.Create(environment).Error
+	err := rw.conn.Create(environment).Error
+	if err != nil {
+		return err
+	}
+
+	err = rw.conn.Preload(clause.Associations).Preload("Project.Owner").Where(environment).First(environment).Error
+	if err != nil {
+		return err
+	}
+
+	body := openfga.ClientWriteRequest{
+		Writes: []openfga.ClientTupleKey{
+			{
+				User:     fga.NewUser(fga.Namespace("project"), fga.Join(fga.DefaultSeparator, environment.Project.Owner.Name, environment.Project.Name)).String(),
+				Relation: fga.NewRelation(fga.String("owner")).String(),
+				Object:   fga.NewObject(fga.Namespace("environment"), fga.Join(fga.DefaultSeparator, environment.Project.Owner.Name, environment.Project.Name, environment.Name)).String(),
+			},
+		},
+	}
+
+	_, err = rw.fga.Write(ctx).Body(body).Execute()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // DeleteEnvironment deletes an environment.
-func (rw *writeTxImpl) DeleteEnvironment(ctx context.Context, teamName, projectName string, environment *models.Environment) error {
-	return rw.conn.
-		Where("project_id = (?)", rw.conn.Model(&models.Project{}).Where("name = ?", projectName).Where("owner_id = (?)", rw.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).Select("id")).
-		Delete(environment).
-		Error
+func (rw *writeTxImpl) DeleteEnvironment(ctx context.Context, environment *models.Environment) error {
+	err := rw.conn.Preload(clause.Associations).Preload("Project.Owner").Where(environment).First(environment).Error
+	if err != nil {
+		return err
+	}
+
+	err = rw.conn.Delete(environment).Error
+	if err != nil {
+		return err
+	}
+
+	body := openfga.ClientWriteRequest{
+		Deletes: []openfga.ClientTupleKeyWithoutCondition{
+			{
+				User:     fga.NewUser(fga.Namespace("project"), fga.Join(fga.DefaultSeparator, environment.Project.Owner.Name, environment.Project.Name)).String(),
+				Relation: fga.NewRelation(fga.String("owner")).String(),
+				Object:   fga.NewObject(fga.Namespace("environment"), fga.Join(fga.DefaultSeparator, environment.Project.Owner.Name, environment.Project.Name, environment.Name)).String(),
+			},
+		},
+	}
+
+	_, err = rw.fga.Write(ctx).Body(body).Execute()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

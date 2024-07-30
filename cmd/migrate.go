@@ -24,7 +24,7 @@ var Migrate = &cobra.Command{
 			return err
 		}
 
-		store, err := seed.NewDatabase(conn, database.NewReadTx(), database.NewWriteTx())
+		store, err := seed.NewDatabase(conn, database.NewReadTx(), database.NewWriteTx(nil))
 		if err != nil {
 			return err
 		}

@@ -167,12 +167,24 @@ func (c *EnvironmentControllerImpl) DeleteEnvironment(ctx context.Context, cmd D
 		return err
 	}
 
+	project := models.Project{
+		Name: cmd.ProjectName,
+	}
+
+	err = c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
+		return tx.GetProject(ctx, &project)
+	})
+	if err != nil {
+		return err
+	}
+
 	environment := models.Environment{
-		Name: cmd.EnvironmentName,
+		Name:      cmd.EnvironmentName,
+		ProjectID: project.ID,
 	}
 
 	return c.store.ReadWriteTx(ctx, func(ctx context.Context, tx ports.ReadWriteTx) error {
-		return tx.DeleteEnvironment(ctx, cmd.TeamName, cmd.ProjectName, &environment)
+		return tx.DeleteEnvironment(ctx, &environment)
 	})
 }
 
