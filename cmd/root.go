@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/zeiss/fiber-authz/oas"
+	"github.com/zeiss/knox/internal/adapters/authz"
 	"github.com/zeiss/knox/internal/adapters/database"
 	"github.com/zeiss/knox/internal/adapters/handlers"
 
@@ -17,14 +18,15 @@ import (
 	"github.com/gofiber/fiber/v2"
 	logger "github.com/gofiber/fiber/v2/middleware/logger"
 	requestid "github.com/gofiber/fiber/v2/middleware/requestid"
-	"github.com/katallaxie/pkg/server"
 	"github.com/kelseyhightower/envconfig"
 	middleware "github.com/oapi-codegen/fiber-middleware"
 	openfga "github.com/openfga/go-sdk/client"
 	"github.com/spf13/cobra"
 	"github.com/zeiss/fiber-authz/oas/oidc"
 	ofga "github.com/zeiss/fiber-authz/openfga"
-	seed "github.com/zeiss/gorm-seed"
+	authx "github.com/zeiss/pkg/authz"
+	"github.com/zeiss/pkg/dbx"
+	"github.com/zeiss/pkg/server"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -100,7 +102,12 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 			return err
 		}
 
-		store, err := seed.NewDatabase(conn, database.NewReadTx(), database.NewWriteTx(fgaClient))
+		authzStore, err := authx.NewStore(fgaClient, authz.NewWriteTx())
+		if err != nil {
+			return err
+		}
+
+		store, err := dbx.NewDatabase(conn, database.NewReadTx(), database.NewWriteTx(authzStore))
 		if err != nil {
 			return err
 		}

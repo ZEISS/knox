@@ -6,12 +6,12 @@ import (
 	"strings"
 
 	"github.com/zeiss/knox/internal/ports"
+	"github.com/zeiss/pkg/dbx"
 
 	"github.com/getkin/kin-openapi/openapi3filter"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/utils"
 	middleware "github.com/oapi-codegen/fiber-middleware"
-	seed "github.com/zeiss/gorm-seed"
 )
 
 // OpenAPIAuthenticatorOpts are the OpenAPI authenticator options.
@@ -46,7 +46,7 @@ func WithBasicAuthenticator(auth openapi3filter.AuthenticationFunc) OpenAPIAuthe
 }
 
 // NewBasicAuthenticator returns a new basic authenticator.
-func NewBasicAuthenticator(store seed.Database[ports.ReadTx, ports.ReadWriteTx]) openapi3filter.AuthenticationFunc {
+func NewBasicAuthenticator(store dbx.Database[ports.ReadTx, ports.ReadWriteTx]) openapi3filter.AuthenticationFunc {
 	return func(ctx context.Context, input *openapi3filter.AuthenticationInput) error {
 		c := middleware.GetFiberContext(ctx)
 

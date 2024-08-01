@@ -6,9 +6,9 @@ import (
 	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
+	"github.com/zeiss/pkg/dbx"
 
 	"github.com/go-playground/validator/v10"
-	seed "github.com/zeiss/gorm-seed"
 )
 
 var _ TeamController = (*TeamControllerImpl)(nil)
@@ -55,11 +55,11 @@ type TeamController interface {
 
 // TeamControllerImpl is the controller for teams.
 type TeamControllerImpl struct {
-	store seed.Database[ports.ReadTx, ports.ReadWriteTx]
+	store dbx.Database[ports.ReadTx, ports.ReadWriteTx]
 }
 
 // NewTeamController returns a new instance of TeamController.
-func NewTeamController(store seed.Database[ports.ReadTx, ports.ReadWriteTx]) *TeamControllerImpl {
+func NewTeamController(store dbx.Database[ports.ReadTx, ports.ReadWriteTx]) *TeamControllerImpl {
 	return &TeamControllerImpl{store}
 }
 

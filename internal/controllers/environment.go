@@ -5,9 +5,9 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/zeiss/fiber-htmx/components/tables"
-	seed "github.com/zeiss/gorm-seed"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
+	"github.com/zeiss/pkg/dbx"
 )
 
 // use a single instance of Validate, it caches struct info
@@ -57,7 +57,7 @@ type ListStatesQuery struct {
 
 // EnvironmentControllerImpl ...
 type EnvironmentControllerImpl struct {
-	store seed.Database[ports.ReadTx, ports.ReadWriteTx]
+	store dbx.Database[ports.ReadTx, ports.ReadWriteTx]
 }
 
 // EnvironmentController ...
@@ -75,7 +75,7 @@ type EnvironmentController interface {
 }
 
 // NewEnvironmentController ...
-func NewEnvironmentController(store seed.Database[ports.ReadTx, ports.ReadWriteTx]) *EnvironmentControllerImpl {
+func NewEnvironmentController(store dbx.Database[ports.ReadTx, ports.ReadWriteTx]) *EnvironmentControllerImpl {
 	return &EnvironmentControllerImpl{store}
 }
 

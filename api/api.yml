@@ -820,7 +820,7 @@ paths:
           namespace: user
           auth_type: oidc
         relation:
-          name: reader
+          name: writer
         object:
           namespace: environment
           separator: /

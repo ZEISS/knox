@@ -3,10 +3,10 @@ package controllers
 import (
 	"context"
 
-	seed "github.com/zeiss/gorm-seed"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
 	"github.com/zeiss/knox/pkg/utils"
+	"github.com/zeiss/pkg/dbx"
 
 	"github.com/google/uuid"
 )
@@ -28,11 +28,11 @@ type SnapshotController interface {
 
 // SnapshotControllerImpl ...
 type SnapshotControllerImpl struct {
-	store seed.Database[ports.ReadTx, ports.ReadWriteTx]
+	store dbx.Database[ports.ReadTx, ports.ReadWriteTx]
 }
 
 // NewSnapshotController ...
-func NewSnapshotController(store seed.Database[ports.ReadTx, ports.ReadWriteTx]) *SnapshotControllerImpl {
+func NewSnapshotController(store dbx.Database[ports.ReadTx, ports.ReadWriteTx]) *SnapshotControllerImpl {
 	return &SnapshotControllerImpl{store}
 }
 

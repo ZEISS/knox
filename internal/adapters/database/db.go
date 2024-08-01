@@ -7,10 +7,9 @@ import (
 	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
+	"github.com/zeiss/pkg/authz"
+	"github.com/zeiss/pkg/dbx"
 
-	openfga "github.com/openfga/go-sdk/client"
-	fga "github.com/zeiss/fiber-authz/openfga"
-	seed "github.com/zeiss/gorm-seed"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -22,7 +21,7 @@ type readTxImpl struct {
 }
 
 // NewReadTx ...
-func NewReadTx() seed.ReadTxFactory[ports.ReadTx] {
+func NewReadTx() dbx.ReadTxFactory[ports.ReadTx] {
 	return func(db *gorm.DB) (ports.ReadTx, error) {
 		return &readTxImpl{conn: db}, nil
 	}
@@ -103,14 +102,14 @@ func (r *readTxImpl) ListStates(ctx context.Context, teamName, projectName, envi
 
 type writeTxImpl struct {
 	conn *gorm.DB
-	fga  *openfga.OpenFgaClient
+	auth authz.Store[ports.AuthzWriteTx]
 	readTxImpl
 }
 
 // NewWriteTx ...
-func NewWriteTx(fga *openfga.OpenFgaClient) seed.ReadWriteTxFactory[ports.ReadWriteTx] {
+func NewWriteTx(auth authz.Store[ports.AuthzWriteTx]) dbx.ReadWriteTxFactory[ports.ReadWriteTx] {
 	return func(db *gorm.DB) (ports.ReadWriteTx, error) {
-		return &writeTxImpl{conn: db, fga: fga}, nil
+		return &writeTxImpl{conn: db, auth: auth}, nil
 	}
 }
 
@@ -196,22 +195,9 @@ func (rw *writeTxImpl) CreateEnvironment(ctx context.Context, environment *model
 		return err
 	}
 
-	body := openfga.ClientWriteRequest{
-		Writes: []openfga.ClientTupleKey{
-			{
-				User:     fga.NewUser(fga.Namespace("project"), fga.Join(fga.DefaultSeparator, environment.Project.Owner.Name, environment.Project.Name)).String(),
-				Relation: fga.NewRelation(fga.String("owner")).String(),
-				Object:   fga.NewObject(fga.Namespace("environment"), fga.Join(fga.DefaultSeparator, environment.Project.Owner.Name, environment.Project.Name, environment.Name)).String(),
-			},
-		},
-	}
-
-	_, err = rw.fga.Write(ctx).Body(body).Execute()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return rw.auth.WriteTx(ctx, func(ctx context.Context, tx ports.AuthzWriteTx) error {
+		return tx.AddOwnerEnvironment(ctx, environment.Project.Owner.Name, environment.Project.Name, environment.Name)
+	})
 }
 
 // DeleteEnvironment deletes an environment.
@@ -226,20 +212,7 @@ func (rw *writeTxImpl) DeleteEnvironment(ctx context.Context, environment *model
 		return err
 	}
 
-	body := openfga.ClientWriteRequest{
-		Deletes: []openfga.ClientTupleKeyWithoutCondition{
-			{
-				User:     fga.NewUser(fga.Namespace("project"), fga.Join(fga.DefaultSeparator, environment.Project.Owner.Name, environment.Project.Name)).String(),
-				Relation: fga.NewRelation(fga.String("owner")).String(),
-				Object:   fga.NewObject(fga.Namespace("environment"), fga.Join(fga.DefaultSeparator, environment.Project.Owner.Name, environment.Project.Name, environment.Name)).String(),
-			},
-		},
-	}
-
-	_, err = rw.fga.Write(ctx).Body(body).Execute()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return rw.auth.WriteTx(ctx, func(ctx context.Context, tx ports.AuthzWriteTx) error {
+		return tx.RemoveOwnerEnvironment(ctx, environment.Project.Owner.Name, environment.Project.Name, environment.Name)
+	})
 }

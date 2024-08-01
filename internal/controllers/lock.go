@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	seed "github.com/zeiss/gorm-seed"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
+	"github.com/zeiss/pkg/dbx"
 )
 
 var _ LocksController = (*LocksControllerImpl)(nil)
@@ -55,11 +55,11 @@ type LocksController interface {
 
 // LocksControllerImpl is the controller for operators.
 type LocksControllerImpl struct {
-	store seed.Database[ports.ReadTx, ports.ReadWriteTx]
+	store dbx.Database[ports.ReadTx, ports.ReadWriteTx]
 }
 
 // NewLocksController returns a new LocksControllerImpl.
-func NewLocksController(store seed.Database[ports.ReadTx, ports.ReadWriteTx]) *LocksControllerImpl {
+func NewLocksController(store dbx.Database[ports.ReadTx, ports.ReadWriteTx]) *LocksControllerImpl {
 	return &LocksControllerImpl{store}
 }
 

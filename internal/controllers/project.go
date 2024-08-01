@@ -5,10 +5,10 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/zeiss/fiber-htmx/components/tables"
-	seed "github.com/zeiss/gorm-seed"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
 	"github.com/zeiss/knox/pkg/utils"
+	"github.com/zeiss/pkg/dbx"
 )
 
 var _ ProjectController = (*ProjectControllerImpl)(nil)
@@ -42,7 +42,7 @@ type DeleteProjectCommand struct {
 
 // ProjectControllerImpl ...
 type ProjectControllerImpl struct {
-	store seed.Database[ports.ReadTx, ports.ReadWriteTx]
+	store dbx.Database[ports.ReadTx, ports.ReadWriteTx]
 }
 
 // ProjectController ...
@@ -58,7 +58,7 @@ type ProjectController interface {
 }
 
 // NewProjectController ...
-func NewProjectController(store seed.Database[ports.ReadTx, ports.ReadWriteTx]) *ProjectControllerImpl {
+func NewProjectController(store dbx.Database[ports.ReadTx, ports.ReadWriteTx]) *ProjectControllerImpl {
 	return &ProjectControllerImpl{store}
 }
 
