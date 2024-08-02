@@ -20,7 +20,7 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/zeiss/fiber-authz v1.0.33
 	github.com/zeiss/fiber-htmx v1.3.21
-	github.com/zeiss/pkg v0.1.4
+	github.com/zeiss/pkg v0.1.6
 	golang.org/x/crypto v0.25.0
 	golang.org/x/mod v0.19.0
 	gorm.io/datatypes v1.2.1
