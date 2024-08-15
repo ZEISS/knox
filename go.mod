@@ -19,7 +19,7 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/zeiss/fiber-authz v1.0.33
-	github.com/zeiss/fiber-htmx v1.3.21
+	github.com/zeiss/fiber-htmx v1.3.22
 	github.com/zeiss/pkg v0.1.7
 	golang.org/x/crypto v0.26.0
 	golang.org/x/mod v0.20.0
@@ -229,7 +229,7 @@ require (
 	github.com/yeya24/promlinter v0.3.0 // indirect
 	github.com/ykadowak/zerologlint v0.1.5 // indirect
 	github.com/yuin/goldmark v1.7.4 // indirect
-	github.com/zeiss/fiber-goth v1.2.8 // indirect
+	github.com/zeiss/fiber-goth v1.2.11 // indirect
 	gitlab.com/bosi/decorder v0.4.2 // indirect
 	go-simpler.org/musttag v0.12.2 // indirect
 	go-simpler.org/sloglint v0.7.2 // indirect
