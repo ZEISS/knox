@@ -19,8 +19,8 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/zeiss/fiber-authz v1.0.33
-	github.com/zeiss/fiber-htmx v1.3.22
-	github.com/zeiss/pkg v0.1.7
+	github.com/zeiss/fiber-htmx v1.3.23
+	github.com/zeiss/pkg v0.1.8-0.20240820122414-ce95f079ee32
 	golang.org/x/crypto v0.26.0
 	golang.org/x/mod v0.20.0
 	gorm.io/datatypes v1.2.1
@@ -135,7 +135,6 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/julz/importas v0.1.0 // indirect
 	github.com/karamaru-alpha/copyloopvar v1.1.0 // indirect
-	github.com/katallaxie/pkg v0.6.6 // indirect
 	github.com/kisielk/errcheck v1.7.0 // indirect
 	github.com/kkHAIKE/contextcheck v1.1.5 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
@@ -163,6 +162,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
+	github.com/mattn/go-sqlite3 v1.14.22 // indirect
 	github.com/mgechev/revive v1.3.9 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
