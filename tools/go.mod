@@ -8,7 +8,7 @@ require (
 	github.com/goreleaser/goreleaser v1.26.2
 	github.com/oapi-codegen/oapi-codegen/v2 v2.3.0
 	gotest.tools/gotestsum v1.12.0
-	k8s.io/code-generator v0.31.0
+	k8s.io/code-generator v0.31.1
 	knative.dev/pkg v0.0.0-20240614135239-339c22b8218c
 	mvdan.cc/gofumpt v0.7.0
 )
