@@ -2,8 +2,6 @@ module github.com/zeiss/knox
 
 go 1.23
 
-toolchain go1.23.3
-
 require (
 	github.com/MicahParks/keyfunc/v2 v2.1.0
 	github.com/getkin/kin-openapi v0.127.0
