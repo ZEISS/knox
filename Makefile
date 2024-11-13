@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := build
 
-include .env
+-include .env
 export
 
 GO 						?= go
