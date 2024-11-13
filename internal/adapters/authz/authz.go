@@ -4,19 +4,19 @@ import (
 	"context"
 
 	"github.com/zeiss/knox/internal/ports"
+	authx "github.com/zeiss/pkg/authx/fga"
 
 	openfga "github.com/openfga/go-sdk/client"
-	"github.com/zeiss/pkg/authz"
 )
 
 type writeTxImpl struct {
 	client *openfga.OpenFgaClient
-	store  authz.StoreTx
+	store  authx.StoreTx
 }
 
 // NewWriteTx returns a new write transaction.
-func NewWriteTx() authz.StoreTxFactory[ports.AuthzWriteTx] {
-	return func(client *openfga.OpenFgaClient, storeTx authz.StoreTx) (ports.AuthzWriteTx, error) {
+func NewWriteTx() authx.StoreTxFactory[ports.AuthzWriteTx] {
+	return func(client *openfga.OpenFgaClient, storeTx authx.StoreTx) (ports.AuthzWriteTx, error) {
 		return &writeTxImpl{client, storeTx}, nil
 	}
 }
@@ -25,9 +25,9 @@ func NewWriteTx() authz.StoreTxFactory[ports.AuthzWriteTx] {
 func (tx *writeTxImpl) AddAdmin(ctx context.Context, user, team string) error {
 	return tx.store.WriteTuple(
 		ctx,
-		authz.NewUser(authz.Namespace("user"), authz.String(user)),
-		authz.NewObject(authz.Namespace("team"), authz.String(team)),
-		authz.NewRelation(authz.String("admin")),
+		authx.NewUser(authx.Namespace("user"), authx.String(user)),
+		authx.NewObject(authx.Namespace("team"), authx.String(team)),
+		authx.NewRelation(authx.String("admin")),
 	)
 }
 
@@ -35,9 +35,9 @@ func (tx *writeTxImpl) AddAdmin(ctx context.Context, user, team string) error {
 func (tx *writeTxImpl) AddOwnerEnvironment(ctx context.Context, team, project, environment string) error {
 	return tx.store.WriteTuple(
 		ctx,
-		authz.NewUser(authz.Namespace("project"), authz.Join(authz.DefaultSeparator, team, project)),
-		authz.NewObject(authz.Namespace("environment"), authz.Join(authz.DefaultSeparator, team, project, environment)),
-		authz.NewRelation(authz.String("owner")),
+		authx.NewUser(authx.Namespace("project"), authx.Join(authx.DefaultSeparator, team, project)),
+		authx.NewObject(authx.Namespace("environment"), authx.Join(authx.DefaultSeparator, team, project, environment)),
+		authx.NewRelation(authx.String("owner")),
 	)
 }
 
@@ -45,8 +45,8 @@ func (tx *writeTxImpl) AddOwnerEnvironment(ctx context.Context, team, project, e
 func (tx *writeTxImpl) RemoveOwnerEnvironment(ctx context.Context, team, project, environment string) error {
 	return tx.store.DeleteTuple(
 		ctx,
-		authz.NewUser(authz.Namespace("project"), authz.Join(authz.DefaultSeparator, team, project)),
-		authz.NewObject(authz.Namespace("environment"), authz.Join(authz.DefaultSeparator, team, project, environment)),
-		authz.NewRelation(authz.String("owner")),
+		authx.NewUser(authx.Namespace("project"), authx.Join(authx.DefaultSeparator, team, project)),
+		authx.NewObject(authx.Namespace("environment"), authx.Join(authx.DefaultSeparator, team, project, environment)),
+		authx.NewRelation(authx.String("owner")),
 	)
 }

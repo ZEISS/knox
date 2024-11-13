@@ -7,7 +7,7 @@ import (
 	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
-	"github.com/zeiss/pkg/authz"
+	authx "github.com/zeiss/pkg/authx/fga"
 	"github.com/zeiss/pkg/dbx"
 
 	"gorm.io/gorm"
@@ -102,12 +102,12 @@ func (r *readTxImpl) ListStates(ctx context.Context, teamName, projectName, envi
 
 type writeTxImpl struct {
 	conn *gorm.DB
-	auth authz.Store[ports.AuthzWriteTx]
+	auth authx.Store[ports.AuthzWriteTx]
 	readTxImpl
 }
 
 // NewWriteTx ...
-func NewWriteTx(auth authz.Store[ports.AuthzWriteTx]) dbx.ReadWriteTxFactory[ports.ReadWriteTx] {
+func NewWriteTx(auth authx.Store[ports.AuthzWriteTx]) dbx.ReadWriteTxFactory[ports.ReadWriteTx] {
 	return func(db *gorm.DB) (ports.ReadWriteTx, error) {
 		return &writeTxImpl{conn: db, auth: auth}, nil
 	}

@@ -1,13 +1,13 @@
 .DEFAULT_GOAL := build
 
-GO 				?= go
-GO_RUN_TOOLS 	?= $(GO) run -modfile ./tools/go.mod
-GO_TEST 		?= $(GO_RUN_TOOLS) gotest.tools/gotestsum --format pkgname
-GO_RELEASER 	?= $(GO_RUN_TOOLS) github.com/goreleaser/goreleaser
-GO_MOD 			?= $(shell ${GO} list -m)
+include .env
+export
 
-# Module name
-MODULE_NAME ?= github.com/katallaxie/template-go
+GO 						?= go
+GO_RUN_TOOLS 	?= $(GO) run -modfile ./tools/go.mod
+GO_TEST 			?= $(GO_RUN_TOOLS) gotest.tools/gotestsum --format pkgname
+GO_RELEASER 	?= $(GO_RUN_TOOLS) github.com/goreleaser/goreleaser
+GO_MOD 				?= $(shell ${GO} list -m)
 
 .PHONY: build
 build: ## Build the binary file.
@@ -50,8 +50,12 @@ clean: ## Remove previous build.
 
 .PHONY: docs
 docs: ## Generate documentation.
-	npx @redocly/cli build-docs api/api.yml 
+	npx @redocly/cli build-docs api/api.yml
 	mv redoc-static.html public/index.html
+
+.PHONY: migrate
+migrate: ## Run database migrations.
+	$(GO) run main.go migrate
 
 .PHONY: help
 help: ## Display this help screen.

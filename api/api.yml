@@ -234,9 +234,7 @@ paths:
           name: admin
         object:
           namespace: system
-          components:
-            - in: path
-              name: teamName
+          name: global
 
     get:
       tags:
@@ -284,6 +282,7 @@ paths:
           name: admin
         object:
           namespace: system
+          components:
           name: global
 
   /teams/{teamName}:
