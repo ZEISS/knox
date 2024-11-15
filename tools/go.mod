@@ -7,7 +7,7 @@ require (
 	github.com/golangci/golangci-lint v1.62.0
 	github.com/goreleaser/goreleaser v1.26.2
 	github.com/oapi-codegen/oapi-codegen/v2 v2.4.1
-	gotest.tools/gotestsum v1.11.0
+	gotest.tools/gotestsum v1.12.0
 	k8s.io/code-generator v0.31.2
 	knative.dev/pkg v0.0.0-20241112094440-47a6f9fc2e7d
 	mvdan.cc/gofumpt v0.7.0
@@ -99,7 +99,7 @@ require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/bitfield/gotestdox v0.2.1 // indirect
+	github.com/bitfield/gotestdox v0.2.2 // indirect
 	github.com/bkielbasa/cyclop v1.2.3 // indirect
 	github.com/blacktop/go-dwarf v1.0.9 // indirect
 	github.com/blacktop/go-macho v1.1.162 // indirect
