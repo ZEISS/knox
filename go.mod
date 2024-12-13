@@ -21,7 +21,7 @@ require (
 	github.com/zeiss/pkg v0.1.19
 	golang.org/x/crypto v0.31.0
 	golang.org/x/mod v0.22.0
-	gorm.io/datatypes v1.2.2
+	gorm.io/datatypes v1.2.5
 	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.12
 	helm.sh/helm v2.17.0+incompatible
