@@ -17,7 +17,7 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/zeiss/fiber-authz v1.0.33
-	github.com/zeiss/fiber-htmx v1.3.32
+	github.com/zeiss/fiber-htmx v1.3.33
 	github.com/zeiss/pkg v0.1.19
 	golang.org/x/crypto v0.31.0
 	golang.org/x/mod v0.22.0
@@ -83,7 +83,7 @@ require (
 	github.com/valyala/fasthttp v1.57.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	github.com/yuin/goldmark v1.7.8 // indirect
-	github.com/zeiss/fiber-goth v1.2.13 // indirect
+	github.com/zeiss/fiber-goth v1.2.15 // indirect
 	github.com/zeiss/fiber-reload v0.1.1 // indirect
 	go.opentelemetry.io/otel v1.29.0 // indirect
 	go.opentelemetry.io/otel/metric v1.29.0 // indirect
