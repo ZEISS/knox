@@ -1,7 +1,6 @@
 module github.com/zeiss/knox
 
 go 1.23
-
 require (
 	github.com/MicahParks/keyfunc/v2 v2.1.0
 	github.com/getkin/kin-openapi v0.128.0
@@ -18,7 +17,7 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/zeiss/fiber-authz v1.0.33
 	github.com/zeiss/fiber-htmx v1.3.33
-	github.com/zeiss/pkg v0.1.19
+	github.com/zeiss/pkg v0.1.20
 	golang.org/x/crypto v0.32.0
 	golang.org/x/mod v0.22.0
 	gorm.io/datatypes v1.2.5
@@ -85,17 +84,17 @@ require (
 	github.com/yuin/goldmark v1.7.8 // indirect
 	github.com/zeiss/fiber-goth v1.2.15 // indirect
 	github.com/zeiss/fiber-reload v0.1.1 // indirect
-	go.opentelemetry.io/otel v1.29.0 // indirect
-	go.opentelemetry.io/otel/metric v1.29.0 // indirect
-	go.opentelemetry.io/otel/trace v1.29.0 // indirect
+	go.opentelemetry.io/otel v1.31.0 // indirect
+	go.opentelemetry.io/otel/metric v1.31.0 // indirect
+	go.opentelemetry.io/otel/trace v1.31.0 // indirect
 	golang.org/x/net v0.34.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
-	google.golang.org/protobuf v1.35.2 // indirect
+	google.golang.org/protobuf v1.36.2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/mysql v1.5.6 // indirect
-	k8s.io/apimachinery v0.31.3 // indirect
+	k8s.io/apimachinery v0.32.1 // indirect
 	k8s.io/helm v2.17.0+incompatible // indirect
 )
