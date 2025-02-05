@@ -19,7 +19,7 @@ require (
 	github.com/zeiss/fiber-htmx v1.3.33
 	github.com/zeiss/pkg v0.1.20
 	golang.org/x/crypto v0.32.0
-	golang.org/x/mod v0.22.0
+	golang.org/x/mod v0.23.0
 	gorm.io/datatypes v1.2.5
 	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.12
