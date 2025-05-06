@@ -8,7 +8,7 @@ require (
 	github.com/golangci/golangci-lint v1.64.8
 	github.com/goreleaser/goreleaser v1.26.2
 	github.com/oapi-codegen/oapi-codegen/v2 v2.4.1
-	gotest.tools/gotestsum v1.12.1
+	gotest.tools/gotestsum v1.12.2
 	k8s.io/code-generator v0.33.0
 	knative.dev/pkg v0.0.0-20241112094440-47a6f9fc2e7d
 	mvdan.cc/gofumpt v0.8.0
