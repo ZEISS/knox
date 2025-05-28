@@ -24,7 +24,7 @@ require (
 	golang.org/x/crypto v0.38.0
 	golang.org/x/mod v0.24.0
 	gorm.io/datatypes v1.2.5
-	gorm.io/driver/postgres v1.5.11
+	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.30.0
 	helm.sh/helm v2.17.0+incompatible
 )
