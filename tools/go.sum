@@ -1469,8 +1469,8 @@ honnef.co/go/tools v0.0.0-20190523083050-ea95bdfd59fc/go.mod h1:rf3lG4BRIbNafJWh
 honnef.co/go/tools v0.0.1-2019.2.3/go.mod h1:a3bituU0lyd329TUQxRnasdCoJDkEUEAqEt0JzvZhAg=
 honnef.co/go/tools v0.6.1 h1:R094WgE8K4JirYjBaOpz/AvTyUu/3wbmAoskKN/pxTI=
 honnef.co/go/tools v0.6.1/go.mod h1:3puzxxljPCe8RGJX7BIy1plGbxEOZni5mR2aXe3/uk4=
-k8s.io/code-generator v0.33.1 h1:ZLzIRdMsh3Myfnx9BaooX6iQry29UJjVfVG+BuS+UMw=
-k8s.io/code-generator v0.33.1/go.mod h1:HUKT7Ubp6bOgIbbaPIs9lpd2Q02uqkMCMx9/GjDrWpY=
+k8s.io/code-generator v0.33.2 h1:PCJ0Y6viTCxxJHMOyGqYwWEteM4q6y1Hqo2rNpl6jF4=
+k8s.io/code-generator v0.33.2/go.mod h1:hBjCA9kPMpjLWwxcr75ReaQfFXY8u+9bEJJ7kRw3J8c=
 k8s.io/gengo v0.0.0-20240404160639-a0386bf69313 h1:wBIDZID8ju9pwOiLlV22YYKjFGtiNSWgHf5CnKLRUuM=
 k8s.io/gengo v0.0.0-20240404160639-a0386bf69313/go.mod h1:FiNAH4ZV3gBg2Kwh89tzAEV2be7d5xI0vBa/VySYy3E=
 k8s.io/gengo/v2 v2.0.0-20250207200755-1244d31929d7 h1:2OX19X59HxDprNCVrWi6jb7LW1PoqTlYqEq5H2oetog=
