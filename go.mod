@@ -22,7 +22,7 @@ require (
 	github.com/zeiss/fiber-htmx v1.3.33
 	github.com/zeiss/pkg v0.1.23
 	golang.org/x/crypto v0.39.0
-	golang.org/x/mod v0.25.0
+	golang.org/x/mod v0.26.0
 	gorm.io/datatypes v1.2.6
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.30.0
@@ -31,6 +31,7 @@ require (
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/BurntSushi/toml v1.4.1-0.20240526193622-a339e1f7089c // indirect
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
