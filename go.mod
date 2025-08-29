@@ -25,7 +25,7 @@ require (
 	golang.org/x/mod v0.27.0
 	gorm.io/datatypes v1.2.6
 	gorm.io/driver/postgres v1.6.0
-	gorm.io/gorm v1.30.1
+	gorm.io/gorm v1.30.2
 	helm.sh/helm v2.17.0+incompatible
 )
 
