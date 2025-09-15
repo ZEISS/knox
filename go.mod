@@ -25,7 +25,7 @@ require (
 	golang.org/x/mod v0.28.0
 	gorm.io/datatypes v1.2.6
 	gorm.io/driver/postgres v1.6.0
-	gorm.io/gorm v1.30.5
+	gorm.io/gorm v1.31.0
 	helm.sh/helm v2.17.0+incompatible
 )
 
@@ -73,7 +73,6 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
-	github.com/mattn/go-sqlite3 v1.14.22 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/oasdiff/yaml v0.0.0-20250309154309-f31be36b4037 // indirect
