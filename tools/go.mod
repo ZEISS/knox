@@ -6,7 +6,7 @@ require (
 	github.com/golang/mock v1.7.0-rc.1
 	github.com/golangci/golangci-lint v1.64.8
 	github.com/goreleaser/goreleaser v1.26.2
-	github.com/oapi-codegen/oapi-codegen/v2 v2.5.1
+	github.com/oapi-codegen/oapi-codegen/v2 v2.6.0
 	gotest.tools/gotestsum v1.13.0
 	k8s.io/code-generator v0.35.2
 	knative.dev/pkg v0.0.0-20241112094440-47a6f9fc2e7d
