@@ -54,7 +54,7 @@ jobs:
           config: helm/cr.yaml
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: manifests
           path: /tmp/dist
