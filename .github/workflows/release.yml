@@ -35,7 +35,7 @@ jobs:
       - uses: actions/setup-go@v7
         with:
           go-version-file: ./tools/go.mod
-      - uses: docker/login-action@abd2ef45e78c5afb21d64d4ca52ee8550d9572c7
+      - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
