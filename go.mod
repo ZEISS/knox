@@ -1,6 +1,6 @@
 module github.com/zeiss/knox
 
-go 1.26
+go 1.26.0
 
 require (
 	github.com/MicahParks/keyfunc/v2 v2.1.0
@@ -19,7 +19,7 @@ require (
 	github.com/zeiss/fiber-authz v1.0.33
 	github.com/zeiss/fiber-htmx v1.3.33
 	github.com/zeiss/pkg v0.1.23
-	golang.org/x/crypto v0.55.0
+	golang.org/x/crypto v0.56.0
 	golang.org/x/mod v0.39.0
 	gorm.io/datatypes v1.2.7
 	gorm.io/driver/postgres v1.6.2
