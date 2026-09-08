@@ -1,90 +1,64 @@
-project_name: knox
-
-env:
-  - GO111MODULE=on
-  - CGO_ENABLED=0
-
+version: 2
 before:
   hooks:
     - go mod tidy
-    - go mod download
+
+env:
+  - DOCKER_IMAGE_REPO={{ envOrDefault "DOCKER_IMAGE_REPO" "builder" }}
 
 builds:
-  - id: main
-    binary: main
-    main: ./main.go
+  - id: knox
+    binary: knox
+    main: main.go
     goos:
-      - windows
-      - darwin
       - linux
+      - darwin
     goarch:
-      - 386
       - amd64
       - arm
       - arm64
+    ignore:
+      - goos: darwin
+        goarch: 386
+    env:
+      - CGO_ENABLED=0
     ldflags:
-        - -s -w
+      - -s -w -X github.com/zeiss/knox/cmd.version={{.Version}} -X github.com/zeiss/knox/cmd.commit={{.Commit}} -X github.com/zeiss/knox/cmd.date={{.Date}}
+
+dockers_v2:
+  - id: knox
+    dockerfile: Dockerfile
+    images:
+      - "{{ .Env.DOCKER_IMAGE_REPO }}/knox"
+    tags:
+      - "{{ .Version }}"
+      - latest
+    ids:
+      - knox
+    platforms:
+      - linux/amd64
+      - linux/arm64
+    labels:
+      "org.opencontainers.image.created": "{{.Date}}"
+      "org.opencontainers.image.revision": "{{.FullCommit}}"
+      "org.opencontainers.image.version": "{{.Version}}"
 
 archives:
-  - id: main
+  - id: knox
     builds:
-      - main
-    name_template: "knox_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
-
-dockers:
-  - image_templates: [
-      "ghcr.io/zeiss/{{ .ProjectName }}/knox:{{ .Version }}-amd64"
-    ]
-    dockerfile: Dockerfile
-    use: buildx
-    goos: linux
-    goarch: amd64
-    build_flag_templates:
-      - --platform=linux/amd64
-      - --label=org.opencontainers.image.title={{ .ProjectName }}
-      - --label=org.opencontainers.image.description={{ .ProjectName }}
-      - --label=org.opencontainers.image.url=https://github.com/zeiss/{{ .ProjectName }}/knox
-      - --label=org.opencontainers.image.source=https://github.com/zeiss/{{ .ProjectName }}
-      - --label=org.opencontainers.image.version={{ .Version }}
-      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
-      - --label=org.opencontainers.image.revision={{ .FullCommit }}
-      - --label=org.opencontainers.image.licenses=Apache-2.0
-  - image_templates: [
-      "ghcr.io/zeiss/{{ .ProjectName }}/knox:{{ .Version }}-arm64"
-    ]
-    dockerfile: Dockerfile
-    use: buildx
-    goos: linux
-    goarch: arm64
-    build_flag_templates:
-      - --platform=linux/arm64
-      - --label=org.opencontainers.image.title={{ .ProjectName }}
-      - --label=org.opencontainers.image.description={{ .ProjectName }}
-      - --label=org.opencontainers.image.url=https://github.com/zeiss/{{ .ProjectName }}/knox
-      - --label=org.opencontainers.image.source=https://github.com/zeiss/{{ .ProjectName }}
-      - --label=org.opencontainers.image.version={{ .Version }}
-      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
-      - --label=org.opencontainers.image.revision={{ .FullCommit }}
-      - --label=org.opencontainers.image.licenses=Apache-2.0
-
-docker_manifests:
-  - name_template: "ghcr.io/zeiss/{{ .ProjectName }}/knox:{{ .Version }}"
-    image_templates:
-      - 'ghcr.io/zeiss/{{ .ProjectName }}/knox:{{ .Version }}-amd64'
-      - 'ghcr.io/zeiss/{{ .ProjectName }}/knox:{{ .Version }}-arm64'
-
-
-gomod:
-  proxy: true
+      - knox
+    name_template: "knox_{{.Version}}_{{.Os}}_{{.Arch}}"
 
 release:
-  draft: true
+  name_template: "v{{ .Version }}"
+  header: |
+    ## {{.Version}} Release ({{ .Date }})
 
-checksum:
-  name_template: "{{ .ProjectName }}_checksums.txt"
+    Welcome to this new release :rocket:!
+  footer: |
+    ## Thanks!
 
-snapshot:
-  name_template: SNAPSHOT-{{.ShortCommit}}
+    Those were the changes on {{ .Tag }}!
 
 changelog:
   groups:
@@ -102,3 +76,6 @@ changelog:
       - "^docs:"
       - typo
       - (?i)foo
+
+checksum:
+  name_template: "knox_checksums.txt"

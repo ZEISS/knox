@@ -3,15 +3,12 @@
 name: Release
 
 on:
-  workflow_dispatch:
   push:
     tags:
       - "v*"
 
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  IMAGE_NAME: zeiss/knox
-  REGISTRY: ghcr.io
+  DOCKER_IMAGE_REPO: ghcr.io/zeiss/knox
 
 jobs:
   test:
@@ -20,42 +17,28 @@ jobs:
     uses: ./.github/workflows/main.yml
 
   release:
-    needs: [test]
     runs-on: ubuntu-latest
+    needs: [test]
     permissions:
+      contents: read
       packages: write
-      contents: write
     steps:
       - uses: actions/checkout@v7
-      - run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-      - run: |
-          echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        with:
+          fetch-depth: 0
       - uses: actions/setup-go@v7
         with:
-          go-version-file: ./tools/go.mod
-      - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f
+          go-version-file: ./go.mod
+      - uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
+      - uses: docker/login-action@v4
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - run: sudo apt-get update && sudo apt install -y libxml2-dev libxslt1-dev liblzma-dev zlib1g-dev
-      - run: |
-          make release
-      - run: |
-          go run internal/tools/updater/main.go --file helm/charts/knox/Chart.yaml --version ${{ env.RELEASE_VERSION }}
-      - uses: azure/setup-helm@v5
-        with:
-          version: v3.11.2
-      - uses: helm/chart-releaser-action@v1.7.0
-        with:
-          charts_dir: helm/charts
-          config: helm/cr.yaml
+      - run: make release
         env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      - uses: actions/upload-artifact@v7
-        with:
-          name: manifests
-          path: /tmp/dist
-          retention-days: 14
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          go tool github.com/zeiss/pkg/cmd/helm/update --file helm/Chart.yaml --version ${{ github.ref_name }}
+          go tool github.com/zeiss/pkg/cmd/helm/package --package-path tmp --path helm
+          go tool github.com/zeiss/pkg/cmd/helm/release --package-path tmp --repo ${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }}

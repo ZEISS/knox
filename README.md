@@ -47,8 +47,8 @@ There is a Helm chart available for Knox. You can find it in the [helm/charts](/
 
 Knox requires a PostgreSQL database to store the state. [CockroachDB](https://www.cockroachlabs.com/) is recommended for production use.
 
-```bash
-helm repo add knox https://zeiss.github.io/knox/helm/charts
+```sh
+helm repo add builder https://zeiss.github.io/knox
 helm repo update
 helm search repo knox
 ```
