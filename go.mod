@@ -32,7 +32,7 @@ require (
 	github.com/zeiss/fiber-authz v1.0.33
 	github.com/zeiss/pkg v0.2.4
 	golang.org/x/crypto v0.56.0
-	golang.org/x/mod v0.40.0
+	golang.org/x/mod v0.41.0
 	gorm.io/datatypes v1.2.7
 	gorm.io/driver/postgres v1.6.2
 	gorm.io/gorm v1.31.2
