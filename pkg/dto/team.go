@@ -1,11 +1,11 @@
 package dto
 
 import (
-	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/controllers"
 	"github.com/zeiss/knox/internal/models"
 	openapi "github.com/zeiss/knox/pkg/apis"
 	"github.com/zeiss/knox/pkg/utils"
+	"github.com/zeiss/pkg/dbx"
 )
 
 // FromCreateTeamRequestObject ...
@@ -64,16 +64,16 @@ func FromGetTeamsRequestObject(request openapi.GetTeamsRequestObject) controller
 }
 
 // ToGetTeamsResponseObject ...
-func ToGetTeamsResponseObject(results tables.Results[models.Team]) openapi.GetTeamsResponseObject {
+func ToGetTeamsResponseObject(results dbx.Results[models.Team]) openapi.GetTeamsResponseObject {
 	res := openapi.GetTeams200JSONResponse{}
 
-	teams := []openapi.Team{}
-	for _, team := range results.Rows {
-		teams = append(teams, openapi.Team{
+	teams := make([]openapi.Team, 0, results.GetLen())
+	for i, team := range results.Rows {
+		teams[i] = openapi.Team{
 			Id:          utils.StrPtr(team.ID.String()),
 			Name:        utils.StrPtr(team.Name),
 			Description: utils.StrPtr(team.Description),
-		})
+		}
 	}
 	res.Teams = &teams
 

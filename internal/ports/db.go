@@ -6,7 +6,7 @@ import (
 
 	"github.com/zeiss/knox/internal/models"
 
-	"github.com/zeiss/fiber-htmx/components/tables"
+	"github.com/zeiss/pkg/dbx"
 )
 
 // Migration is a method that runs the migration.
@@ -39,15 +39,15 @@ type ReadTx interface {
 	// GetLock ...
 	GetLock(context.Context, *models.Lock) error
 	// ListProjects ...
-	ListProjects(context.Context, string, *tables.Results[models.Project]) error
+	ListProjects(context.Context, string, *dbx.Results[models.Project]) error
 	// AuthenticateClient ...
 	AuthenticateClient(context.Context, string, string, string, string, string) error
 	// ListEnvironments ...
-	ListEnvironments(context.Context, string, string, *tables.Results[models.Environment]) error
+	ListEnvironments(context.Context, string, string, *dbx.Results[models.Environment]) error
 	// ListTeams ...
-	ListTeams(context.Context, *tables.Results[models.Team]) error
+	ListTeams(context.Context, *dbx.Results[models.Team]) error
 	// ListStates ...
-	ListStates(context.Context, string, string, string, *tables.Results[models.State]) error
+	ListStates(context.Context, string, string, string, *dbx.Results[models.State]) error
 }
 
 // ReadWriteTx provides methods for transactional read and write operations.

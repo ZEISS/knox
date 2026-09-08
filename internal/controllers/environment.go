@@ -3,14 +3,14 @@ package controllers
 import (
 	"context"
 
-	"github.com/go-playground/validator/v10"
-	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
+
+	"github.com/go-playground/validator/v10"
 	"github.com/zeiss/pkg/dbx"
 )
 
-// use a single instance of Validate, it caches struct info
+// use a single instance of Validate, it caches struct info.
 var validate *validator.Validate
 
 var _ ProjectController = (*ProjectControllerImpl)(nil)
@@ -65,13 +65,13 @@ type EnvironmentController interface {
 	// CreateEnvironment ...
 	CreateEnvironment(ctx context.Context, cmd CreateEnvironmentCommand) error
 	// ListEnvironments ...
-	ListEnvironments(ctx context.Context, query ListEnvironmentsQuery) (tables.Results[models.Environment], error)
+	ListEnvironments(ctx context.Context, query ListEnvironmentsQuery) (dbx.Results[models.Environment], error)
 	// GetEnvironment ...
 	GetEnvironment(ctx context.Context, query GetEnvironmentQuery) (models.Environment, error)
 	// DeleteEnvironment ...
 	DeleteEnvironment(ctx context.Context, cmd DeleteEnvironmentCommand) error
 	// ListStates ...
-	ListStates(ctx context.Context, query ListStatesQuery) (tables.Results[models.State], error)
+	ListStates(ctx context.Context, query ListStatesQuery) (dbx.Results[models.State], error)
 }
 
 // NewEnvironmentController ...
@@ -135,10 +135,10 @@ func (c *EnvironmentControllerImpl) CreateEnvironment(ctx context.Context, cmd C
 }
 
 // ListEnvironments ...
-func (c *EnvironmentControllerImpl) ListEnvironments(ctx context.Context, query ListEnvironmentsQuery) (tables.Results[models.Environment], error) {
+func (c *EnvironmentControllerImpl) ListEnvironments(ctx context.Context, query ListEnvironmentsQuery) (dbx.Results[models.Environment], error) {
 	validate = validator.New()
 
-	results := tables.Results[models.Environment]{
+	results := dbx.Results[models.Environment]{
 		Limit:  query.Limit,
 		Offset: query.Offset,
 	}
@@ -189,10 +189,10 @@ func (c *EnvironmentControllerImpl) DeleteEnvironment(ctx context.Context, cmd D
 }
 
 // ListStates ...
-func (c *EnvironmentControllerImpl) ListStates(ctx context.Context, query ListStatesQuery) (tables.Results[models.State], error) {
+func (c *EnvironmentControllerImpl) ListStates(ctx context.Context, query ListStatesQuery) (dbx.Results[models.State], error) {
 	validate = validator.New()
 
-	results := tables.Results[models.State]{}
+	results := dbx.Results[models.State]{}
 
 	err := c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
 		return tx.ListStates(ctx, query.TeamName, query.ProjectName, query.EnvironmentName, &results)

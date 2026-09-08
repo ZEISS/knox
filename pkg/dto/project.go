@@ -1,11 +1,11 @@
 package dto
 
 import (
-	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/controllers"
 	"github.com/zeiss/knox/internal/models"
 	openapi "github.com/zeiss/knox/pkg/apis"
 	"github.com/zeiss/knox/pkg/utils"
+	"github.com/zeiss/pkg/dbx"
 )
 
 // FromCreateProjectRequestObject ...
@@ -34,7 +34,7 @@ func FromGetProjectsRequestObject(req openapi.GetProjectsRequestObject) controll
 }
 
 // ToGetProjectsResponseObject ...
-func ToGetProjectsResponseObject(results tables.Results[models.Project]) openapi.GetProjects200JSONResponse {
+func ToGetProjectsResponseObject(results dbx.Results[models.Project]) openapi.GetProjects200JSONResponse {
 	res := openapi.GetProjects200JSONResponse{}
 
 	projects := make([]openapi.Project, results.GetLen())

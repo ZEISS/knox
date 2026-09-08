@@ -3,11 +3,11 @@ package controllers
 import (
 	"context"
 
-	"github.com/go-playground/validator/v10"
-	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
 	"github.com/zeiss/knox/pkg/utils"
+
+	"github.com/go-playground/validator/v10"
 	"github.com/zeiss/pkg/dbx"
 )
 
@@ -52,7 +52,7 @@ type ProjectController interface {
 	// GetProject ...
 	GetProject(ctx context.Context, cmd GetProjectQuery) (models.Project, error)
 	// ListProjects ...
-	ListProjects(ctx context.Context, cmd ListProjectsQuery) (tables.Results[models.Project], error)
+	ListProjects(ctx context.Context, cmd ListProjectsQuery) (dbx.Results[models.Project], error)
 	// DeleteProject ...
 	DeleteProject(ctx context.Context, cmd DeleteProjectCommand) error
 }
@@ -110,8 +110,8 @@ func (c *ProjectControllerImpl) GetProject(ctx context.Context, cmd GetProjectQu
 }
 
 // ListProjects ...
-func (c *ProjectControllerImpl) ListProjects(ctx context.Context, cmd ListProjectsQuery) (tables.Results[models.Project], error) {
-	teams := tables.Results[models.Project]{
+func (c *ProjectControllerImpl) ListProjects(ctx context.Context, cmd ListProjectsQuery) (dbx.Results[models.Project], error) {
+	teams := dbx.Results[models.Project]{
 		Limit:  cmd.Limit,
 		Offset: cmd.Offset,
 		Sort:   cmd.Sort,

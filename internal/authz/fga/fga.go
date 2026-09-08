@@ -121,7 +121,8 @@ func NoopResolver() AuthzResolverFunc {
 type AuthzResolverFunc func(ctx *fiber.Ctx) (User, Relation, Object, error)
 
 // NewAuthz returns a new authz middleware.
-// nolint:contextcheck
+//
+//nolint:contextcheck
 func NewAuthz(config ...Config) openapi.StrictMiddlewareFunc {
 	cfg := configDefault(config...)
 
@@ -155,7 +156,7 @@ func NewAuthz(config ...Config) openapi.StrictMiddlewareFunc {
 	}
 }
 
-// Helper function to set default values
+// Helper function to set default values.
 func configDefault(config ...Config) Config {
 	if len(config) < 1 {
 		return DefaultConfig

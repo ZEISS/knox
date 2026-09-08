@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 
-	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
-	authx "github.com/zeiss/pkg/authx/fga"
+
 	"github.com/zeiss/pkg/dbx"
+	"github.com/zeiss/pkg/fga"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -38,7 +38,7 @@ func (r *readTxImpl) GetProject(ctx context.Context, project *models.Project) er
 }
 
 // GetEnvironment ...
-func (r *readTxImpl) GetEnvironment(ctx context.Context, teamName string, projectName string, environment *models.Environment) error {
+func (r *readTxImpl) GetEnvironment(ctx context.Context, teamName, projectName string, environment *models.Environment) error {
 	return r.conn.
 		Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projectName).Where("owner_id = (?)", r.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).Select("id")).
 		Where(environment).
@@ -56,22 +56,22 @@ func (r *readTxImpl) GetState(ctx context.Context, state *models.State) error {
 }
 
 // ListProjects ...
-func (r *readTxImpl) ListProjects(ctx context.Context, teamName string, results *tables.Results[models.Project]) error {
-	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).
+func (r *readTxImpl) ListProjects(ctx context.Context, teamName string, results *dbx.Results[models.Project]) error {
+	return r.conn.Scopes(dbx.PaginatedResults(&results.Rows, results, r.conn)).
 		Where("owner_id = (?)", r.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).
 		Find(&results.Rows).Error
 }
 
 // ListEnvironments ...
-func (r *readTxImpl) ListEnvironments(ctx context.Context, teamName, projetName string, results *tables.Results[models.Environment]) error {
-	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).
+func (r *readTxImpl) ListEnvironments(ctx context.Context, teamName, projetName string, results *dbx.Results[models.Environment]) error {
+	return r.conn.Scopes(dbx.PaginatedResults(&results.Rows, results, r.conn)).
 		Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projetName).Where("owner_id = (?)", r.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).Select("id")).
 		Find(&results.Rows).Error
 }
 
 // ListTeams ...
-func (r *readTxImpl) ListTeams(ctx context.Context, results *tables.Results[models.Team]) error {
-	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).Find(&results.Rows).Error
+func (r *readTxImpl) ListTeams(ctx context.Context, results *dbx.Results[models.Team]) error {
+	return r.conn.Scopes(dbx.PaginatedResults(&results.Rows, results, r.conn)).Find(&results.Rows).Error
 }
 
 // AuthenticateClient ...
@@ -94,20 +94,20 @@ func (r *readTxImpl) AuthenticateClient(ctx context.Context, teamId, projectId, 
 }
 
 // ListStates ...
-func (r *readTxImpl) ListStates(ctx context.Context, teamName, projectName, environmentName string, results *tables.Results[models.State]) error {
-	return r.conn.Scopes(tables.PaginatedResults(&results.Rows, results, r.conn)).
+func (r *readTxImpl) ListStates(ctx context.Context, teamName, projectName, environmentName string, results *dbx.Results[models.State]) error {
+	return r.conn.Scopes(dbx.PaginatedResults(&results.Rows, results, r.conn)).
 		Where("environment_id = (?)", r.conn.Model(&models.Environment{}).Where("name = ?", environmentName).Where("project_id = (?)", r.conn.Model(&models.Project{}).Where("name = ?", projectName).Where("owner_id = (?)", r.conn.Model(&models.Team{}).Where("name = ?", teamName).Select("id")).Select("id")).Select("id")).
 		Find(&results.Rows).Error
 }
 
 type writeTxImpl struct {
 	conn *gorm.DB
-	auth authx.Store[ports.AuthzWriteTx]
+	auth fga.Store[ports.AuthzWriteTx]
 	readTxImpl
 }
 
 // NewWriteTx ...
-func NewWriteTx(auth authx.Store[ports.AuthzWriteTx]) dbx.ReadWriteTxFactory[ports.ReadWriteTx] {
+func NewWriteTx(auth fga.Store[ports.AuthzWriteTx]) dbx.ReadWriteTxFactory[ports.ReadWriteTx] {
 	return func(db *gorm.DB) (ports.ReadWriteTx, error) {
 		return &writeTxImpl{conn: db, auth: auth}, nil
 	}

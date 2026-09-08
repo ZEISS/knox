@@ -24,8 +24,8 @@ import (
 	"github.com/zeiss/fiber-authz/oas"
 	"github.com/zeiss/fiber-authz/oas/oidc"
 	ofga "github.com/zeiss/fiber-authz/openfga"
-	authx "github.com/zeiss/pkg/authx/fga"
 	"github.com/zeiss/pkg/dbx"
+	"github.com/zeiss/pkg/fga"
 	"github.com/zeiss/pkg/server"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -102,7 +102,7 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 			return err
 		}
 
-		authzStore, err := authx.NewStore(fgaClient, authz.NewWriteTx())
+		authzStore, err := fga.NewStore(fgaClient, authz.NewWriteTx())
 		if err != nil {
 			return err
 		}
@@ -132,7 +132,6 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 		}
 
 		validatorOptions := &middleware.Options{}
-		// validatorOptions.Options.AuthenticationFunc = auth.NewAuthenticator(auth.WithBasicAuthenticator(auth.NewBasicAuthenticator(store)))
 		validatorOptions.Options.AuthenticationFunc = ofga.Authenticate(
 			oas.Authenticate(
 				oas.WithBearerSchema(oidc.Authenticate(validator)),

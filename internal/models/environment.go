@@ -34,7 +34,7 @@ type Environment struct {
 	DeletedAt gorm.DeletedAt `json:"deleted_at"`
 }
 
-// HashPassword substitutes User.Password with its bcrypt hash
+// HashPassword substitutes User.Password with its bcrypt hash.
 func (e *Environment) HashPassword() error {
 	hash, err := bcrypt.GenerateFromPassword([]byte(e.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -46,12 +46,12 @@ func (e *Environment) HashPassword() error {
 	return nil
 }
 
-// ComparePassword compares User.Password hash with raw password
+// ComparePassword compares User.Password hash with raw password.
 func (e *Environment) ComparePassword(password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(e.Password), []byte(password))
 }
 
-// BeforeCreate gorm hook
+// BeforeCreate gorm hook.
 func (e *Environment) BeforeCreate(db *gorm.DB) (err error) {
 	return e.HashPassword()
 }

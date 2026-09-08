@@ -2,7 +2,6 @@ package authn
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/MicahParks/keyfunc/v2"
 	"github.com/getkin/kin-openapi/openapi3filter"
@@ -104,13 +103,11 @@ func Authenticate2(fn ...openapi3filter.AuthenticationFunc) openapi3filter.Authe
 			}
 		}
 
-		fmt.Println("Authenticated")
-
 		return nil
 	}
 }
 
-// Authenticate returns a nil error and the AuthClaims info (if available) if the subject is authenticated or a
+// Authenticate returns a nil error and the AuthClaims info (if available) if the subject is authenticated or a.
 func Authenticate(opts ...AuthenticatorOpt) openapi3filter.AuthenticationFunc {
 	options := DefaultAuthenticatorOpts()
 	options.Configure(opts...)

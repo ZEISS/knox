@@ -1,11 +1,12 @@
 package dto
 
 import (
-	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/controllers"
 	"github.com/zeiss/knox/internal/models"
 	openapi "github.com/zeiss/knox/pkg/apis"
+
 	"github.com/zeiss/knox/pkg/utils"
+	"github.com/zeiss/pkg/dbx"
 )
 
 // FromCreateEnvironmentRequestObject ...
@@ -37,7 +38,7 @@ func FromGetEnvironmentsRequestObject(req openapi.GetEnvironmentsRequestObject) 
 }
 
 // ToGetEnvironmentsResponseObject ...
-func ToGetEnvironmentsResponseObject(results tables.Results[models.Environment]) openapi.GetEnvironments200JSONResponse {
+func ToGetEnvironmentsResponseObject(results dbx.Results[models.Environment]) openapi.GetEnvironments200JSONResponse {
 	res := openapi.GetEnvironments200JSONResponse{}
 
 	environments := make([]openapi.Environment, results.GetLen())
@@ -101,7 +102,7 @@ func FromGetStatesRequestObject(req openapi.GetStatesRequestObject) controllers.
 }
 
 // ToGetStatesResponseObject ...
-func ToGetStatesResponseObject(results tables.Results[models.State]) openapi.GetStates200JSONResponse {
+func ToGetStatesResponseObject(results dbx.Results[models.State]) openapi.GetStates200JSONResponse {
 	res := openapi.GetStates200JSONResponse{}
 
 	states := make([]openapi.State, results.GetLen())

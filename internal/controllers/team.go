@@ -3,12 +3,11 @@ package controllers
 import (
 	"context"
 
-	"github.com/zeiss/fiber-htmx/components/tables"
 	"github.com/zeiss/knox/internal/models"
 	"github.com/zeiss/knox/internal/ports"
-	"github.com/zeiss/pkg/dbx"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/zeiss/pkg/dbx"
 )
 
 var _ TeamController = (*TeamControllerImpl)(nil)
@@ -50,7 +49,7 @@ type TeamController interface {
 	// DeleteTeam deletes a team.
 	DeleteTeam(ctx context.Context, cmd DeleteTeamCommand) error
 	// ListTeams lists teams.
-	ListTeams(ctx context.Context, query ListTeamsQuery) (tables.Results[models.Team], error)
+	ListTeams(ctx context.Context, query ListTeamsQuery) (dbx.Results[models.Team], error)
 }
 
 // TeamControllerImpl is the controller for teams.
@@ -103,8 +102,8 @@ func (c *TeamControllerImpl) DeleteTeam(ctx context.Context, cmd DeleteTeamComma
 }
 
 // ListTeams lists teams.
-func (c *TeamControllerImpl) ListTeams(ctx context.Context, query ListTeamsQuery) (tables.Results[models.Team], error) {
-	teams := tables.Results[models.Team]{}
+func (c *TeamControllerImpl) ListTeams(ctx context.Context, query ListTeamsQuery) (dbx.Results[models.Team], error) {
+	teams := dbx.Results[models.Team]{}
 
 	err := c.store.ReadTx(ctx, func(ctx context.Context, tx ports.ReadTx) error {
 		return tx.ListTeams(ctx, &teams)

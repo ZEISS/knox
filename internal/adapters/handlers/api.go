@@ -28,19 +28,19 @@ func NewAPIHandlers(locks controllers.LocksController, state controllers.StateCo
 }
 
 // Get system health status
-// (GET /_health)
+// (GET /_health).
 func (h *apiHandlers) GetHealth(ctx context.Context, request openapi.GetHealthRequestObject) (openapi.GetHealthResponseObject, error) {
 	return openapi.GetHealth200JSONResponse{}, nil // this is just up
 }
 
 // Get system readiness
-// (GET /_ready)
+// (GET /_ready).
 func (h *apiHandlers) GetReady(ctx context.Context, request openapi.GetReadyRequestObject) (openapi.GetReadyResponseObject, error) {
 	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Get a list of projects
-// (GET /project)
+// (GET /project).
 func (h *apiHandlers) GetProjects(ctx context.Context, request openapi.GetProjectsRequestObject) (openapi.GetProjectsResponseObject, error) {
 	query := dto.FromGetProjectsRequestObject(request)
 
@@ -53,7 +53,7 @@ func (h *apiHandlers) GetProjects(ctx context.Context, request openapi.GetProjec
 }
 
 // Create a new project
-// (POST /project)
+// (POST /project).
 func (h *apiHandlers) CreateProject(ctx context.Context, request openapi.CreateProjectRequestObject) (openapi.CreateProjectResponseObject, error) {
 	cmd := dto.FromCreateProjectRequestObject(request)
 
@@ -66,7 +66,7 @@ func (h *apiHandlers) CreateProject(ctx context.Context, request openapi.CreateP
 }
 
 // Delete a project
-// (DELETE /project/{id})
+// (DELETE /project/{id}).
 func (h *apiHandlers) DeleteProject(ctx context.Context, request openapi.DeleteProjectRequestObject) (openapi.DeleteProjectResponseObject, error) {
 	cmd := dto.FromDeleteProjectRequestObject(request)
 
@@ -79,7 +79,7 @@ func (h *apiHandlers) DeleteProject(ctx context.Context, request openapi.DeleteP
 }
 
 // Get a project
-// (GET /project/{id})
+// (GET /project/{id}).
 func (h *apiHandlers) GetProject(ctx context.Context, request openapi.GetProjectRequestObject) (openapi.GetProjectResponseObject, error) {
 	query := dto.FromGetProjectRequestObject(request)
 
@@ -92,13 +92,13 @@ func (h *apiHandlers) GetProject(ctx context.Context, request openapi.GetProject
 }
 
 // Update a project
-// (PUT /project/{id})
+// (PUT /project/{id}).
 func (h *apiHandlers) UpdateProject(ctx context.Context, request openapi.UpdateProjectRequestObject) (openapi.UpdateProjectResponseObject, error) {
 	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Get a list of environments
-// (GET /project/{projectId}/environment)
+// (GET /project/{projectId}/environment).
 func (h *apiHandlers) GetEnvironments(ctx context.Context, request openapi.GetEnvironmentsRequestObject) (openapi.GetEnvironmentsResponseObject, error) {
 	query := dto.FromGetEnvironmentsRequestObject(request)
 
@@ -111,7 +111,7 @@ func (h *apiHandlers) GetEnvironments(ctx context.Context, request openapi.GetEn
 }
 
 // Create a new environment
-// (POST /project/{projectId}/environment)
+// (POST /project/{projectId}/environment).
 func (h *apiHandlers) CreateEnvironment(ctx context.Context, request openapi.CreateEnvironmentRequestObject) (openapi.CreateEnvironmentResponseObject, error) {
 	cmd := dto.FromCreateEnvironmentRequestObject(request)
 
@@ -124,7 +124,7 @@ func (h *apiHandlers) CreateEnvironment(ctx context.Context, request openapi.Cre
 }
 
 // Delete an environment
-// (DELETE /project/{projectId}/environment/{environmentId})
+// (DELETE /project/{projectId}/environment/{environmentId}).
 func (h *apiHandlers) DeleteEnvironment(ctx context.Context, request openapi.DeleteEnvironmentRequestObject) (openapi.DeleteEnvironmentResponseObject, error) {
 	cmd := dto.FromDeleteEnvironmentRequestObject(request)
 
@@ -137,7 +137,7 @@ func (h *apiHandlers) DeleteEnvironment(ctx context.Context, request openapi.Del
 }
 
 // Get an environment
-// (GET /project/{projectId}/environment/{environmentId})
+// (GET /project/{projectId}/environment/{environmentId}).
 func (h *apiHandlers) GetEnvironment(ctx context.Context, request openapi.GetEnvironmentRequestObject) (openapi.GetEnvironmentResponseObject, error) {
 	query := dto.FromGetEnvironmentRequestObject(request)
 
@@ -150,25 +150,25 @@ func (h *apiHandlers) GetEnvironment(ctx context.Context, request openapi.GetEnv
 }
 
 // Update an environment
-// (PUT /project/{projectId}/environment/{environmentId})
+// (PUT /project/{projectId}/environment/{environmentId}).
 func (h *apiHandlers) UpdateEnvironment(ctx context.Context, request openapi.UpdateEnvironmentRequestObject) (openapi.UpdateEnvironmentResponseObject, error) {
 	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Get a list of snapshots
-// (GET /snapshot)
+// (GET /snapshot).
 func (h *apiHandlers) GetSnapshots(ctx context.Context, request openapi.GetSnapshotsRequestObject) (openapi.GetSnapshotsResponseObject, error) {
 	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Delete a snapshot
-// (DELETE /snapshot/{id})
+// (DELETE /snapshot/{id}).
 func (h *apiHandlers) DeleteSnapshot(ctx context.Context, request openapi.DeleteSnapshotRequestObject) (openapi.DeleteSnapshotResponseObject, error) {
 	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Get a snapshot
-// (GET /snapshot/{id})
+// (GET /snapshot/{id}).
 func (h *apiHandlers) GetSnapshot(ctx context.Context, request openapi.GetSnapshotRequestObject) (openapi.GetSnapshotResponseObject, error) {
 	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
@@ -176,7 +176,7 @@ func (h *apiHandlers) GetSnapshot(ctx context.Context, request openapi.GetSnapsh
 // Update a snapshot
 
 // Get a list of teams
-// (GET /team)
+// (GET /team).
 func (h *apiHandlers) GetTeams(ctx context.Context, request openapi.GetTeamsRequestObject) (openapi.GetTeamsResponseObject, error) {
 	cmd := dto.FromGetTeamsRequestObject(request)
 
@@ -189,7 +189,7 @@ func (h *apiHandlers) GetTeams(ctx context.Context, request openapi.GetTeamsRequ
 }
 
 // Create a new team
-// (POST /team)
+// (POST /team).
 func (h *apiHandlers) CreateTeam(ctx context.Context, request openapi.CreateTeamRequestObject) (openapi.CreateTeamResponseObject, error) {
 	cmd := dto.FromCreateTeamRequestObject(request)
 
@@ -202,7 +202,7 @@ func (h *apiHandlers) CreateTeam(ctx context.Context, request openapi.CreateTeam
 }
 
 // Delete a team
-// (DELETE /team/{id})
+// (DELETE /team/{id}).
 func (h *apiHandlers) DeleteTeam(ctx context.Context, request openapi.DeleteTeamRequestObject) (openapi.DeleteTeamResponseObject, error) {
 	cmd := dto.FromDeleteTeamRequestObject(request)
 
@@ -215,7 +215,7 @@ func (h *apiHandlers) DeleteTeam(ctx context.Context, request openapi.DeleteTeam
 }
 
 // Get a team
-// (GET /team/{id})
+// (GET /team/{id}).
 func (h *apiHandlers) GetTeam(ctx context.Context, request openapi.GetTeamRequestObject) (openapi.GetTeamResponseObject, error) {
 	query := dto.FromGetTeamRequestObject(request)
 
@@ -228,13 +228,13 @@ func (h *apiHandlers) GetTeam(ctx context.Context, request openapi.GetTeamReques
 }
 
 // Update a team
-// (PUT /team/{id})
+// (PUT /team/{id}).
 func (h *apiHandlers) UpdateTeam(ctx context.Context, request openapi.UpdateTeamRequestObject) (openapi.UpdateTeamResponseObject, error) {
 	return nil, fiber.NewError(fiber.StatusNotImplemented, "not implemented")
 }
 
 // Create a new snapshot
-// (POST /snapshot)
+// (POST /snapshot).
 func (a *apiHandlers) CreateSnapshot(ctx context.Context, request openapi.CreateSnapshotRequestObject) (openapi.CreateSnapshotResponseObject, error) {
 	cmd := dto.FromCreateSnapshotRequestObject(request)
 
@@ -247,7 +247,7 @@ func (a *apiHandlers) CreateSnapshot(ctx context.Context, request openapi.Create
 }
 
 // Lock the state of Terraform environment
-// (POST /client/{teamId}/{projectId}/{environmentId}/lock)
+// (POST /client/{teamId}/{projectId}/{environmentId}/lock).
 func (a *apiHandlers) LockEnvironment(ctx context.Context, request openapi.LockEnvironmentRequestObject) (openapi.LockEnvironmentResponseObject, error) {
 	cmd := dto.FromLockEnvironmentRequestObject(request)
 
@@ -260,7 +260,7 @@ func (a *apiHandlers) LockEnvironment(ctx context.Context, request openapi.LockE
 }
 
 // Get the state of Terraform environment
-// (GET /client/{teamId}/{projectId}/{environmentId}/state)
+// (GET /client/{teamId}/{projectId}/{environmentId}/state).
 func (a *apiHandlers) GetEnvironmentState(ctx context.Context, request openapi.GetEnvironmentStateRequestObject) (openapi.GetEnvironmentStateResponseObject, error) {
 	query := dto.FromGetEnvironmentStateRequestObject(request)
 
@@ -277,7 +277,7 @@ func (a *apiHandlers) GetEnvironmentState(ctx context.Context, request openapi.G
 }
 
 // Update the state of Terraform environment
-// (POST /client/{teamId}/{projectId}/{environmentId}/state)
+// (POST /client/{teamId}/{projectId}/{environmentId}/state).
 func (a *apiHandlers) UpdateEnvironmentState(ctx context.Context, request openapi.UpdateEnvironmentStateRequestObject) (openapi.UpdateEnvironmentStateResponseObject, error) {
 	cmd := dto.FromUpdateEnvironmentStateRequestObject(request)
 
@@ -290,7 +290,7 @@ func (a *apiHandlers) UpdateEnvironmentState(ctx context.Context, request openap
 }
 
 // Unlock the state of Terraform environment
-// (POST /client/{teamId}/{projectId}/{environmentId}/unlock)
+// (POST /client/{teamId}/{projectId}/{environmentId}/unlock).
 func (a *apiHandlers) UnlockEnvironment(ctx context.Context, request openapi.UnlockEnvironmentRequestObject) (openapi.UnlockEnvironmentResponseObject, error) {
 	cmd := dto.FromUnlockEnvironmentRequestObject(request)
 
@@ -303,7 +303,7 @@ func (a *apiHandlers) UnlockEnvironment(ctx context.Context, request openapi.Unl
 }
 
 // Get the state of Terraform environment
-// (GET /teams/{teamName}/projects/{projectName}/environments/{environmentName}/states)
+// (GET /teams/{teamName}/projects/{projectName}/environments/{environmentName}/states).
 func (a *apiHandlers) GetStates(ctx context.Context, request openapi.GetStatesRequestObject) (openapi.GetStatesResponseObject, error) {
 	query := dto.FromGetStatesRequestObject(request)
 
