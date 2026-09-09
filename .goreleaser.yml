@@ -50,6 +50,7 @@ archives:
     name_template: "knox_{{.Version}}_{{.Os}}_{{.Arch}}"
 
 release:
+  draft: false
   name_template: "v{{ .Version }}"
   header: |
     ## {{.Version}} Release ({{ .Date }})
