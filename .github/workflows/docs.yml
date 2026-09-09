@@ -1,32 +1,57 @@
-# .github/workflows/docs.yml
-
-name: Build docs
+name: Docs & Charts
 
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_call:
   workflow_dispatch:
+  release:
+    types: [published]
+  push:
+    branches:
+      - "main"
+    paths:
+      - "www/**/*"
+      - ".github/workflows/docs.yml"
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          submodules: true
-          fetch-depth: 0
-      - uses: actions/setup-node@v7
-      - run: |
-          make docs
-      - uses: peaceiris/actions-gh-pages@v4
+          go-version-file: www/go.mod
+      - uses: peaceiris/actions-hugo@2752ce1d29631191ea3f27c23495fa06139a5b78 # v3
         with:
-          keep_files: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          hugo-version: "latest"
+          extended: true
+      - run: hugo --minify
+        working-directory: ./www/
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+      - run: go tool github.com/zeiss/pkg/cmd/helm/index --repo ${{ github.repository }} --index www/public/index.yaml
+      - uses: actions/upload-pages-artifact@v5
+        id: deployment
+        with:
+          path: ./www/public
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

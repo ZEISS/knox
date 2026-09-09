@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/go,intellij,webstorm,terraform
-# Edit at https://www.toptal.com/developers/gitignore?templates=go,intellij,webstorm,terraform
+# Created by https://www.toptal.com/developers/gitignore/api/go,intellij,webstorm,terraform,hugo
+# Edit at https://www.toptal.com/developers/gitignore?templates=go,intellij,webstorm,terraform,hugo
 
 ### Go ###
 # If you prefer the allow list template instead of the deny list, see community template:
@@ -17,15 +17,27 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
-.env
-.tmp
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
-tmp
 
 # Go workspace file
 go.work
+
+### Hugo ###
+# Generated files by hugo
+/public/
+/resources/_gen/
+/assets/jsconfig.json
+hugo_stats.json
+
+# Executable may be added to repository
+hugo.exe
+hugo.darwin
+hugo.linux
+
+# Temporary lock file while building
+/.hugo_build.lock
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
@@ -251,4 +263,4 @@ terraform.rc
 # Azure Toolkit for IntelliJ plugin
 # https://plugins.jetbrains.com/plugin/8053-azure-toolkit-for-intellij
 
-# End of https://www.toptal.com/developers/gitignore/api/go,intellij,webstorm,terraform
+# End of https://www.toptal.com/developers/gitignore/api/go,intellij,webstorm,terraform,hu

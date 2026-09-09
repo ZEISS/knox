@@ -1,0 +1,93 @@
+languageCode: "en-us"
+title: "Knox"
+
+module:
+  imports:
+    - path: github.com/imfing/hextra
+  mounts:
+    - source: static
+      target: static
+      # NOTE: this keeps compat with previous /static/* URLs
+    - source: static
+      target: static/static
+
+enableRobotsTXT: true
+enableGitInfo: true
+enableEmoji: true
+enableInlineShortcodes: true
+relativeURLs: true
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+    extensions:
+      footnote: true
+      taskList: true
+  highlight:
+    noClasses: false
+
+menu:
+  main:
+    - name: Search
+      weight: 70
+      params:
+        type: search
+    - name: GitHub
+      weight: 80
+      url: "https://github.com/zeiss/knox"
+      params:
+        icon: github
+
+params:
+  externalLinkDecoration: true
+  description: "Knox is a simple and secure Terraform backend."
+  highlight:
+    copy:
+      enable: true
+      # hover | always
+      display: hover
+  imageZoom:
+    enable: true
+  navbar:
+    displayTitle: true
+  theme:
+    default: system
+    displayToggle: true
+  footer:
+    displayCopyright: true
+    displayPoweredBy: false
+    width: normal
+  displayUpdatedDate: true
+  dateFormat: "January 2, 2006"
+  search:
+    enable: true
+    type: flexsearch
+    maxResults: 10
+  toc:
+    displayTags: true
+  editPage:
+    enable: true
+    base: "https://github.com/zeiss/knox/edit/main/www/content"
+
+permalinks:
+  page:
+    blog: /blog/:slug
+
+outputs:
+  home: [html, llms, markdown]
+  section:
+    - html
+    - markdown
+  page:
+    - html
+    - markdown
+  taxonomy:
+    - html
+  term:
+    - html
+
+outputFormats:
+  rss:
+    mediaType: "application/rss+xml"
+    baseName: "feed"
