@@ -41,11 +41,11 @@ terraform {
 
 ## Helm Chart
 
-There is a Helm chart available for Knox. You can find it in the [helm/charts](/helm/charts) directory.
+There is a Helm chart available for Knox. You can find it in the [helm](/helm) directory.
 
 :warning: **Please note that the Helm chart is still in development and should not be used in production.**
 
-Knox requires a PostgreSQL database to store the state. [CockroachDB](https://www.cockroachlabs.com/) is recommended for production use.
+Knox requires a PostgreSQL database to store the state.
 
 ```sh
 helm repo add builder https://zeiss.github.io/knox
