@@ -112,7 +112,7 @@ func (s *WebSrv) Start(ctx context.Context, ready server.ReadyFunc, run server.R
 			return err
 		}
 
-		swagger, err := openapi.GetSwagger()
+		swagger, err := openapi.GetSpec()
 		if err != nil {
 			return err
 		}
