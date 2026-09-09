@@ -11,7 +11,7 @@ info:
     There is an available Helm chart for Knox.
 
     ```shell
-    helm repo add knox https://zeiss.github.io/knox/helm/charts
+    helm repo add builder https://zeiss.github.io/knox
     helm repo update
     helm search repo knox
     ```
