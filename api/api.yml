@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.0/schema.json
+# yaml-language-server: $schema=https://spec.openapis.org/oas/3.0/schema/2021-09-28
 
 openapi: 3.0.1
 
@@ -1050,14 +1050,12 @@ components:
       required: false
       schema:
         type: integer
-      default: 0
     limit:
       name: limit
       in: query
       required: false
       schema:
         type: integer
-      default: 10
 
   schemas:
     LockInfo:
