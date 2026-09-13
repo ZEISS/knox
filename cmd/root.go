@@ -34,7 +34,10 @@ import (
 var config *cfg.Config
 
 func init() {
-	cobra.OnInitialize(initConfig)
+	config = cfg.New()
+
+	err := envconfig.Process("", config.Flags)
+	cobra.CheckErr(err)
 
 	Root.AddCommand(Migrate)
 
@@ -48,13 +51,6 @@ func init() {
 	Root.PersistentFlags().StringVar(&config.Flags.OIDCAudience, "oidc-audience", config.Flags.OIDCAudience, "OIDC Audience")
 
 	Root.SilenceUsage = true
-}
-
-func initConfig() {
-	config = cfg.New()
-
-	err := envconfig.Process("", config.Flags)
-	cobra.CheckErr(err)
 }
 
 var Root = &cobra.Command{
