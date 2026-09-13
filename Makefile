@@ -1,11 +1,11 @@
 .DEFAULT_GOAL := build
 
 # Go variables
-GO 							?= go
+GO 					?= go
+GO_TOOL 			?= $(GO) tool
 GO_RELEASER 		?= $(GO_TOOL) github.com/goreleaser/goreleaser/v2
-GO_LINT 				?= $(GO_TOOL) github.com/golangci/golangci-lint/v2/cmd/golangci-lint
-GO_TOOL 				?= $(GO) tool
-GO_TEST 				?= $(GO_TOOL) gotest.tools/gotestsum --format pkgname
+GO_LINT 			?= $(GO_TOOL) github.com/golangci/golangci-lint/v2/cmd/golangci-lint
+GO_TEST 			?= $(GO_TOOL) gotest.tools/gotestsum --format pkgname
 
 .PHONY: build
 build: ## Build the binary file.

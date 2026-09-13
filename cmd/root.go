@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"log"
 
 	"github.com/zeiss/knox/internal/adapters/authz"
 	"github.com/zeiss/knox/internal/adapters/database"
@@ -35,12 +34,7 @@ import (
 var config *cfg.Config
 
 func init() {
-	config = cfg.New()
-
-	err := envconfig.Process("", config.Flags)
-	if err != nil {
-		log.Fatal(err)
-	}
+	cobra.OnInitialize(initConfig)
 
 	Root.AddCommand(Migrate)
 
@@ -54,6 +48,13 @@ func init() {
 	Root.PersistentFlags().StringVar(&config.Flags.OIDCAudience, "oidc-audience", config.Flags.OIDCAudience, "OIDC Audience")
 
 	Root.SilenceUsage = true
+}
+
+func initConfig() {
+	config = cfg.New()
+
+	err := envconfig.Process("", config.Flags)
+	cobra.CheckErr(err)
 }
 
 var Root = &cobra.Command{
