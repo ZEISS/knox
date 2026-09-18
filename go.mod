@@ -35,7 +35,7 @@ require (
 	github.com/zeiss/pkg v0.2.4
 	golang.org/x/crypto v0.57.0
 	gorm.io/datatypes v1.2.7
-	gorm.io/driver/postgres v1.6.2
+	gorm.io/driver/postgres v1.6.3
 	gorm.io/gorm v1.31.2
 )
 
