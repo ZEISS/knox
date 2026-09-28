@@ -29,7 +29,7 @@ require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/oapi-codegen/fiber-middleware v1.1.0
 	github.com/oapi-codegen/runtime v1.7.0
-	github.com/openfga/go-sdk v0.8.2
+	github.com/openfga/go-sdk v0.8.3
 	github.com/spf13/cobra v1.10.2
 	github.com/zeiss/fiber-authz v1.0.33
 	github.com/zeiss/pkg v0.2.4
@@ -564,11 +564,11 @@ require (
 	go.opentelemetry.io/contrib/detectors/gcp v1.44.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.68.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.69.0 // indirect
-	go.opentelemetry.io/otel v1.45.0 // indirect
-	go.opentelemetry.io/otel/metric v1.45.0 // indirect
+	go.opentelemetry.io/otel v1.46.0 // indirect
+	go.opentelemetry.io/otel/metric v1.46.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.45.0 // indirect
 	go.opentelemetry.io/otel/sdk/metric v1.45.0 // indirect
-	go.opentelemetry.io/otel/trace v1.45.0 // indirect
+	go.opentelemetry.io/otel/trace v1.46.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.28.0 // indirect
