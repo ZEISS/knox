@@ -20,14 +20,14 @@ replace github.com/vmware-labs/yaml-jsonpath => github.com/hazzik/yaml-jsonpath 
 
 require (
 	github.com/MicahParks/keyfunc/v2 v2.1.0
-	github.com/getkin/kin-openapi v0.151.0
+	github.com/getkin/kin-openapi v0.152.0
 	github.com/go-playground/validator/v10 v10.30.5
 	github.com/gofiber/fiber/v2 v2.52.15
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/google/uuid v1.6.0
 	github.com/hashicorp/go-retryablehttp v0.7.8
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/oapi-codegen/fiber-middleware v1.1.0
+	github.com/oapi-codegen/fiber-middleware v1.2.0
 	github.com/oapi-codegen/runtime v1.7.0
 	github.com/openfga/go-sdk v0.8.3
 	github.com/spf13/cobra v1.10.2
