@@ -1074,8 +1074,8 @@ github.com/nishanths/predeclared v0.2.2 h1:V2EPdZPliZymNAn79T8RkNApBjMmVKh5XRpLm
 github.com/nishanths/predeclared v0.2.2/go.mod h1:RROzoN6TnGQupbC+lqggsOlcgysk3LMK/HI84Mp280c=
 github.com/nunnatsa/ginkgolinter v0.24.0 h1:Mp0EagluLFP98JatP6nqp/gGEoljNG97uf9AcxcBVy8=
 github.com/nunnatsa/ginkgolinter v0.24.0/go.mod h1:2ZMRuzX6+3XXyY6UZOwb6n+MCocVGbkIsDBC4vuWz5c=
-github.com/oapi-codegen/fiber-middleware v1.2.0 h1:XDQKiCBILLrio/ECd9ZFJIXpTTI4KCgZCVxHeWR/luw=
-github.com/oapi-codegen/fiber-middleware v1.2.0/go.mod h1:qPtpgUKRllv3f2TY+/Of1ja3HHndIJ61z/yHa0bs1vU=
+github.com/oapi-codegen/fiber-middleware v1.3.0 h1:G4MYCuCbe9Qg1WFgYRH99++d7juYzt84VezyBaisXqY=
+github.com/oapi-codegen/fiber-middleware v1.3.0/go.mod h1:qPtpgUKRllv3f2TY+/Of1ja3HHndIJ61z/yHa0bs1vU=
 github.com/oapi-codegen/nullable v1.1.0 h1:eAh8JVc5430VtYVnq00Hrbpag9PFRGWLjxR1/3KntMs=
 github.com/oapi-codegen/nullable v1.1.0/go.mod h1:KUZ3vUzkmEKY90ksAmit2+5juDIhIZhfDl+0PwOQlFY=
 github.com/oapi-codegen/oapi-codegen/v2 v2.8.0 h1:s4hxMxuqtR8jPzXkBTtFwY/SBuj3gEAYikmbBSdtLMM=
