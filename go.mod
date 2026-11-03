@@ -21,7 +21,7 @@ replace github.com/vmware-labs/yaml-jsonpath => github.com/hazzik/yaml-jsonpath 
 require (
 	github.com/MicahParks/keyfunc/v2 v2.1.0
 	github.com/getkin/kin-openapi v0.152.0
-	github.com/go-playground/validator/v10 v10.30.5
+	github.com/go-playground/validator/v10 v10.30.6
 	github.com/gofiber/fiber/v2 v2.52.16
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/google/uuid v1.6.0
@@ -232,7 +232,7 @@ require (
 	github.com/fsnotify/fsnotify v1.10.1 // indirect
 	github.com/fxamacker/cbor/v2 v2.9.2 // indirect
 	github.com/fzipp/gocyclo v0.6.0 // indirect
-	github.com/gabriel-vasile/mimetype v1.4.15 // indirect
+	github.com/gabriel-vasile/mimetype v1.4.16 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/ghostiam/protogetter v0.3.21 // indirect
 	github.com/github/smimesign v0.2.0 // indirect
@@ -271,8 +271,8 @@ require (
 	github.com/go-openapi/swag/typeutils v0.29.1 // indirect
 	github.com/go-openapi/swag/yamlutils v0.29.1 // indirect
 	github.com/go-openapi/validate v0.26.3 // indirect
-	github.com/go-playground/locales v0.14.1 // indirect
-	github.com/go-playground/universal-translator v0.18.1 // indirect
+	github.com/go-playground/locales v0.14.2 // indirect
+	github.com/go-playground/universal-translator v0.18.2 // indirect
 	github.com/go-restruct/restruct v1.2.0-alpha // indirect
 	github.com/go-sql-driver/mysql v1.9.3 // indirect
 	github.com/go-swagger/go-swagger v0.36.5 // indirect
